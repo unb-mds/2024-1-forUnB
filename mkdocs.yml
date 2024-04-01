@@ -4,5 +4,9 @@ repo_url: https://github.com/unb-mds/2024-1-Squad01
 nav:
   - Home: index.md
   - About: about.md
+  - Estudos:
+      - Métodos Ágeis: estudos/metodos-ageis.md
+      
+      - Section 2: estudos/section2.md
 
 theme: material
