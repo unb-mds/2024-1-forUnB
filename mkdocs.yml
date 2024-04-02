@@ -10,6 +10,8 @@ nav:
 
   - Estudos:
       - Métodos Ágeis: estudos/metodos-ageis.md
+
+      - MkDocs: estudos/documentacao.md
       
       - Bibliografia: estudos/bibliografia.md
 
