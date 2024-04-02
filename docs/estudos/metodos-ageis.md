@@ -19,7 +19,20 @@ Para saber mais sobre o Scrum, consulte a [documentação oficial do Scrum.org](
 
 ## Kanban
 
-O Kanban é uma metodologia ágil...
+Kanban, do japonês "cartão visual" ou "sinalização visual" é uma metologia ágil projetada para ajudar equipes a visualizar seu trabalho, limitar o trabalho em progresso e maximizar a eficiência do fluxo de trabalho. Ele funciona através do uso de cartões (ou post-its) que representam tarefas ou itens de trabalho, e estes são movidos através de diferentes etapas de um processo, que são geralmente representadas em um *quadro Kanban*.
+
+### Princípios Fundamentais do Kanban:
+
+1. **Visualização do trabalho:** Todas as tarefas ou itens de trabalho são representados por cartões visuais em um quadro Kanban. Isso permite que todos na equipe vejam o que está sendo feito, o que está em progresso e o que está concluído.
+
+2. **Limitação do trabalho em progresso (WIP):** O Kanban incentiva a limitação do número de tarefas ou itens de trabalho em progresso em qualquer momento. Isso ajuda a evitar a sobrecarga da equipe e a manter um fluxo de trabalho mais suave.
+
+3. **Gestão do fluxo:** O Kanban foca em melhorar o fluxo de trabalho, garantindo que as tarefas ou itens de trabalho se movam através do processo de forma eficiente e sem interrupções.
+
+4. **Melhoria contínua:** O Kanban promove uma cultura de melhoria contínua, onde as equipes são encorajadas a refletir sobre seu processo e procurar maneiras de torná-lo mais eficaz.
+
+O Kanban é amplamente utilizado em uma variedade de contextos, não apenas em manufatura, mas também em desenvolvimento de software, gerenciamento de projetos, marketing, recursos humanos e muitas outras áreas. Ele se destaca pela sua simplicidade e flexibilidade, permitindo que equipes de diferentes tipos e tamanhos o adaptem às suas necessidades específicas.
+
 
 ## XP
 
