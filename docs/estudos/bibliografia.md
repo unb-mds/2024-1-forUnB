@@ -10,9 +10,7 @@
 - [Site explicando o kanban](https://www.atlassian.com/br/agile/kanban)
 
 ### XP (Extreme Programming)
-- []()
-- []()
-- []()
+- [PDF da UFPE](https://www.cin.ufpe.br/~gamr/FAFICA/Desenvolvimento%20de%20sistemas/XP.pdf)
 
 ## MkDocs
 
