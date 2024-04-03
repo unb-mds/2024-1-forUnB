@@ -3,7 +3,7 @@
 
 ## Metodologias Ágeis
 ### Scrum
-- []()
+- [Site explicando o Scrum](https://www.atlassian.com/br/agile/scrum)
 
 ### Kanban
 - [Site explicando o kanban](https://www.atlassian.com/br/agile/kanban)
