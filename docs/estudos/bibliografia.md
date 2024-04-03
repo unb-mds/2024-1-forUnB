@@ -1,6 +1,5 @@
 ## Estudo Git
 - [Documentação oficial do Git](https://git-scm.com/doc)
-- [Comandos do git]( https://education.github.com/git-cheat-sheet-education.pd)
 - [Estudo de GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 ## Metodologias Ágeis
