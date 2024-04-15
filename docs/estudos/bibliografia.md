@@ -13,5 +13,7 @@
 - [PDF da UFPE](https://www.cin.ufpe.br/~gamr/FAFICA/Desenvolvimento%20de%20sistemas/XP.pdf)
 
 ## MkDocs
-
 - [Documentação oficial do MkDocs](https://www.mkdocs.org/)
+
+## Capacitação Back-end
+- [Playlist implementação de Python com Django](https://youtube.com/playlist?list=PLLVddSbilcumgeyk0z6ko5U_FYPfbRO2C&si=oOmjq9zp7gCmSb0Q)
