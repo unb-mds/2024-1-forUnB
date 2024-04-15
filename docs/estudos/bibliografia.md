@@ -16,4 +16,4 @@
 - [Documentação oficial do MkDocs](https://www.mkdocs.org/)
 
 ## Capacitação Back-end
-- [Playlist implementação de Python com Django](https://youtube.com/playlist?list=PLLVddSbilcumgeyk0z6ko5U_FYPfbRO2C&si=oOmjq9zp7gCmSb0Q)
+- [Playlist de implementação de Python com Django](https://youtube.com/playlist?list=PLLVddSbilcumgeyk0z6ko5U_FYPfbRO2C&si=oOmjq9zp7gCmSb0Q)
