@@ -17,3 +17,4 @@
 
 ## Capacitação Back-end
 - [Playlist de implementação de Python com Django](https://youtube.com/playlist?list=PLLVddSbilcumgeyk0z6ko5U_FYPfbRO2C&si=oOmjq9zp7gCmSb0Q)
+- [Curso de Aplicação Web de Python com Django](https://cursos.alura.com.br/formacao-django)
