@@ -18,3 +18,9 @@
 ## Capacitação Back-end
 - [Playlist de implementação de Python com Django](https://youtube.com/playlist?list=PLLVddSbilcumgeyk0z6ko5U_FYPfbRO2C&si=oOmjq9zp7gCmSb0Q)
 - [Curso de Aplicação Web de Python com Django](https://cursos.alura.com.br/formacao-django)
+
+## Capacitação Front-end
+- [Playlist de implementação em React](https://www.youtube.com/playlist?list=PLnDvRpP8BneyVA0SZ2okm-QBojomniQVO)
+- [Vídeo de React](https://www.youtube.com/watch?v=hd2B7XQAFls)
+- [Livro de HTML e CSS; livro físico](https://wtf.tw/ref/duckett.pdf)
+- [Livro de Javascript; livro físico](https://pt.scribd.com/document/494076628/JavaScript-JQuery-Jon-Duckett)
