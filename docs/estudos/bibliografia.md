@@ -24,3 +24,5 @@
 - [Vídeo de React](https://www.youtube.com/watch?v=hd2B7XQAFls)
 - [Livro de HTML e CSS; livro físico](https://wtf.tw/ref/duckett.pdf)
 - [Livro de Javascript; livro físico](https://pt.scribd.com/document/494076628/JavaScript-JQuery-Jon-Duckett)
+- [Curso completo de Programação Web](https://www.udemy.com/course/curso-web/?couponCode=ST7MT41824)
+- [Curso completo Figma](https://www.udemy.com/course/curso-do-figma-ao-codigo-o-design-da-interface-web-completo/?couponCode=ST7MT41824)
