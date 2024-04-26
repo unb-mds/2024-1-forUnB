@@ -60,7 +60,7 @@ Antes da criação do nosso ambiente, Certifique-se de ter o Python 3 instalado 
 python3 --version
 ```
 
-Você pode baixar e instalar o Python a partir do site oficial do Python.
+Você pode baixar e instalar o Python a partir do [site oficial do Python](https://www.python.org/).
 
 Após isso, iremos instalar o pacote virtualenv, utilizando o seguinte comando:
 
