@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Fórum{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        <h1>Meu Fórum</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'questions' %}">perguntas</a></li>
+                <li><a href="{% url 'new_question' %}">Nova Pergunta</a></li>
+                {% if user.is_authenticated %}
+                Olá, {{ user.username }}. -
+                <a href="{% url 'logout' %}">Sair</a>
+                {% else %}
+                <a href="{% url 'register' %}">Registrar</a> -
+                <a href="{% url 'login' %}">Entrar</a>
+                {% endif %}
+                <!-- Adicione mais itens de menu conforme necessário -->
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Meu Fórum</p>
+    </footer>
+</body>
+
+</html>

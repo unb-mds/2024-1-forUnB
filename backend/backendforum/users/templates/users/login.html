@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<p>Entre com suas credenciais:</p>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Entrar</button>
+    <input type="hidden" name="next" value="{% url 'index' %}" />
+</form>
+{% endblock content %}

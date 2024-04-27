@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block title %}Lista de Perguntas{% endblock %}
+
+{% block content %}
+<h1>Lista de Perguntas</h1>
+
+{% if questions %}
+<ul>
+    {% for question in questions %}
+    <li><a href="{% url 'question' question.id %}">{{ question.title }}</a></li>
+    {% empty %}
+    <li>Nenhuma pergunta encontrada.</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Nenhuma pergunta encontrada.</p>
+{% endif %}
+{% endblock %}

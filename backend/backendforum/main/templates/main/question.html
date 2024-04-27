@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<p>Pergunta: {{ question }}</p>
+<p>Data de Adição: {{ question.created_at|date:'M d, Y H:i' }}</p>
+<p> {{ question.description }} </p>
+
+<p>Respostas:</p>
+
+<p>
+    <a href="{% url 'new_answer' question.id %}">Responder a pergunta</a>
+</p>
+
+<ul>
+    {% for answer in answers %}
+    <li>
+        <p>Data de Adição: {{ answer.created_at|date:'M d, Y H:i' }}</p>
+        <p>{{ answer.text|linebreaks }}</p>
+    </li>
+    {% empty %}
+    <li>Não há respostas registradas.</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
