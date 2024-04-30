@@ -100,7 +100,7 @@ Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de
 ## Protótipos 
 
 ### Protótipo de baixa fidelidade
-- Para acesar clique [aqui](https://www.figma.com/proto/ktEvIqEpgsThoDwnXSdD3Y/Prototipo-de-baixa-fidelidade?type=design&node-id=6-698&t=4QpszmUyONW1vlTV-1&scaling=min-zoom&page-id=0%3A1&mode=design).
+- Para acesar clique [aqui](https://www.figma.com/proto/ktEvIqEpgsThoDwnXSdD3Y/Prototipo-de-baixa-fidelidade?node-id=2-2&mode=design&t=eiqpzf5QcevaT4Ok-1).
 
 ### Protótipo de alta fidelidade
-- Para acesar clique [aqui](https://www.figma.com/proto/kI9C8oLfBGGoXdJU1zAdZX/Intera%C3%A7%C3%B5es?type=design&node-id=1-2&t=fP166WVIwud5KO5m-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A2&mode=design).
+- Para acesar clique [aqui](https://www.figma.com/proto/kI9C8oLfBGGoXdJU1zAdZX/Intera%C3%A7%C3%B5es?node-id=1-2&starting-point-node-id=1%3A2&mode=design&t=tLNIpJGRjTw0PVRe-1).
