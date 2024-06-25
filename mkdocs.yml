@@ -1,4 +1,4 @@
-site_name: Documentção
+site_name: Documentação forUnB
 repo_url: https://github.com/unb-mds/2024-1-forUnB
 
 nav:
@@ -9,16 +9,13 @@ nav:
       - Sprint 1: sprints/sprint1.md
       - Sprint 2: sprints/sprint2.md
 
-
   - Estudos:
+      - Lean Inception: lean_inception/lean_inception.md
       - Métodos Ágeis: estudos/metodos-ageis.md
-
       - MkDocs: estudos/documentacao.md
-
       - Bibliografia: estudos/bibliografia.md
-
-  - Lean Inception: lean_inception/lean_inception.md
-
+  
+  - Visão do produto: visao_do_produto/visao_produto.md
   - Arquitetura:  arquitetura/arquitetura.md
       
 
