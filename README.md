@@ -104,3 +104,8 @@ Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de
 
 ### Protótipo de alta fidelidade
 - Para acesar clique [aqui](https://www.figma.com/proto/kI9C8oLfBGGoXdJU1zAdZX/Intera%C3%A7%C3%B5es?node-id=1-2&starting-point-node-id=1%3A2&mode=design&t=tLNIpJGRjTw0PVRe-1).
+
+## ✨ User Story Mapping
+
+### Miro
+- Para acessar clique [aqui](https://miro.com/welcomeonboard/dDJmYU5kRFFFU3FTSFhmOXM0NFBISEZRNW1ZaTNWRzd0djVzTElEWkpJeGVFNTh1cXQ1N3pUTE5nVHMwbEpoSXwzNDU4NzY0NTM2Mzk3Mzg0NTUyfDI=?share_link_id=918024347294).
