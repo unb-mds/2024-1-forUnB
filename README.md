@@ -108,4 +108,4 @@ Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de
 ## ✨ User Story Mapping
 
 ### Miro
-- Para acessar clique [aqui](https://miro.com/welcomeonboard/dDJmYU5kRFFFU3FTSFhmOXM0NFBISEZRNW1ZaTNWRzd0djVzTElEWkpJeGVFNTh1cXQ1N3pUTE5nVHMwbEpoSXwzNDU4NzY0NTM2Mzk3Mzg0NTUyfDI=?share_link_id=918024347294).
+- Para acessar clique [aqui](https://miro.com/app/board/uXjVK3aRJY0=/?share_link_id=690300696919).
