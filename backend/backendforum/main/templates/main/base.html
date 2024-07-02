@@ -96,24 +96,24 @@
             <div class="col-auto bg-green custom-height">
                 <header class="mt-3">
                     <div class="titulo text-left fs-1 fw-bold">
-                        <a href="/">forUnb</a>
+                        <a href="/" class="text-white fw-bold">forUnb</a>
                     </div>
                 </header>
                 <nav class="nav flex-column">
-                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'index' %}">Home</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'questions' %}">Forúns</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'new_question' %}">Nova Pergunta</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold" href="{% url 'index' %}">Home</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold" href="{% url 'questions' %}">Fóruns</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold" href="{% url 'new_question' %}">Nova Pergunta</a>
                     {% if user.is_authenticated %}
                     Olá, {{ user.username }}. -
                     <a class="nav-link text-dark" href="{% url 'logout' %}">Sair</a>
                     {% else %}
-                    <a class="btn btn-primary bt-color btn-sm register-button" href="{% url 'register' %}">Registrar</a>
-                    <a class="btn btn-primary bt-color btn-sm access-button" href="{% url 'login' %}">Entrar</a>
+                    <a class="btn btn-primary bt-color btn-sm register-button text-white fw-bold" href="{% url 'register' %}">Registrar</a>
+                    <a class="btn btn-primary bt-color btn-sm access-button text-white fw-bold" href="{% url 'login' %}">Entrar</a>
                     {% endif %}
                     <!-- Adicione mais itens de menu conforme necessário -->
                 </nav>
                 <footer class="mt-auto">
-                    <p>&copy; 2024 Meu Fórum</p>
+                    <p class="text-white">&copy; 2024 Meu Fórum</p>
                 </footer>
             </div>
             <div class="col-10">
