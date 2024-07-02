@@ -1,12 +1,18 @@
-{% extends "main/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<p>Entre com suas credenciais:</p>
+<head>
+    <meta charset="UTF-8">
+    <title>Entrar</title>
 
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">Entrar</button>
-    <input type="hidden" name="next" value="{% url 'index' %}" />
-</form>
-{% endblock content %}
+</html>
+
+<body>
+    <h1>Entre com suas credenciais:</h1>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Entrar</button>
+        <input type="hidden" name="next" value="{% url 'index' %}" />
+    </form>
+</body>
