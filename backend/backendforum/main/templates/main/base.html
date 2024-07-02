@@ -81,6 +81,7 @@
         }
 
         .custom-height {
+            width: 240px;
             min-height: 100vh;
             /* Garante que a coluna tenha pelo menos 100% da altura da viewport */
             display: flex;
@@ -99,10 +100,9 @@
                     </div>
                 </header>
                 <nav class="nav flex-column">
-                    <a class="btn btn-primary bt-color button-button" href="{% url 'index' %}">Home</a>
-
-                    <a class="nav-link text-dark" href="{% url 'questions' %}">Perguntas</a>
-                    <a class="nav-link text-dark" href="{% url 'new_question' %}">Nova Pergunta</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'index' %}">Home</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'questions' %}">Forúns</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button" href="{% url 'new_question' %}">Nova Pergunta</a>
                     {% if user.is_authenticated %}
                     Olá, {{ user.username }}. -
                     <a class="nav-link text-dark" href="{% url 'logout' %}">Sair</a>

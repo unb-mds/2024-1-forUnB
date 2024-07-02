@@ -1,26 +1,33 @@
 {% extends "main/base.html" %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pergunta: {{ question.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Data de Adição: {{ question.created_at|date:'M d, Y H:i' }}</h6>
+            <p class="card-text">{{ question.description }}</p>
+        </div>
+    </div>
 
-<p>Pergunta: {{ question }}</p>
-<p>Data de Adição: {{ question.created_at|date:'M d, Y H:i' }}</p>
-<p> {{ question.description }} </p>
+    <div class="mt-4">
+        <h5>Respostas:</h5>
+        <p>
+            <a class="btn btn-primary btn-sm bt-color bu" href="{% url 'new_answer' question.id %}">Responder a pergunta</a>
+        </p>
 
-<p>Respostas:</p>
-
-<p>
-    <a href="{% url 'new_answer' question.id %}">Responder a pergunta</a>
-</p>
-
-<ul>
-    {% for answer in answers %}
-    <li>
-        <p>Data de Adição: {{ answer.created_at|date:'M d, Y H:i' }}</p>
-        <p>{{ answer.text|linebreaks }}</p>
-    </li>
-    {% empty %}
-    <li>Não há respostas registradas.</li>
-    {% endfor %}
-</ul>
-
+        <ul class="list-group">
+            {% for answer in answers %}
+            <li class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">Data de Adição: {{ answer.created_at|date:'M d, Y H:i' }}</h6>
+                </div>
+                <p class="mb-1">{{ answer.text|linebreaks }}</p>
+            </li>
+            {% empty %}
+            <li class="list-group-item">Não há respostas registradas.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock content %}
