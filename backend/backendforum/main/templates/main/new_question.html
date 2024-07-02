@@ -1,10 +1,12 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<p>Adicione uma nova pergunta:</p>
-<form action="{% url 'new_question' %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name='submit'>Pergunte</button>
-</form>
+<div class="container mt-5">
+    <h3>Adicione uma nova pergunta:</h3>
+    <form action="{% url 'new_question' %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3 bt-color">Pergunte</button>
+    </form>
+</div>
 {% endblock %}

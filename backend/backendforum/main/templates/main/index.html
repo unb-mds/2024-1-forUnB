@@ -1,6 +1,28 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<h1>Forum</h1>
-<p>Seja bem-vindo ao fórum!</p>
+<style>
+    .custom-container {
+        max-width: 800px; /* Defina o máximo desejado */
+        margin: 0 auto; /* Centraliza horizontalmente */
+        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+        height: 30vh; /* Altura total da viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        left: 50px;
+        
+    }
+</style>
+
+<div class="custom-container mt-5 ms-0">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Fórum</h1>
+            <p class="card-text">Seja bem-vindo ao fórum!</p>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

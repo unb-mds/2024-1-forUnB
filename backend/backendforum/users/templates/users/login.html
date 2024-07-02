@@ -1,12 +1,39 @@
-{% extends "main/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<p>Entre com suas credenciais:</p>
+<head>
+    <meta charset="UTF-8">
+    <title>Entrar</title>
 
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">Entrar</button>
-    <input type="hidden" name="next" value="{% url 'index' %}" />
-</form>
-{% endblock content %}
+</html>
+
+<body>
+    <h1>Entre com suas credenciais:</h1>
+    <div class="dropdown-menu">
+        <form method="post" action="{% url 'login' %}" class="px-4 py-3">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == 'username' %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">Email UnB</label>
+                        {{ field }}
+                    </div>
+                {% elif field.name == 'password' %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">Senha</label>
+                        {{ field }}
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <input type="hidden" name="next" value="{% url 'index' %}" />
+        </form>
+        
+    </div>
+    
+    
+    
+</body>
+
