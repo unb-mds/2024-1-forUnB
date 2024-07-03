@@ -1,7 +1,21 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<div class="container mt-5">
+<style>
+    .custom-container {
+        max-width: 800px; /* Defina o máximo desejado */
+        margin: 0 auto; /* Centraliza horizontalmente */
+        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+        height: 45vh; /* Altura total da viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        left: 50px;
+    }
+</style>
+
+<div class="custom-container mt-5 ms-0">
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Pergunta: {{ question.title }}</h5>
