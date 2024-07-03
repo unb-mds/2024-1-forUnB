@@ -85,13 +85,13 @@ Com o ambiente criado, vamos ativá-lo:
 ### No Windows:
 
 ```bash
-.\venv\Scripts\activate
+.\.venv\Scripts\activate
 ```
 
 ### No Linux/macOS:
 
 ```bash
-source venv/Scripts/activate
+source .venv/bin/activate
 ```
 
 Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de comando, indicando que o ambiente virtual está em uso.
