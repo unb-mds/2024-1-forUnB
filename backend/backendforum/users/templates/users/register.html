@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<p>Cadastre suas credenciais:</p>
+
+<form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Registrar</button>
+    <input type="hidden" name="next" value="{% url 'index' %}" />
+</form>
+{% endblock content %}
