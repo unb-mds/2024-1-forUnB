@@ -97,3 +97,40 @@ class QuestionViewTest(TestCase):
         self.assertContains(response, self.forum.title)
         self.assertContains(response, self.forum.description)
         self.assertEqual(response.context['question'], self.forum)
+
+
+class QuestionsViewTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.forum1 = Forum.objects.create(
+            title="Test Question 1",
+            description="This is a test question description 1."
+        )
+        self.forum2 = Forum.objects.create(
+            title="Test Question 2",
+            description="This is a test question description 2."
+        )
+
+    # Testa a resposta a uma solicitação GET para a view questions:
+    #   - Verifica se o código de status da resposta é 200 (OK).
+    #   - Verifica se o template correto (main/questions.html) é usado.
+    #   - Verifica se a resposta contém os títulos e descrições das perguntas.
+    #   - Verifica se o contexto da resposta contém a lista de perguntas correta.
+    def test_questions_view_status_code(self):
+        response = self.client.get(reverse('questions'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_questions_view_template_used(self):
+        response = self.client.get(reverse('questions'))
+        self.assertTemplateUsed(response, 'main/questions.html')
+
+    def test_questions_view_context(self):
+        response = self.client.get(reverse('questions'))
+        self.assertIn(self.forum1, response.context['questions'])
+        self.assertIn(self.forum2, response.context['questions'])
+
+    def test_questions_view_content(self):
+        response = self.client.get(reverse('questions'))
+        self.assertContains(response, self.forum1.title)
+        self.assertContains(response, self.forum2.title)
