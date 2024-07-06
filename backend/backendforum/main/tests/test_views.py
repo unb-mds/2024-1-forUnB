@@ -74,3 +74,26 @@ class NewQuestionViewTest(TestCase):
         self.assertIsInstance(response.context['form'], ForumForm)
         self.assertTrue(response.context['form'].errors)
         self.assertEqual(Forum.objects.count(), 0)
+
+
+class QuestionViewTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.forum = Forum.objects.create(
+            title="Test Question",
+            description="This is a test question description."
+        )
+
+    # testa a resposta a uma solicitação GET para a view question:
+    #   - Verifica se o código de status da resposta é 200 (OK).
+    #   - Verifica se o template correto (main/question.html) é usado.
+    #   - Verifica se a resposta contém o título e a descrição da pergunta.
+    #   - Verifica se o contexto da resposta contém o objeto Forum correto.
+    def test_question_view(self):
+        response = self.client.get(reverse('question', args=[self.forum.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/question.html')
+        self.assertContains(response, self.forum.title)
+        self.assertContains(response, self.forum.description)
+        self.assertEqual(response.context['question'], self.forum)
