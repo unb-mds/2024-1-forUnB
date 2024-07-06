@@ -1,25 +1,31 @@
 from django.test import TestCase
+from main.models import Forum
+from django.utils import timezone
 
-from main.models import *
+class ForumModelTest(TestCase):
 
-# Create your tests here.
+    def setUp(self):
+        self.forum = Forum.objects.create(
+            title="Test Forum",
+            description="This is a test forum description"
+        )
 
-class ForumModelTest (TestCase):
+    # testa se o objeto Forum é criado corretamente e se seus atributos são definidos conforme esperado.
+    def test_forum_creation(self):
+        self.assertIsInstance(self.forum, Forum)
+        self.assertEqual(self.forum.title, "Test Forum")
+        self.assertEqual(self.forum.description, "This is a test forum description")
+        self.assertIsNotNone(self.forum.created_at)
 
-    def setUpTestData():
-        Forum.objects.create(title='Cálculo 1', description='Isso é um teste', created_at='Data de Adição: Apr 27, 2024 22:06')
+    # testa o método __str__ do modelo para garantir que ele retorne o título do fórum.
+    def test_str_method(self):
+        self.assertEqual(str(self.forum), self.forum.title)
+
+
+    # testa se o campo created_at é automaticamente preenchido com a data e hora atuais quando um objeto Forum é criado.
+    def test_created_at_auto_now_add(self):
+        now = timezone.now()
+        self.assertTrue(now - self.forum.created_at < timezone.timedelta(seconds=1))
+
 
     
-    def test_title_name_label(self):
-        forum = Forum.objects.get(id=1)
-        field_label = forum._meta.get_field('title').verbose_name
-        self.assertEquals(field_label, 'title')
-
-    def test_title_name_max_lenght(self):
-        forum = Forum.objects.get(id=1)
-        max_length = forum._meta.get_field('title').max_length
-        self.assertEquals(max_length, 100)
-
-    def test_string_return(self):
-        forum = Forum.objects.get(id=1)
-        self.assertEquals(forum.__str__(), 'Cálculo 1')
