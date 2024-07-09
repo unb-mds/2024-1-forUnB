@@ -1,13 +1,25 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<p><a href="{% url 'question' question.id %}">{{ question }}</a></p>
+<style>
+    .custom-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+</style>
 
-<p>Responder:</p>
-
-<form action="{% url 'new_answer' question.id %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name='submit'>Adicionar resposta</button>
-</form>
+<div class="custom-container mt-5 ms-0">
+    <h3>Responder à Pergunta: {{ question.title }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3 bt-color">Enviar Resposta</button>
+    </form>
+</div>
 {% endblock %}
