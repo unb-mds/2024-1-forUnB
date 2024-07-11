@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import Forum, Answer
 from .forms import ForumForm, AnswerForm
@@ -16,11 +16,14 @@ def questions(request):
     return render(request, 'main/questions.html', context)
 
 def question(request, question_id):
-    question = Forum.objects.get(id=question_id)
+    question = get_object_or_404(Forum, id=question_id)
+    answers = question.answer_set.all()
     context = {
-        'question': question
+        'question': question,
+        'answers': answers
     }
-    return render(request, 'main/question.html', context) 
+    return render(request, 'main/question.html', context)
+ 
 
 def new_question(request):
     if request.method != 'POST':
@@ -36,16 +39,17 @@ def new_question(request):
     return render(request, 'main/new_question.html', context) 
     
 def new_answer(request, question_id):
-    # forum = get_object_or_404(Forum, id=question_id)
-    forum = Forum.objects.get(id=question_id)
-    if request.method != 'POST':
-        form = AnswerForm()
-    else:
+    question = get_object_or_404(Forum, id=question_id)
+    
+    if request.method == 'POST':
         form = AnswerForm(request.POST)
         if form.is_valid():
-            new_answer = form.save(commit=False)
-            new_answer.forum = forum
+            answer_text = form.cleaned_data['text']
+            new_answer = Answer(forum=question, text=answer_text)
             new_answer.save()
-            return HttpResponseRedirect(reverse('question', args=[question_id, ]))
-    context = {'forum': forum, 'form': form}
+            return redirect('question', question_id=question_id)
+    else:
+        form = AnswerForm()
+    
+    context = {'form': form, 'question': question}
     return render(request, 'main/new_answer.html', context)
