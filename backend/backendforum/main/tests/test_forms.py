@@ -73,3 +73,38 @@ class AnswerFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('text', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'text'
         """
+
+
+class UnbEmailRegistrationFormTest(TestCase):
+
+    #Testa com um email válido
+    def test_valid_unb_email(self):
+        form_data = {
+            'email': 'validemail@aluno.unb.br',
+            'password': 'testpassword'
+        }
+        form = UnbEmailRegistrationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    # Testa com um email inválido
+    def test_invalid_email_domain(self):
+        form_data = {
+            'email': 'invalidemail@otherdomain.com',
+            'password': 'testpassword'
+        }
+        form = UnbEmailRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'email'
+
+    # Testa com um email ja registrado
+    def test_email_already_registered(self):
+        # Cria um usuário com o email válido
+        User.objects.create_user(username='existinguser', email='validemail@aluno.unb.br', password='existingpassword')
+
+        form_data = {
+            'email': 'validemail@aluno.unb.br',
+            'password': 'testpassword'
+        }
+        form = UnbEmailRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'email'
