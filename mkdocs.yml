@@ -25,5 +25,6 @@ nav:
       - Lean Inception: lean_inception/lean_inception.md
       - Métodos Ágeis: estudos/metodos-ageis.md
       - MkDocs: estudos/documentacao.md
+      - GitFlow: estudos/gitflow.md
       - Bibliografia: estudos/bibliografia.md
       
