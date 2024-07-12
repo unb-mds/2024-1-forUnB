@@ -15,6 +15,7 @@ nav:
   - Home: index.md
   - Visão do produto: visao_do_produto/visao_produto.md
   - Arquitetura:  arquitetura/arquitetura.md
+  - Protótipos: prototipo/prototipo.md
 
   - Sprints:
       - Sprint 0: sprints/sprint0.md
@@ -27,4 +28,5 @@ nav:
       - MkDocs: estudos/documentacao.md
       - GitFlow: estudos/gitflow.md
       - Bibliografia: estudos/bibliografia.md
+
       
