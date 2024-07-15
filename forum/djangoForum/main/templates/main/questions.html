@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+
+{% block title %}Lista de Perguntas{% endblock %}
+
+{% block content %}
+<style>
+    .custom-container {
+        max-width: 800px; /* Defina o máximo desejado */
+        margin: 0 auto; /* Centraliza horizontalmente */
+        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+        height: 34vh; /* Altura total da viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        left: 50px;
+    }
+</style>
+
+<div class="custom-container mt-5 ms-0">
+    <h1 class="mb-4">Lista de Fóruns</h1>
+
+    <div class="questions-content">
+        {% if questions %}
+        <ul class="list-group questions-list">
+            {% for question in questions %}
+            <li class="list-group-item">
+                <a href="{% url 'question' question.id %}">{{ question.title }}</a>
+            </li>
+            {% empty %}
+            <li class="list-group-item">Nenhuma pergunta encontrada.</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            Nenhuma pergunta encontrada.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

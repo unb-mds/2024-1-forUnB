@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<style>
+    .custom-container {
+        max-width: 800px; /* Defina o máximo desejado */
+        margin: 0 auto; /* Centraliza horizontalmente */
+        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+        height: 45vh; /* Altura total da viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        left: 50px;
+    }
+</style>
+
+<div class="custom-container mt-5 ms-0">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pergunta: {{ question.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Data de Adição: {{ question.created_at|date:'M d, Y H:i' }}</h6>
+            <p class="card-text">{{ question.description }}</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h5>Respostas:</h5>
+        <p>
+            <a class="btn btn-primary btn-sm bt-color bu" href="{% url 'new_answer' question.id %}">Responder a pergunta</a>
+        </p>
+
+        <ul class="list-group">
+            {% for answer in answers %}
+            <li class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">Data de Adição: {{ answer.created_at|date:'M d, Y H:i' }}</h6>
+                </div>
+                <p class="mb-1">{{ answer.text|linebreaks }}</p>
+            </li>
+            {% empty %}
+            <li class="list-group-item">Não há respostas registradas.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock content %}

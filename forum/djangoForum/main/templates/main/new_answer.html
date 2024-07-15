@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<p><a href="{% url 'question' question.id %}">{{ question }}</a></p>
+
+<p>Responder:</p>
+
+<form action="{% url 'new_answer' question.id %}" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name='submit'>Adicionar resposta</button>
+</form>
+{% endblock %}
