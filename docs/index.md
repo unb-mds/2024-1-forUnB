@@ -2,7 +2,7 @@
 
 ## Sobre
 
-A ideia é de fazer um fórum, parecido com a ideia do [stack overflow](https://stackoverflow.com/), onde poderiam ser criados fóruns com perguntas para serem respondidas por **alunos** ou até mesmo **professores**. A ideia seria uma comunidade cooperativa para alunos se ajudarem, tendo também fóruns específicos para as turmas e seus monitores, facilitando a organização para os mesmos. Também teria um sistema de avaliação para reforçar as melhores respostas e deixa-las em destaque.
+A ideia é de fazer um fórum, parecido com a ideia do [stack overflow](https://stackoverflow.com/), onde poderiam ser criados fóruns com perguntas a serem respondidas por **alunos** ou até mesmo **professores**. A ideia seria uma comunidade cooperativa para alunos se ajudarem, tendo também fóruns específicos para as turmas e seus monitores, facilitando a organização para os mesmos. Também teria um sistema de avaliação para reforçar as melhores respostas e deixa-las em destaque.
 
 ## Equipe
 
