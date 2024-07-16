@@ -20,9 +20,9 @@ Para essa sprint, foi estruturado reuniões com intuito de desenvolver as featur
 - **Local:** Discord
 - **Ata:**
   Nessa Reunião curta foram definidos a divisão do grupo para cada função na conclusão do MVP:
-  - **Features**: Pedro Lopes e Victor Hugo Bernardes
-  - **Protótipos**: Alexandre Junior e Manoela Garcia
-  - **Documentação e participação secundária no código**: Davi Klein e Bruno Bragança
+    - Features: Pedro Lopes e Victor Hugo Bernardes
+    - Protótipos: Alexandre Junior e Manoela Garcia
+    - Documentação e participação secundária no código: Davi Klein e Bruno Bragança
  
 ### Reunião 2
 - **Data:** 21/04/2024
