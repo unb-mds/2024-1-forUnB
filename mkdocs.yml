@@ -15,15 +15,21 @@ nav:
   - Home: index.md
   - Visão do produto: visao_do_produto/visao_produto.md
   - Arquitetura:  arquitetura/arquitetura.md
+  - Protótipos: prototipo/prototipo.md
 
   - Sprints:
       - Sprint 0: sprints/sprint0.md
       - Sprint 1: sprints/sprint1.md
       - Sprint 2: sprints/sprint2.md
+      - Sprint 3: sprints/sprint3.md
+      - Sprint 4: sprints/sprint4.md
+      - Sprint 5: sprints/sprint5.md
 
   - Estudos:
       - Lean Inception: lean_inception/lean_inception.md
       - Métodos Ágeis: estudos/metodos-ageis.md
       - MkDocs: estudos/documentacao.md
+      - GitFlow: estudos/gitflow.md
       - Bibliografia: estudos/bibliografia.md
+
       
