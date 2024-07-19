@@ -51,19 +51,18 @@ def new_question(request, forum_id):
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
 
+@login_required
 def new_answer(request, question_id):
-    """Criação de uma nova resposta para uma perguta."""
-    question = get_object_or_404(Forum, id=question_id) # se a pergunta existir
-
+    question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
         if form.is_valid():
-            answer_text = form.cleaned_data['text']
-            new_answer = Answer(forum=question, text=answer_text)
-            new_answer.save()
-            return redirect('question', question_id=question_id)
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.author = request.user
+            answer.save()
+            return redirect('question_detail', question_id=question.id)
     else:
         form = AnswerForm()
+    return render(request, 'main/new_answer.html', {'form': form, 'question': question})
 
-    context = {'form': form, 'question': question}
-    return render(request, 'main/new_answer.html', context)
