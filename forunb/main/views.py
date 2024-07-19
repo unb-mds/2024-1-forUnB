@@ -29,15 +29,10 @@ def questions(request):
     return render(request, 'main/questions.html', {'questions': questions})
 
 
-def question(request, question_id):
-    """Mostra todos os detalhes do forum."""
-    question = get_object_or_404(Forum, id=question_id)
-    answers = question.answer_set.all().order_by("-created_at")
-    context = {
-        'question': question,
-        'answers': answers
-    }
-    return render(request, 'main/question.html', context)
+def question_detail(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    answers = question.answers.all()  # Supondo que você configurou related_name='answers' no modelo Answer
+    return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
 
 def new_question(request):
