@@ -25,13 +25,8 @@ def forum_list(request):
     return render(request, 'main/forums.html', {'forums': forums})
 
 def questions(request):
-    """Mostra todos os foruns que estão na base de dados."""
-    questions = Forum.objects.all().order_by(
-        "title")  # a ordem que aparece os forns é por alfabética
-    context = {
-        'questions': questions
-    }
-    return render(request, 'main/questions.html', context)
+    questions = Question.objects.all()  # Ajuste conforme necessário para filtrar as perguntas desejadas
+    return render(request, 'main/questions.html', {'questions': questions})
 
 
 def question(request, question_id):
