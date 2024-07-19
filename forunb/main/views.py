@@ -8,6 +8,9 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 
 
+def login_redirect(view_func):
+    return user_passes_test(lambda u: u.is_authenticated, login_url='/accounts/login/')(view_func)
+
 def index(request):
     latest_questions = Question.objects.all().order_by('-created_at')  # Ordenar por data de criação
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
