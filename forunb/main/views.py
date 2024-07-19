@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Forum, Answer
-from .forms import ForumForm, AnswerForm
+from .models import Forum, Answer, Question
+from .forms import *
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
 
 
 def index(request):
-    """Encaminhamento para a pagina home."""
-    return render(request, 'main/index.html')
+    latest_questions = Question.objects.all().order_by('-created_at')  # Ordenar por data de criação
+    return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
 
 def questions(request):
