@@ -20,6 +20,10 @@ def forum_detail(request, forum_id):
     questions = Question.objects.filter(forum=forum)
     return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': questions})
 
+def forum_list(request):
+    forums = Forum.objects.all()
+    return render(request, 'main/forums.html', {'forums': forums})
+
 def questions(request):
     """Mostra todos os foruns que estão na base de dados."""
     questions = Forum.objects.all().order_by(
