@@ -15,6 +15,10 @@ def index(request):
     latest_questions = Question.objects.all().order_by('-created_at')  # Ordenar por data de criação
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
+def forum_detail(request, forum_id):
+    forum = get_object_or_404(Forum, id=forum_id)
+    questions = Question.objects.filter(forum=forum)
+    return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': questions})
 
 def questions(request):
     """Mostra todos os foruns que estão na base de dados."""
