@@ -35,19 +35,20 @@ def question_detail(request, question_id):
     return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
 
-def new_question(request):
-    """Criação de uma nova pergunta para o fórum."""
-    if request.method != 'POST':
-        form = ForumForm()
-    else:
-        form = ForumForm(request.POST)
+@login_required
+def new_question(request, forum_id):
+    forum = get_object_or_404(Forum, id=forum_id)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
         if form.is_valid():
-            new_question = form.save(commit=False)
-            new_question.save()
-            form.save()
-            return HttpResponseRedirect(reverse('questions'))
-    context = {'form': form}
-    return render(request, 'main/new_question.html', context)
+            question = form.save(commit=False)
+            question.forum = forum
+            question.author = request.user
+            question.save()
+            return redirect('forum_detail', forum_id=forum.id)
+    else:
+        form = QuestionForm()
+    return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
 
 def new_answer(request, question_id):
