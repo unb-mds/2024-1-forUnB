@@ -9,11 +9,11 @@ assignees: ''
 
 ## Tipo de Issue
 
-- [ ] Documentação
-- [ ] Bug
-- [ ] Nova funcionalidade
-- [ ] Melhorias
-- [ ] Outros (especificar)
+- Documentação
+- Bug
+- Nova funcionalidade
+- Melhorias
+- Outros (especificar)
 
 ## Descrição
 
