@@ -105,6 +105,8 @@
             display: flex;
             flex-direction: column;
         }
+
+        
     </style>
 </head>
 
@@ -117,22 +119,16 @@
                     <a href="/"><img src="{% static 'forunb/img/logo1.jpg' %}" alt="logo" width="200" height="100"></a>
                 </header>
                 <nav class="nav flex-column">
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'index' %}">Home</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'questions' %}">Fóruns</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'new_question' %}">Nova Pergunta</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold" href="{% url 'index' %}">Home</a>
+                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold" href="{% url 'forum_list' %}">Fóruns</a>
                     {% if user.is_authenticated %}
                     Olá, {{ user.username }}. -
                     <a class="nav-link text-dark" href="{% url 'logout' %}">Sair</a>
                     {% else %}
-                    <a class="btn btn-primary bt-color btn-sm register-button text-white fw-bold"
-                        href="{% url 'register' %}">Registrar</a>
-                    <a class="btn btn-primary bt-color btn-sm access-button text-white fw-bold"
-                        href="{% url 'login' %}">Entrar</a>
+                    <a class="btn btn-primary bt-color btn-sm register-button text-white fw-bold" href="{% url 'register' %}">Registrar</a>
+                    <a class="btn btn-primary bt-color btn-sm access-button text-white fw-bold" href="{% url 'login' %}">Entrar</a>
                     {% endif %}
-
+                    
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">&copy; 2024 Meu Fórum</p>
@@ -142,15 +138,13 @@
                 <main>
                     <nav class="navbar navbar-light bg-light search-bar">
                         <div class="container-fluid">
-                            <form class="d-flex">
-                                <input class="form-control me-2" style="width: 30rem;" type="search"
-                                    placeholder="Pesquisa" aria-label="Pesquisa">
-                                <button class="btn btn-outline-success" type="submit">Buscar</button>
-                            </form>
+                          <form class="d-flex">
+                            <input class="form-control me-2" style="width: 30rem;" type="search" placeholder="Pesquisa" aria-label="Pesquisa">
+                            <button class="btn btn-outline-success" type="submit">Buscar</button>
+                          </form>
                         </div>
-                    </nav>
-                    {% block content %} {% endblock %}
-                </main>
+                      </nav> 
+                      {% block content %} {% endblock %}</main>
             </div>
         </div>
     </div>

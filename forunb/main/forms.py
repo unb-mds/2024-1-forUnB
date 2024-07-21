@@ -1,5 +1,5 @@
 from django import forms
-from .models import Forum, Answer
+from .models import *
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User 
 
@@ -11,6 +11,11 @@ class ForumForm(forms.ModelForm):
             'title': '',
             'description': ''
         }
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['title', 'description']
 
 class AnswerForm(forms.ModelForm):
     class Meta:
