@@ -4,20 +4,19 @@
 <style>
     .custom-container {
         max-width: 800px; /* Defina o máximo desejado */
-        margin: 0 auto; /* Centraliza horizontalmente */
-        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
-        height: 50vh; /* Altura total da viewport */
+        margin: 0px; /* Centraliza horizontalmente */
+        padding: 0px; /* Ajusta o preenchimento interno conforme necessário */
+        height: 5vh; /* Altura total da viewport */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        left: 50px;
     }
 
     .forum-card {
         margin-bottom: 20px;
         width: 100%;
-        padding: 20px;
+        padding: 0px;
         background-color: #f8f9fa;
         border: 1px solid #ced4da;
         border-radius: 8px;
@@ -33,7 +32,7 @@
     }
 </style>
 
-<div class="custom-container mt-5 ms-0">
+<div class="custom-container mt-5">
     <h2>Lista de Fóruns</h2>
     <hr>
     {% for forum in forums %}
