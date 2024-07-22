@@ -4,13 +4,13 @@
 <style>
     .custom-container {
         max-width: 800px; /* Define o máximo desejado */
-        margin: 0 auto; /* Centraliza horizontalmente */
-        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+        margin: 0px;
+        padding: 10px;
+        height: 10hv;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* Alinha os itens ao topo */
+        justify-content: center;
         align-items: flex-start;
-        margin-top: 50px; /* Adiciona margem superior ao contêiner */
     }
 
     .question-card {
@@ -44,12 +44,12 @@
     }
 
     .heading {
-        margin-top: 100px; /* Espaçamento acima do título */
+        margin-top: 10px; /* Espaçamento acima do título */
         margin-bottom: 20px; /* Espaçamento abaixo do título */
     }
 </style>
 
-<div class="custom-container mt-5 ms-0">
+<div class="custom-container mt-5">
     <h2 class="heading">Últimas Perguntas</h2>
     <hr>
     {% for question in latest_questions %}
