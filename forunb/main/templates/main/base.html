@@ -7,158 +7,76 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-    <style>
-        a {
-            color: inherit;
-            /* Mantém a cor do texto ao invés da cor padrão do link */
-        }
-
-        .access-button {
-            position: absolute;
-            margin: 10px 0;
-            top: 20px;
-            right: 20px;
-            background-color: #003366;
-            color: #C7D2DD;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .register-button {
-            position: absolute;
-            margin: 10px 0;
-            top: 20px;
-            right: 115px;
-            background-color: #003366;
-            color: #C7D2DD;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .search-bar {
-            position: absolute;
-            margin: 10px 0;
-            top: 20px;
-            left: 250px;
-            background-color: #003366;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 0px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .button-button {
-            position: inherit;
-            /* Ou use 'static' se desejar remover a posição absoluta */
-            margin: 10px 0;
-            background-color: #003366;
-            color: #C7D2DD;
-            padding: 8px 16px;
-            /* Ajuste o padding para tornar o botão menor */
-            border: none;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 14px;
-            /* Reduzindo o tamanho da fonte */
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* Centraliza horizontalmente */
-            text-align: center;
-            /* Garante que o texto esteja centralizado */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .bg-green {
-            background-color: #006633;
-        }
-
-        .bt-color {
-            background-color: #003366;
-        }
-
-        .custom-height {
-            width: 250px;
-            min-height: 100vh;
-            /* Garante que a coluna tenha pelo menos 100% da altura da viewport */
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    {% load static %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-auto bg-green custom-height">
-                <header class="mt-5 d-flex justify-content-center mb-5">
+            <!-- Barra lateral visível em telas maiores ou iguais a 1200px -->
+            <div class="col-xl-3 bg-green custom-height" id="accordionSidebar">
+                <button class="btn btn-primary d-xl-none btn-menu" id="sidebarClose"><i class="bi bi-list"></i></button>
+                <header class="d-flex justify-content-center mb-5">
                     {% load static %}
-                    <a href="/"><img src="{% static 'forunb/img/logo1.jpg' %}" alt="logo" width="200" height="100"></a>
+                    <a href="/"><img class="img-fluid" src="{% static 'forunb/img/logo1.jpg' %}" alt="logo" width="300" height="200"></a>
                 </header>
                 <nav class="nav flex-column">
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'index' %}">Home</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'questions' %}">Fóruns</a>
-                    <a class="btn btn-primary btn-sm bt-color button-button text-white fw-bold"
-                        href="{% url 'new_question' %}">Nova Pergunta</a>
+                    <a class="btn btn-primary btn-sm btn-home" href="{% url 'index' %}"><i class="bi bi-house-door"></i>Home</a>
+                    <a class="btn btn-primary btn-sm btn-home" href="{% url 'questions' %}"><i class="bi bi-star"></i>Fóruns</a>
                     {% if user.is_authenticated %}
-                    Olá, {{ user.username }}. -
-                    <a class="nav-link text-dark" href="{% url 'logout' %}">Sair</a>
-                    {% else %}
-                    <a class="btn btn-primary bt-color btn-sm register-button text-white fw-bold"
-                        href="{% url 'register' %}">Registrar</a>
-                    <a class="btn btn-primary bt-color btn-sm access-button text-white fw-bold"
-                        href="{% url 'login' %}">Entrar</a>
+                        <a class="nav-link text-dark" href="{% url 'logout' %}">Sair</a>
                     {% endif %}
-
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">&copy; 2024 Meu Fórum</p>
                 </footer>
             </div>
-            <div class="col-10">
-                <main>
-                    <nav class="navbar navbar-light bg-light search-bar">
-                        <div class="container-fluid">
-                            <form class="d-flex">
-                                <input class="form-control me-2" style="width: 30rem;" type="search"
-                                    placeholder="Pesquisa" aria-label="Pesquisa">
-                                <button class="btn btn-outline-success" type="submit">Buscar</button>
-                            </form>
-                        </div>
-                    </nav>
-                    {% block content %} {% endblock %}
-                </main>
+
+            <!-- Conteúdo principal -->
+            <div class="col-xl-9">
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <!-- Botão para mostrar a barra lateral em telas pequenas -->
+                    <button class="btn btn-primary d-xl-none btn-menu" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <!-- Barra de pesquisa -->
+                    <form class="d-flex flex-grow-1 me-2" role="search">
+                        <input class="form-control search-bar me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+                    </form>
+                    <!-- Botão de login -->
+                    <div class="d-flex align-items-center">
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-login d-none d-sm-flex align-items-center" href="#">
+                                <i class="bi bi-person-fill me-2"></i> {{ user.username }}
+                            </a>
+                            <a class="btn btn-login d-flex d-sm-none" href="#">
+                                <i class="bi bi-person-fill"></i>
+                            </a>
+                        {% else %}
+                            <a class="btn btn-login" href="{% url 'login' %}">Entrar</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Conteúdo principal -->
+                {% block content %} {% endblock %}
             </div>
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('accordionSidebar');
+            sidebar.classList.toggle('show');
+        });
+
+        document.getElementById('sidebarClose').addEventListener('click', function() {
+            var sidebar = document.getElementById('accordionSidebar');
+            sidebar.classList.remove('show');
+        });
+    </script>
 </body>
 
 </html>

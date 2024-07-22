@@ -1,0 +1,165 @@
+/* Ajustes gerais */
+.bg-green {
+    background-color: #006633;
+    padding: 15px;
+    width: 230px;
+}
+
+/* Barra lateral fixa em telas grandes */
+.custom-height {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra lateral */
+#accordionSidebar {
+    display: none; /* Inicialmente oculta em telas pequenas */
+}
+
+/* Ajustes para a largura da barra lateral em telas grandes */
+@media (min-width: 1200px) {
+    .bg-green {
+        width: 230px;
+    }
+    #accordionSidebar {
+        display: flex; /* Exibe a barra lateral em telas grandes */
+    }
+    #sidebarToggle {
+        display: none; /* Esconde o botão de menu em telas grandes */
+    }
+}
+
+/* Ajuste para o container principal */
+.col-xl-9 {
+    padding: 0; /* Remove o padding para evitar espaço extra */
+    flex: 1; /* Garante que o conteúdo principal ocupe o espaço restante */
+    display: flex;
+    flex-direction: column;
+    margin-left: 0; /* Garante que não há margem esquerda que cause deslocamento */
+}
+
+/* Ajustes para a barra de pesquisa */
+.search-bar {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    max-width: 700px;
+    margin-left: 90px;
+    flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
+}
+
+.search-bar::placeholder {
+    color: #003366; 
+    font-weight: bolder;
+}
+
+/* Botão do menu para telas pequenas */
+#sidebarToggle {
+    margin-right: 15px; /* Espaço entre a barra de pesquisa e o botão do menu */
+    display: none; /* Inicialmente oculto */
+}
+
+/* Ajustes para botões */
+.btn-login {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.btn-login:hover {
+    background-color: #a0b0c0;
+}
+
+.btn-home {
+    background-color: #003366;
+    color: #C7D2DD;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.btn-home:hover {
+    background-color: #02305e;
+}
+
+.btn-menu {
+    background-color: #006633;
+    color: #C7D2DD;
+    border: none;
+    margin-left: 10px;
+}
+
+/* Ajustes para telas menores que 1200px */
+@media (max-width: 1199px) {
+    .search-bar {
+        margin-left: 0; /* Remove a margem à esquerda */
+    }
+
+    #accordionSidebar {
+        display: none;
+        position: fixed;
+        width: 230px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background-color: #006633; /* Garante que a cor de fundo seja a mesma */
+        overflow-y: auto; /* Adiciona rolagem se necessário */
+    }
+    #accordionSidebar.show {
+        display: block;
+    }
+
+    #sidebarToggle {
+        display: block; /* Mostra o botão do menu em telas menores */
+    }
+
+    #sidebarClose {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1100; /* Garante que o botão de fechar esteja acima do conteúdo da barra lateral */
+    }
+}
+
+/* Ajustes para telas menores que 576px */
+@media (max-width: 575.98px) {
+    .btn-login {
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-login .bi-person-fill {
+        margin-right: 0; /* Remove a margem à direita quando o nome de usuário está escondido */
+    }
+
+    .btn-login span {
+        display: none; /* Esconde o nome de usuário em telas pequenas */
+    }
+}
+
+/* Ajustes para telas maiores que 576px */
+@media (min-width: 576px) {
+    .btn-login.d-none.d-sm-flex {
+        display: flex !important; /* Mostra o botão com nome e ícone em telas maiores */
+    }
+
+    .btn-login.d-flex.d-sm-none {
+        display: none !important; /* Esconde o botão com apenas ícone em telas maiores */
+    }
+
+    .btn-login span {
+        display: inline; /* Garante que o nome de usuário seja exibido em telas maiores */
+    }
+}

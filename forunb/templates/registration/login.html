@@ -14,6 +14,9 @@
         .botao{
             background-color: #003366;
         }
+        .titulo{
+            color: #003366;
+        }
         .fonte{
             color: #003366;
         }
@@ -50,7 +53,7 @@
                     {% endfor %}
             <button type="submit" class="botao row col-6 mx-auto btn btn-primary mb-3 rounded-3 text-white fw-bold" style="width: 15rem;">Entrar</button>
             <input type="hidden" class ="row col-6 mx-auto form-control mt-4 rounded-5 px-3" style="width: 30rem ;" id ="{{ field.id_for_label }}" name="next" value="{% url 'index' %}" />
-            <div id="emailHelp" class="text-center form-text mb-2 text-white fw-bold">Primeira vez aqui ?<a class="fonte card-link ms-1" href="{% url 'register' %}" >Cadastre-se</a></div>
+            <div id="emailHelp" class="text-center form-text mb-2 text-white fw-bold">Primeira vez aqui ?<a href="#" class="fonte card-link ms-1">Cadastre-se</a></div>
             <a href="#" class="text-center card-link mb-3 text-white fw-bold">Esqueci minha senha</a>
         </div>
     </form>
