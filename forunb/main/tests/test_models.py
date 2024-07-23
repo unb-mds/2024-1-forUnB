@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from main.models import Question, Answer, Forum
+from django.core.exceptions import ValidationError
+from main.models import Forum, Question, Answer
 
 class ForumModelTest(TestCase):
     @classmethod
@@ -16,6 +17,9 @@ class ForumModelTest(TestCase):
     def test_forum_str_method(self):
         self.assertEqual(str(self.forum), 'Test Forum')  # Verifica se o método __str__ retorna o título do fórum
 
+    def test_forum_title_max_length(self):
+        max_length = self.forum._meta.get_field('title').max_length
+        self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
 
 class QuestionModelTest(TestCase):
     @classmethod
@@ -41,6 +45,15 @@ class QuestionModelTest(TestCase):
     def test_question_str_method(self):
         self.assertEqual(str(self.question), 'Test Question')  # Verifica se o método __str__ retorna o título da pergunta
 
+    def test_question_title_max_length(self):
+        max_length = self.question._meta.get_field('title').max_length
+        self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
+
+    '''def test_question_missing_title(self):
+        question = Question(description='Test Description', author=self.user, forum=self.forum)
+        with self.assertRaises(ValidationError) as context:  # Verifica se ocorre erro ao criar uma pergunta sem título
+            question.full_clean()
+        self.assertTrue('title' in context.exception.message_dict)  # Verifica se o erro de validação está relacionado ao campo 'title' '''
 
 class AnswerModelTest(TestCase):
     @classmethod
@@ -69,3 +82,14 @@ class AnswerModelTest(TestCase):
 
     def test_answer_str_method(self):
         self.assertEqual(str(self.answer), 'Test Answer...')  # Verifica se o método __str__ retorna o início do texto da resposta
+
+    def test_answer_missing_text(self):
+        answer = Answer(author=self.user, question=self.question)
+        with self.assertRaises(ValidationError):  # Verifica se ocorre erro ao criar uma resposta sem texto
+            answer.full_clean()
+
+    def test_delete_question_deletes_answers(self):
+        question_id = self.question.id
+        self.question.delete()
+        with self.assertRaises(Answer.DoesNotExist):  # Verifica se as respostas associadas são deletadas junto com a pergunta
+            Answer.objects.get(question__id=question_id)
