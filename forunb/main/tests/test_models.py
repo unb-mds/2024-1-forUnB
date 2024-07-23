@@ -40,3 +40,32 @@ class QuestionModelTest(TestCase):
 
     def test_question_str_method(self):
         self.assertEqual(str(self.question), 'Test Question')  # Verifica se o método __str__ retorna o título da pergunta
+
+
+class AnswerModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='testuser', password='12345')
+        cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
+        cls.question = Question.objects.create(
+            title='Test Question',
+            description='Test Description',
+            author=cls.user,
+            forum=cls.forum
+        )
+        cls.answer = Answer.objects.create(
+            text='Test Answer',
+            author=cls.user,
+            question=cls.question
+        )
+
+    def test_answer_creation(self):
+        self.assertIsInstance(self.answer, Answer)  # Verifica se o objeto é uma instância de Answer
+        self.assertEqual(self.answer.text, 'Test Answer')  # Verifica se o texto da resposta é 'Test Answer'
+        self.assertEqual(self.answer.author, self.user)  # Verifica se o autor da resposta é o usuário de teste
+        self.assertEqual(self.answer.question, self.question)  # Verifica se a pergunta associada é a pergunta de teste
+        self.assertTrue(hasattr(self.answer, 'created_at'))  # Verifica se o atributo 'created_at' existe
+        self.assertEqual(self.answer.upvotes, 0)  # Verifica se o número de upvotes é 0
+
+    def test_answer_str_method(self):
+        self.assertEqual(str(self.answer), 'Test Answer...')  # Verifica se o método __str__ retorna o início do texto da resposta
