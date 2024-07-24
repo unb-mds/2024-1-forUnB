@@ -40,3 +40,27 @@ class AnswerFormTest(TestCase):
         form = AnswerForm(data={})
         self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem texto
         self.assertIn('text', form.errors)  # Deve haver erro para o campo 'text'
+
+
+
+class UnbEmailRegistrationFormTest(TestCase):
+
+    def test_unb_email_form_valid_data(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br', 'password': 'password123'})
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com um e-mail UNB válido
+
+    def test_unb_email_form_invalid_email(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@example.com', 'password': 'password123'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido com um e-mail não-UNB
+        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
+
+    def test_unb_email_form_existing_email(self):
+        User.objects.create_user(username='testuser', email='existing@aluno.unb.br', password='password123')
+        form = UnbEmailRegistrationForm(data={'email': 'existing@aluno.unb.br', 'password': 'password123'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido se o e-mail já estiver em uso
+        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
+
+    def test_unb_email_form_missing_password(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma senha
+        self.assertIn('password', form.errors)  # Deve haver erro para o campo 'password'
