@@ -1,110 +1,66 @@
 from django.test import TestCase
 from main.forms import *
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class ForumFormTest(TestCase):
 
-    # Testa com Dados Válidos
     def test_forum_form_valid_data(self):
-        form_data = {
-            'title': 'Test Question',
-            'description': 'This is a test question description.'
-        }
-        form = ForumForm(data=form_data)
-        self.assertTrue(form.is_valid())
+        form = ForumForm(data={'title': 'Test Forum', 'description': 'This is a test forum.'})
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+
+    def test_forum_form_no_data(self):
+        form = ForumForm(data={})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
+        self.assertEqual(len(form.errors), 2)  # Devem haver erros para 'title' e 'description'
 
 
-    # Testa com Dados Vazios 
-    def test_forum_form_empty_data(self):
-        form_data = {}
-        form = ForumForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(len(form.errors), 2)  # Verifica se há 2 erros (um para cada campo obrigatório)
 
-    # Testa com Título Ausente
-    def test_forum_form_missing_title(self):
-        form_data = {
-            'description': 'This is a test question description.'
-        }
-        form = ForumForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('title', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'title'
+class QuestionFormTest(TestCase):
 
+    def test_question_form_valid_data(self):
+        form = QuestionForm(data={'title': 'Test Question', 'description': 'This is a test question.'})
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
 
-    # Testa com Descrição Ausente
-    def test_forum_form_missing_description(self):
-        form_data = {
-            'title': 'Test Question'
-        }
-        form = ForumForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('description', form.errors.keys())
+    def test_question_form_missing_title(self):
+        form = QuestionForm(data={'description': 'This is a test question without a title.'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem o título
+        self.assertIn('title', form.errors)  # Deve haver erro para o campo 'title'
+
 
 
 class AnswerFormTest(TestCase):
 
-    # Testa com Dados Válidos
     def test_answer_form_valid_data(self):
-        form_data = {
-            'text': 'This is a valid answer.'
-        }
-        form = AnswerForm(data=form_data)
-        self.assertTrue(form.is_valid())
+        form = AnswerForm(data={'text': 'This is a test answer.'})
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
 
-    # Testa com Dados Vazios 
-    def test_answer_form_empty_data(self):
-        form_data = {}
-        form = AnswerForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(len(form.errors), 1)  # Verifica se há 1 erro (para o campo 'text')
-
-    # Testa com Texto Ausente
     def test_answer_form_missing_text(self):
-        form_data = {}
-        form = AnswerForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('text', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'text'
-"""
-    # Testa com Texto muito curto
-    def test_answer_form_text_too_short(self):
-        form_data = {
-            'text': 'Short'
-        }
-        form = AnswerForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('text', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'text'
-        """
+        form = AnswerForm(data={})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem texto
+        self.assertIn('text', form.errors)  # Deve haver erro para o campo 'text'
+
 
 
 class UnbEmailRegistrationFormTest(TestCase):
 
-    #Testa com um email válido
-    def test_valid_unb_email(self):
-        form_data = {
-            'email': 'validemail@aluno.unb.br',
-            'password': 'testpassword'
-        }
-        form = UnbEmailRegistrationForm(data=form_data)
-        self.assertTrue(form.is_valid())
+    def test_unb_email_form_valid_data(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br', 'password': 'password123'})
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com um e-mail UNB válido
 
-    # Testa com um email inválido
-    def test_invalid_email_domain(self):
-        form_data = {
-            'email': 'invalidemail@otherdomain.com',
-            'password': 'testpassword'
-        }
-        form = UnbEmailRegistrationForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('email', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'email'
+    def test_unb_email_form_invalid_email(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@example.com', 'password': 'password123'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido com um e-mail não-UNB
+        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
 
-    # Testa com um email ja registrado
-    def test_email_already_registered(self):
-        # Cria um usuário com o email válido
-        User.objects.create_user(username='existinguser', email='validemail@aluno.unb.br', password='existingpassword')
+    def test_unb_email_form_existing_email(self):
+        User.objects.create_user(username='testuser', email='existing@aluno.unb.br', password='password123')
+        form = UnbEmailRegistrationForm(data={'email': 'existing@aluno.unb.br', 'password': 'password123'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido se o e-mail já estiver em uso
+        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
 
-        form_data = {
-            'email': 'validemail@aluno.unb.br',
-            'password': 'testpassword'
-        }
-        form = UnbEmailRegistrationForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('email', form.errors.keys())  # Verifica se há um erro relacionado ao campo 'email'
+    def test_unb_email_form_missing_password(self):
+        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br'})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma senha
+        self.assertIn('password', form.errors)  # Deve haver erro para o campo 'password'
