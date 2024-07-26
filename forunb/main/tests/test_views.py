@@ -17,3 +17,25 @@ class IndexViewTest(TestCase):
     def test_index_view_template_used(self):
         response = self.client.get(reverse('index'))
         self.assertTemplateUsed(response, 'main/index.html')
+
+# Utilzando um modelo geral
+class ViewsTestCase(TestCase):
+
+    def setUp(self):
+        # Create test user
+        self.user = User.objects.create_user(username='testuser', password='12345')
+
+        # Create a Forum
+        self.forum = Forum.objects.create(title="Test Forum", description="Test Forum Description")
+
+        # Create a Question
+        self.question = Question.objects.create(title="Test Question", description="Test Question Description", forum=self.forum, author=self.user)
+
+        # Create an Answer
+        self.answer = Answer.objects.create(text="Test Answer", question=self.question, author=self.user)
+
+    def test_index_view(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/index.html')
+        self.assertContains(response, self.question.title)
