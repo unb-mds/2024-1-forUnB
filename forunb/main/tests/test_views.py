@@ -69,3 +69,10 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('new_question', args=[self.forum.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_question.html')
+
+        # Test posting a new question
+        response = self.client.post(reverse('new_question', args=[self.forum.id]), {
+            'title': 'Another Test Question',
+            'description': 'Another Test Question Description',
+        })
+        self.assertEqual(response.status_code, 302)  # Redirect after success
