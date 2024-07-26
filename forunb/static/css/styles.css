@@ -1,3 +1,5 @@
+/* BASE.HTML */
+
 /* Ajustes gerais */
 .bg-green {
     background-color: #006633;
@@ -162,4 +164,68 @@
     .btn-login span {
         display: inline; /* Garante que o nome de usuário seja exibido em telas maiores */
     }
+}
+
+
+/* FORUM_DETAIL.HTML */
+.custom-container {
+    max-width: 800px; /* Defina o máximo desejado */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
+    height: 50vh; /* Altura total da viewport */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    left: 50px;
+}
+
+/* Estilo para o título do fórum */
+.forum-header {
+    margin-bottom: 5px;
+}
+
+.forum-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #003366; /* Cor personalizada */
+    margin-bottom: 10px; /* Espaço abaixo do título */
+}
+
+/* Estilo para os cards de perguntas */
+.question-card {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.question-card a {
+    text-decoration: none;
+}
+
+.question-card h5 {
+    font-size: 1.5rem;
+    color: #003366;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.question-card p {
+    font-size: 1.25rem;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.question-card .btn-info {
+    background-color: #003366;
+    border: none;
+    color: #ffffff;
+}
+
+.question-card .btn-info:hover {
+    background-color: #02305e;
 }
