@@ -63,3 +63,9 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/question_detail.html')
         self.assertContains(response, self.question.title)
+
+    def test_new_question_view(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('new_question', args=[self.forum.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/new_question.html')
