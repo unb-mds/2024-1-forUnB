@@ -82,3 +82,9 @@ class ViewsTestCase(TestCase):
         response = self.client.get(reverse('new_answer', args=[self.question.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_answer.html')
+
+        # Test posting a new answer
+        response = self.client.post(reverse('new_answer', args=[self.question.id]), {
+            'text': 'Another Test Answer',
+        })
+        self.assertEqual(response.status_code, 302)  # Redirect after success
