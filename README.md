@@ -102,7 +102,7 @@ Para instalar as dependências do projeto, você pode rodar o seguinte comando:
 
 ```bash
 # Instale as dependências do projeto
-pip install
+pip install -r requirements.txt
 ```
 
 ### 💾 Execução
