@@ -167,29 +167,25 @@
 }
 
 
+
 /* FORUM_DETAIL.HTML */
-.custom-container {
-    max-width: 800px; /* Defina o máximo desejado */
-    margin: 0 auto; /* Centraliza horizontalmente */
-    padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
-    height: 50vh; /* Altura total da viewport */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    left: 50px;
+.container-fluid {
+    padding-left: 12px;
+    padding-right: 12px;
+    width: 100%;
 }
 
-/* Estilo para o título do fórum */
 .forum-header {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
+    width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
 }
 
 .forum-title {
     font-size: 3rem;
     font-weight: bold;
-    color: #003366; /* Cor personalizada */
-    margin-bottom: 10px; /* Espaço abaixo do título */
+    color: #003366;
+    margin-bottom: 0; /* Remove o espaço abaixo do título */
+    padding: 0;
 }
 
 /* Estilo para os cards de perguntas */
@@ -199,6 +195,7 @@
     background-color: #f8f9fa;
     margin-bottom: 20px;
     padding: 15px;
+    width: 100%; /* Certifica-se de que os cards ocupem toda a largura disponível */
 }
 
 .question-card a {
@@ -227,5 +224,18 @@
 }
 
 .question-card .btn-info:hover {
+    background-color: #02305e;
+}
+
+.btn-question {
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.btn-question:hover {
     background-color: #02305e;
 }
