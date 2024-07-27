@@ -1,14 +1,15 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<div class="container mt-5 ms-0">
-    <div class="forum-header">
+<div class="container-fluid mt-5 ms-0">
+    <div class="d-flex justify-content-between align-items-center forum-header">
         <h1 class="forum-title">{{ forum.title }}</h1>
-        <a href="{% url 'new_question' forum.id %}" class="btn btn-primary">Perguntar</a>
+        <a class="btn btn-question" href="{% url 'new_question' forum.id %}">Criar Pergunta</a>
     </div>
 
     <hr>
 
+    <h3>Perguntas neste fórum:</h3>
     {% if questions %}
         {% for question in questions %}
             <div class="question-card mb-3 p-3 border border-secondary rounded">
