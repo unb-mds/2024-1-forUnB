@@ -39,6 +39,8 @@
     display: flex;
     flex-direction: column;
     margin-left: 0; /* Garante que não há margem esquerda que cause deslocamento */
+    overflow: hidden;
+    height: 100vh;
 }
 
 /* Ajustes para a barra de pesquisa */
@@ -111,7 +113,7 @@
         display: none;
         position: fixed;
         width: 230px;
-        height: 100%;
+        height: 100vh;
         top: 0;
         left: 0;
         z-index: 1000;
@@ -176,8 +178,18 @@
 }
 
 .forum-header {
-    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 3px;
+    margin-bottom: 30px;
     width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
 }
 
 .forum-title {
@@ -188,43 +200,63 @@
     padding: 0;
 }
 
-/* Estilo para os cards de perguntas */
-.question-card {
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    background-color: #f8f9fa;
+.questions-container {
+    overflow-y: auto; /* Habilita a rolagem vertical */
+    padding-right: 10px;
     margin-bottom: 20px;
-    padding: 15px;
-    width: 100%; /* Certifica-se de que os cards ocupem toda a largura disponível */
+    height: calc(100vh - 208px);
+    overflow-x: hidden;
 }
 
-.question-card a {
+.question-item {
+    padding: 0px 0; /* Espaço acima e abaixo do item */
+}
+
+.question-item a {
     text-decoration: none;
 }
 
-.question-card h5 {
+.question-item .btn-info {
+    background-color: #ffffff;
+    border: none;
+    color: #003366;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.question-item .btn-info:hover {
+    background-color: #C7D2DD;
+}
+
+.question-comments {
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.question-comments i {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+}
+
+.question-title {
     font-size: 1.5rem;
     color: #003366;
     font-weight: bold;
     margin: 0;
-    padding: 0;
 }
 
-.question-card p {
+.question-description {
     font-size: 1.25rem;
     color: #000000;
     margin: 0;
-    padding: 0;
 }
 
-.question-card .btn-info {
-    background-color: #003366;
-    border: none;
-    color: #ffffff;
-}
-
-.question-card .btn-info:hover {
-    background-color: #02305e;
+.question-separator {
+    border: 0;
+    border-top: 1px solid #006633; /* Linha horizontal */
+    border-bottom: 1px solid #006633;
+    margin: 20px 0; /* Espaço acima e abaixo da linha */
 }
 
 .btn-question {

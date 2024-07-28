@@ -7,23 +7,23 @@
         <a class="btn btn-question" href="{% url 'new_question' forum.id %}">Criar Pergunta</a>
     </div>
 
-    <hr>
-
-    <h3>Perguntas neste fórum:</h3>
-    {% if questions %}
-        {% for question in questions %}
-            <div class="question-card mb-3 p-3 border border-secondary rounded">
-                <a href="{% url 'question_detail' question.id %}">
-                    <h5>{{ question.title }}</h5>
-                    <p>{{ question.description }}</p>
-                </a>
-                <a href="{% url 'question_detail' question.id %}" class="btn btn-info mt-2">
-                    {{ question.answers.count }} Comentários
-                </a>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Nenhuma pergunta encontrada neste fórum.</p>
-    {% endif %}
+    <div class="questions-container">
+        {% if questions %}
+            {% for question in questions %}
+                <div class="question-item">
+                    <a href="{% url 'question_detail' question.id %}">
+                        <h5 class="question-title">{{ question.title }}</h5>
+                        <p class="question-description">{{ question.description }}</p>
+                    </a>
+                    <a href="{% url 'question_detail' question.id %}" class="btn btn-info mt-2 question-comments">
+                        <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                    </a>
+                </div>
+                <hr class="question-separator">
+            {% endfor %}
+        {% else %}
+            <p>Nenhuma pergunta encontrada neste fórum.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
