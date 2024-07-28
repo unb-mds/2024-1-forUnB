@@ -7,10 +7,16 @@
         <a class="btn btn-question" href="{% url 'new_question' forum.id %}">Perguntar</a>
     </div>
 
+    {% load custom_filters %}
+    
     <div class="questions-container">
         {% if questions %}
             {% for question in questions %}
                 <div class="question-item">
+                    <div class="question-meta">
+                        <span class="question-author">{{ question.author.username }}</span> • 
+                        <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+                    </div>
                     <a href="{% url 'question_detail' question.id %}">
                         <h5 class="question-title">{{ question.title }}</h5>
                         <p class="question-description">{{ question.description }}</p>

@@ -294,6 +294,21 @@ button:focus, a:focus, .btn:focus {
     margin-bottom: 20px;
 }
 
+.question-meta {
+    font-size: 0.9rem;
+    color: #a0b0c0;
+    margin-bottom: 5px;
+}
+
+.question-author {
+    font-weight: bold;
+    color: #003366;
+}
+
+.question-date {
+    color: #999999;
+}
+
 /* Ajustes para telas menores que 992px */
 @media (max-width: 992px) {
     .forum-header {
