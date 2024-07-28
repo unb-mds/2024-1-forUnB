@@ -171,6 +171,12 @@
 
 
 /* FORUM_DETAIL.HTML */
+/* Remove o efeito de foco padrão */
+button:focus, a:focus, .btn:focus {
+    outline: none;
+    box-shadow: none; /* Também remove qualquer sombra de caixa que possa aparecer */
+}
+
 .container-fluid {
     padding-left: 12px;
     padding-right: 12px;
@@ -216,27 +222,44 @@
     text-decoration: none;
 }
 
-.question-item .btn-info {
+.question-item .btn-info, .btn-like {
     background-color: #ffffff;
     border: none;
     color: #003366;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 20px;
     font-weight: bold;
+    outline: none;
 }
 
-.question-item .btn-info:hover {
+.question-item .btn-info:hover, .btn-like:hover {
     background-color: #C7D2DD;
+    color: #003366;
 }
 
-.question-comments {
-    display: inline-flex;
+.action-buttons {
+    display: flex;
     align-items: center;
-    font-weight: bold;
+    margin-top: 15px;
 }
 
-.question-comments i {
+.btn-like, .btn-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2px; /* Espaçamento entre os botões */
+    outline: none;
+    font-size: 1.12rem;
+}
+
+.btn-like i, .btn-info i {
     margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+    color: inherit; /* Garante que a cor do ícone herde a cor do texto */
+}
+
+/* Remove o destaque de clique (focus) */
+.btn-like:focus, .btn-info:focus {
+    outline: none;
 }
 
 .question-title {
@@ -256,7 +279,8 @@
     border: 0;
     border-top: 1px solid #006633; /* Linha horizontal */
     border-bottom: 1px solid #006633;
-    margin: 20px 0; /* Espaço acima e abaixo da linha */
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .btn-question {
