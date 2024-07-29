@@ -5,8 +5,8 @@ FROM python:3.11-alpine
 WORKDIR /usr/src/forunb
 
 # definir variáveis de ambiente
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Copie o arquivo requirements.txt para o diretório de trabalho
 COPY ./requirements.txt /usr/src/forunb/requirements.txt
