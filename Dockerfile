@@ -1,5 +1,5 @@
 # Use uma imagem base oficial do Python
-FROM python:3.11-alpine
+FROM python:3.11-bullseye
 
 # Defina o diretório de trabalho no contêiner
 WORKDIR /usr/src/forunb
