@@ -228,7 +228,7 @@ body, html {
 }
 
 
-.questions-container {
+.questions-container, .answer-container {
     overflow-y: auto; /* Habilita a rolagem vertical */
     padding-right: 10px;
     margin-bottom: 20px;
@@ -238,7 +238,7 @@ body, html {
     flex-direction: column;
 }
 
-.question-item {
+.question-item, .answer-item {
     padding: 0px 0; /* Espaço acima e abaixo do item */
     display: flex;
     flex-direction: column;
@@ -246,7 +246,7 @@ body, html {
     overflow-wrap: break-word; /* Garante que o texto não transborde */
 }
 
-.question-item a {
+.question-item a, .answer-item a {
     text-decoration: none;
 }
 
@@ -265,11 +265,33 @@ body, html {
     color: #003366;
 }
 
+.answer-item .btn-info, .btn-like {
+    background-color: #ffffff;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.answer-item .btn-info:hover, .btn-like:hover {
+    background-color: #C7D2DD;
+    color: #003366;
+}
+
 .action-buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-top: 15px;
+}
+
+.action-buttons-answer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
 }
 
 .btn-like, .btn-info {
@@ -296,7 +318,7 @@ body, html {
     text-overflow: ellipsis; /* Adiciona "..." no final do texto que transborda */
 }
 
-.question-description {
+.question-description, .answer-text {
     font-size: 1.25rem;
     color: #000000;
     margin: 0;
@@ -312,7 +334,7 @@ a {
     text-decoration: none;
 }
 
-.question-separator {
+.question-separator, .answer-separator {
     border: 0;
     border-top: 1px solid #006633; /* Linha horizontal */
     border-bottom: 1px solid #006633;
@@ -320,18 +342,18 @@ a {
     margin-bottom: 20px;
 }
 
-.question-meta {
+.question-meta, .answer-meta {
     font-size: 0.9rem;
     color: #a0b0c0;
     margin-bottom: 5px;
 }
 
-.question-author {
+.question-author, .answer-author {
     font-weight: bold;
     color: #003366;
 }
 
-.question-date {
+.question-date, .answer-date {
     color: #999999;
 }
 
@@ -361,7 +383,7 @@ a {
         font-size: 1.25rem;
     }
     
-    .question-description {
+    .question-description, .answer-text {
         font-size: 1rem;
         display: flex;
         flex-direction: column;
@@ -392,7 +414,7 @@ a {
         font-size: 1.1rem;
     }
     
-    .question-description {
+    .question-description, .answer-text {
         font-size: 0.95rem;
     }
 }
@@ -412,6 +434,7 @@ html, body {
     max-width: 100%;
     max-width: none;
     margin: 0 auto; /* Centraliza horizontalmente */
+    margin-right: 0px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -424,7 +447,7 @@ html, body {
 
 .response-area {
     margin-top: 5px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     width: 100%;
     box-sizing: border-box;
     overflow: auto;
@@ -507,8 +530,9 @@ html, body {
     background-color: #a0b0c0;
 }
 
-.container {
-    padding: 0;
+.return-container {
+    display: flex;
+    justify-content: flex-start;
 }
 
 .btn-return {
@@ -518,6 +542,7 @@ html, body {
     padding-top: 6px;
     border-radius: 20px;
     font-size: 0.9rem;
+    text-decoration: none;
 }
 
 .btn-return:hover {

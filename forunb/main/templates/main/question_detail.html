@@ -6,7 +6,7 @@
 <div class="custom-container mt-5 ms-0">
     <div class="question-item">
         <div class="question-info">
-            <div class="container">
+            <div class="return-container">
                 <a href="{% url 'forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
@@ -36,14 +36,25 @@
         </div>
     </div>
 
-    <h3>Respostas:</h3>
     {% if answers %}
         {% for answer in answers %}
-            <div class="answer-card">
-                <h5>Por {{ answer.author.username }} em {{ answer.created_at }}</h5>
-                <p>{{ answer.text }}</p>
-                <hr>
-            </div>
+            <div class="answer-item">
+                <div class="answer-info">
+                    <div class="answer-meta">
+                        <span class="answer-author">{{ answer.author.username }}</span> • 
+                        <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
+                    </div>
+                    <p class="answer-text">{{ answer.text }}</p>
+                    <div class="action-buttons-answer">
+                        <button class="btn btn-like" onclick="toggleLike(this);">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                            <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
+                        </a>
+                    </div>   
+                </div>
+                <hr class="answer-separator">
         {% empty %}
             <p>Nenhuma resposta encontrada para esta pergunta.</p>
         {% endfor %}
@@ -76,6 +87,17 @@
             responseForm.classList.add('d-none');
         } else {
             console.error('Elementos não encontrados.');
+        }
+    }
+
+    function toggleLike(element) {
+        var icon = element.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
         }
     }
 </script>
