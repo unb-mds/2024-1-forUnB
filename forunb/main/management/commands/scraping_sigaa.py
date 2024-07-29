@@ -1,4 +1,4 @@
-# main/management/commands/importar_disciplinas.py
+# Raspagem de dados das disciplinas do site Sigaa da UnB e salva como fóruns
 
 from django.core.management.base import BaseCommand
 from main.models import Forum

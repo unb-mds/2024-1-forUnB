@@ -1,4 +1,4 @@
-# main/scraping.py
+# Obtendo os dados das disciplinas da UnB
 
 from .sessions import URL, HEADERS, create_request_session, get_session_cookie, get_response
 from bs4 import BeautifulSoup
