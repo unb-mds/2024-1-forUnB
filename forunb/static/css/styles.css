@@ -506,3 +506,21 @@ html, body {
 .response-form .btn-cancel:hover {
     background-color: #a0b0c0;
 }
+
+.container {
+    padding: 0;
+}
+
+.btn-return {
+    background-color: #006633;
+    color: #C7D2DD;
+    border: none;
+    padding-top: 6px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.btn-return:hover {
+    background-color: #004c26;
+    color: #C7D2DD;
+}
