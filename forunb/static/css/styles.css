@@ -177,10 +177,16 @@ button:focus, a:focus, .btn:focus {
     box-shadow: none; /* Também remove qualquer sombra de caixa que possa aparecer */
 }
 
+body, html {
+    width: 100%;
+    overflow-x: hidden; /* Impede que o conteúdo transborde horizontalmente */
+}
+
 .container-fluid {
     padding-left: 12px;
     padding-right: 12px;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .forum-header {
@@ -228,10 +234,16 @@ button:focus, a:focus, .btn:focus {
     margin-bottom: 20px;
     height: calc(100vh - 208px);
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .question-item {
     padding: 0px 0; /* Espaço acima e abaixo do item */
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word; /* Garante que o texto não transborde */
 }
 
 .question-item a {
@@ -255,6 +267,7 @@ button:focus, a:focus, .btn:focus {
 
 .action-buttons {
     display: flex;
+    flex-direction: row;
     align-items: center;
     margin-top: 15px;
 }
@@ -278,12 +291,25 @@ button:focus, a:focus, .btn:focus {
     color: #003366;
     font-weight: bold;
     margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona "..." no final do texto que transborda */
 }
 
 .question-description {
     font-size: 1.25rem;
     color: #000000;
     margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+a {
+    display: block;
+    max-width: 100%; /* Garante que o link não ultrapasse os limites do contêiner */
+    overflow: hidden;
+    text-decoration: none;
 }
 
 .question-separator {
@@ -337,6 +363,8 @@ button:focus, a:focus, .btn:focus {
     
     .question-description {
         font-size: 1rem;
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -367,4 +395,114 @@ button:focus, a:focus, .btn:focus {
     .question-description {
         font-size: 0.95rem;
     }
+}
+
+
+
+
+/* QUESTION_DETAIL.HTML */
+html, body {
+    height: 100%;
+    overflow: auto; /* Permite rolagem se necessário */
+    margin: 0;
+    padding: 0;
+}
+
+.custom-container {
+    max-width: 100%;
+    max-width: none;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow: auto;
+}
+
+.response-area {
+    margin-top: 5px;
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+/* Estilo para o campo de entrada inicial (input) */
+.response-area input {
+    width: 100%;
+    background-color: #C7D2DD !important;
+    color: #003366 !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+    
+.response-area input::placeholder {
+    color: #003366; 
+    font-weight: bolder;
+}
+
+.response-area input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Estilo para o formulário de resposta (textarea e botões) */
+.response-form {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.response-form textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #C7D2DD;
+    color: #003366;
+    font-size: 1rem;
+    resize: none;
+}
+
+.response-form textarea::placeholder {
+    color: #003366;
+}
+
+.response-form textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.response-form .btn {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.response-form .btn-send {
+    background-color: #006633;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.response-form .btn-send:hover {
+    background-color: #004c26;
+}
+
+.response-form .btn-cancel {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.response-form .btn-cancel:hover {
+    background-color: #a0b0c0;
 }
