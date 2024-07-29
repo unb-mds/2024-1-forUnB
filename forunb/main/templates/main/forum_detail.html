@@ -1,91 +1,53 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<style>
-    .custom-container {
-        max-width: 800px; /* Defina o máximo desejado */
-        margin: 0 auto; /* Centraliza horizontalmente */
-        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
-        height: 50vh; /* Altura total da viewport */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        left: 50px;
-    }
-
-    .forum-card {
-        margin-bottom: 20px;
-        width: 100%;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-    }
-
-    .forum-card h5 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-
-    .forum-card p {
-        font-size: 1rem;
-    }
-
-    .question-card {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #ffffff;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-    }
-
-    .question-card h5 {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-    }
-
-    .question-card p {
-        font-size: 1rem;
-        color: #6c757d;
-    }
-
-    .fixed-forum-card {
-        position: sticky;
-        top: 100px;
-        z-index: 1000;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-</style>
-
-<div class="container mt-5 ms-0">
-    <div class="card fixed-forum-card">
-        <div class="card-body">
-            <h5 class="card-title">{{ forum.title }}</h5>
-            <p class="card-text">{{ forum.description }}</p>
-            <a href="{% url 'new_question' forum.id %}" class="btn btn-primary">Perguntar</a>
-        </div>
+<div class="container-fluid mt-5 ms-0">
+    <div class="d-flex justify-content-between align-items-center forum-header">
+        <h1 class="forum-title">{{ forum.title }}</h1>
+        <a class="btn btn-question" href="{% url 'new_question' forum.id %}">Perguntar</a>
     </div>
-    
-    <hr>
-    <hr>
-    <hr>
 
-    <h3>Perguntas neste fórum:</h3>
-    {% if questions %}
-        {% for question in questions %}
-            <div class="question-card">
-                <a href="{% url 'question_detail' question.id %}">
-                    <h5>{{ question.title }}</h5>
-                    <p>{{ question.description }}</p>
-                </a>
-            </div>
-        {% empty %}
+    {% load custom_filters %}
+
+    <div class="questions-container">
+        {% if questions %}
+            {% for question in questions %}
+                <div class="question-item">
+                    <div class="question-meta">
+                        <span class="question-author">{{ question.author.username }}</span> • 
+                        <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+                    </div>
+                    <a href="{% url 'question_detail' question.id %}">
+                        <h5 class="question-title">{{ question.title }}</h5>
+                        <p class="question-description">{{ question.description }}</p>
+                    </a>
+                    <div class="action-buttons">
+                        <button class="btn btn-like" onclick="toggleLike(this);">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                            <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                        </a>
+                    </div>                    
+                </div>
+                <hr class="question-separator">
+            {% endfor %}
+        {% else %}
             <p>Nenhuma pergunta encontrada neste fórum.</p>
-        {% endfor %}
-    {% else %}
-        <p>Nenhuma pergunta encontrada neste fórum.</p>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
+
+<script>
+    function toggleLike(element) {
+        var icon = element.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        }
+    }
+</script>
 {% endblock %}

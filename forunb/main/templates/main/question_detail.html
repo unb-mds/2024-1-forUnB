@@ -2,81 +2,59 @@
 
 {% block content %}
 
-<style>
-    .custom-container {
-        max-width: 800px; /* Defina o máximo desejado */
-        margin: 0 auto; /* Centraliza horizontalmente */
-        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .forum-card {
-        margin-bottom: 20px;
-        width: 100%;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-    }
-
-    .forum-card h5 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-
-    .forum-card p {
-        font-size: 1rem;
-    }
-
-    .question-card {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #ffffff;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-    }
-
-    .question-card h5 {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-    }
-
-    .question-card p {
-        font-size: 1rem;
-        color: #6c757d;
-    }
-
-    .fixed-question-card {
-        position: sticky;
-        top: 100px;
-        z-index: 1000;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-</style>
-
+{% load custom_filters %}
 <div class="custom-container mt-5 ms-0">
-    <div class="card fixed-question-card">
-        <div class="card-body">
-            <h5 class="card-title">{{ question.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ question.created_at|date:'M d, Y H:i' }}</h6>
-            <p class="card-text">{{ question.description }}</p>
-            <a href="{% url 'new_answer' question.id %}" class="btn btn-primary">Responder</a>
+    <div class="question-item">
+        <div class="question-info">
+            <div class="return-container">
+                <a href="{% url 'forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
+            </div>
+            <div class="question-meta">
+                <span class="question-author">{{ question.author.username }}</span> • 
+                <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+            </div>
+            <h5 class="question-title">{{ question.title }}</h5>
+            <p class="question-description">{{ question.description }}</p>
+            <div class="action-buttons">
+                <button class="btn btn-like" onclick="toggleLike(this);">
+                    <i class="bi bi-heart"></i>
+                </button>
+                <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                    <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                </a>
+            </div>   
+            <div class="response-area">
+                <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
+                <div class="response-form d-none">
+                    <textarea class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
+                    <div class="mt-1">
+                        <button class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
+                        <button class="btn btn-send">Enviar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <hr>
-
-    <h3>Respostas:</h3>
     {% if answers %}
         {% for answer in answers %}
-            <div class="answer-card">
-                <h5>Por {{ answer.author.username }} em {{ answer.created_at }}</h5>
-                <p>{{ answer.text }}</p>
-                <hr>
-            </div>
+            <div class="answer-item">
+                <div class="answer-info">
+                    <div class="answer-meta">
+                        <span class="answer-author">{{ answer.author.username }}</span> • 
+                        <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
+                    </div>
+                    <p class="answer-text">{{ answer.text }}</p>
+                    <div class="action-buttons-answer">
+                        <button class="btn btn-like" onclick="toggleLike(this);">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                            <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
+                        </a>
+                    </div>   
+                </div>
+                <hr class="answer-separator">
         {% empty %}
             <p>Nenhuma resposta encontrada para esta pergunta.</p>
         {% endfor %}
@@ -84,5 +62,45 @@
         <p>Nenhuma resposta encontrada para esta pergunta.</p>
     {% endif %}
 </div>
+
+<script>
+    function showResponseForm() {
+        var responseInput = document.querySelector('.response-area input');
+        var responseForm = document.querySelector('.response-form');
+        var textarea = responseForm.querySelector('textarea');
+
+        if (responseInput && responseForm && textarea) {
+            responseInput.classList.add('d-none');
+            responseForm.classList.remove('d-none');
+            textarea.focus(); // Coloca o foco no campo de texto
+        } else {
+            console.error('Elementos não encontrados.');
+        }
+    }
+
+    function cancelResponse() {
+        var responseInput = document.querySelector('.response-area input');
+        var responseForm = document.querySelector('.response-form');
+        
+        if (responseInput && responseForm) {
+            responseInput.classList.remove('d-none');
+            responseForm.classList.add('d-none');
+        } else {
+            console.error('Elementos não encontrados.');
+        }
+    }
+
+    function toggleLike(element) {
+        var icon = element.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        }
+    }
+</script>
+
 
 {% endblock %}
