@@ -55,7 +55,7 @@
     <h2 class="titulo fw-bold p-4">Meus fóruns</h2>
     <div class="scroll-container p-3 rounded container"> <!--Controle do scroll dos foruns-->
     {% for forum in forums %}
-        <div class="list-group col-xxl-10 "> <!--Listagem dos foruns-->
+        <div class="list-group col-xxl-12 "> <!--Listagem dos foruns-->
             <a class="foruns list-group-item list-group-item-action" href="{% url 'forum_detail' forum.id %}">
                 <div class=" d-flex w-100 justify-content-between">
                     <h5 class="fw-bold mb-1">{{ forum.title }}</h5>
