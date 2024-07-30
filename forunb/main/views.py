@@ -17,7 +17,7 @@ def index(request):
 
 def forum_detail(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
-    questions = Question.objects.filter(forum=forum)
+    questions = Question.objects.filter(forum=forum).order_by('-created_at')
     return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': questions})
 
 def forum_list(request):
@@ -32,6 +32,7 @@ def questions(request):
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     answers = question.answers.all()  # Supondo que você configurou related_name='answers' no modelo Answer
+    forum = question.forum
     return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
 

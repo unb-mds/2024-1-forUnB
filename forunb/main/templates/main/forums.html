@@ -2,7 +2,7 @@
 
 {% block content %}
 <style>
-    .custom-container {
+     .custom-container {
         max-width: 800px; /* Defina o máximo desejado */
         margin: 0px; /* Centraliza horizontalmente */
         padding: 0px; /* Ajusta o preenchimento interno conforme necessário */
@@ -17,7 +17,6 @@
         margin-bottom: 20px;
         width: 100%;
         padding: 0px;
-        background-color: #f8f9fa;
         border: 1px solid #ced4da;
         border-radius: 8px;
     }
@@ -30,15 +29,41 @@
     .forum-card p {
         font-size: 1rem;
     }
+    
+    .foruns {
+        background-color: #003366;
+        color: #ffffff;
+        font-weight: bolder;
+        border-radius: 8px;
+    }
+
+    .titulo{
+        color: #003366;
+    }
+    
+    .scroll-container { /* Controle do scroll dos fóruns */
+        /* Ajuste conforme necessário para o espaço disponível */
+        height: 70vh;
+        max-width: 100vw;
+        overflow-y: auto;
+        width: 100%;
+    }
+
 </style>
 
-<div class="custom-container mt-5">
-    <h2>Lista de Fóruns</h2>
-    <hr>
+
+    <h2 class="titulo fw-bold p-4">Meus fóruns</h2>
+    <div class="scroll-container p-3 rounded container"> <!--Controle do scroll dos foruns-->
     {% for forum in forums %}
-        <div class="forum-card">
-            <h5><a href="{% url 'forum_detail' forum.id %}">{{ forum.title }}</a></h5>
-            <p>{{ forum.description }}</p>
+        <div class="list-group col-xxl-12 "> <!--Listagem dos foruns-->
+            <a class="foruns list-group-item list-group-item-action" href="{% url 'forum_detail' forum.id %}">
+                <div class=" d-flex w-100 justify-content-between">
+                    <h5 class="fw-bold mb-1">{{ forum.title }}</h5>
+                </div>
+                <p class="mb-1">{{ forum.description }}</p>
+            </a>
+            <br>
+       
         </div>
     {% endfor %}
 </div>

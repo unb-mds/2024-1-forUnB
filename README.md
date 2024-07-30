@@ -71,13 +71,13 @@ pip install virtualenv
 Agora caminharemos para o diretório do projeto com:
 
 ```bash
-cd backendforum
+cd forunb
 ```
 
 Com o diretório criado, e no caminho dele, vamos criar nosso ambiente virtual com o nome de venv:
 
 ```bash
-python3 -m venv nome_projeto/venv
+python3 -m venv main/venv
 ```
 
 Com o ambiente criado, vamos ativá-lo:
@@ -85,16 +85,33 @@ Com o ambiente criado, vamos ativá-lo:
 ### No Windows:
 
 ```bash
-.\.venv\Scripts\activate
+./main/venv/Scripts/activate
 ```
 
 ### No Linux/macOS:
 
 ```bash
-source .venv/bin/activate
+source main/venv/bin/activate
 ```
 
 Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de comando, indicando que o ambiente virtual está em uso.
+
+### 📁 Dependências do projeto
+
+Para instalar as dependências do projeto, você pode rodar o seguinte comando:
+
+```bash
+# Instale as dependências do projeto
+pip install -r requirements.txt
+```
+
+### 💾 Execução
+
+Para executar o projeto, você pode rodar o seguinte comando:
+
+```bash
+python manage.py runserver
+```
         
 
 ## Protótipos 
