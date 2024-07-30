@@ -26,11 +26,14 @@
             <div class="response-area">
                 <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
-                    <textarea class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
-                    <div class="mt-1">
-                        <button class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
-                        <button class="btn btn-send">Enviar</button>
-                    </div>
+                    <form method="post" action="{% url 'new_answer' question.id %}">
+                        {% csrf_token %}
+                        <textarea name="text" class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
+                            <button type="submit" class="btn btn-send">Enviar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
