@@ -1,18 +1,27 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User 
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import CustomUser
 
 def validate_unb_email(value):
     if not value.endswith('@aluno.unb.br'):
         raise ValidationError('Por favor, utilize um email da UNB válido.')
 
-class UnbEmailRegistrationForm(forms.Form):
-    email = forms.EmailField(label='Email UNB', validators=[validate_unb_email])
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(validators=[validate_unb_email])
+    
+    class Meta:
+        model = CustomUser
+        fields = ('email',)
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = user.email  # Define o username como o email
+        if commit:
+            user.save()
+        return user
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        # Verifica se o email já está em uso por outro usuário
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('Este email já está cadastrado.')
-        return email
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'username', 'followed_forums', 'liked_questions', 'created_questions', 'created_answers', 'is_active', 'is_staff')
