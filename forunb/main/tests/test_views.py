@@ -87,3 +87,52 @@ class ViewsTestCase(TestCase):
             'text': 'Another Test Answer',
         })
         self.assertEqual(response.status_code, 302)  # Redirect after success
+
+
+# TESTANDO VIEWS DO APP SEARCH
+
+class SearchForumTestCase(TestCase):
+
+    def setUp(self):
+        # Configuração inicial para criar alguns objetos de fórum
+        self.client = Client()
+        self.forum1 = Forum.objects.create(title="Python Programming", description="Discuss all things Python.")
+        self.forum2 = Forum.objects.create(title="Django Tips", description="Tips and tricks for Django.")
+        self.forum3 = Forum.objects.create(title="Web Development", description="General web development discussion.")
+
+    def test_search_forum_with_query(self):
+        # Envia uma solicitação GET com um parâmetro de pesquisa
+        response = self.client.get(reverse('search_forum') + '?search=python')
+        
+        # Verifica se a resposta foi bem-sucedida
+        self.assertEqual(response.status_code, 200)
+        
+        # Verifica se o template correto foi renderizado
+        self.assertTemplateUsed(response, 'main/forums.html')
+        
+        # Verifica se o contexto contém os fóruns filtrados
+        self.assertIn('forums', response.context)
+        forums = response.context['forums']
+        self.assertEqual(forums.count(), 1)
+        self.assertEqual(forums[0], self.forum1)
+        
+        # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
+        self.assertEqual(response.context['query'], 'python')
+
+    def test_search_forum_with_no_results(self):
+        # Envia uma solicitação GET com um parâmetro de pesquisa que não deve retornar resultados
+        response = self.client.get(reverse('search_forum') + '?search=java')
+        
+        # Verifica se a resposta foi bem-sucedida
+        self.assertEqual(response.status_code, 200)
+        
+        # Verifica se o template correto foi renderizado
+        self.assertTemplateUsed(response, 'main/forums.html')
+        
+        # Verifica se o contexto contém a lista de fóruns vazia
+        self.assertIn('forums', response.context)
+        forums = response.context['forums']
+        self.assertEqual(forums.count(), 0)
+        
+        # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
+        self.assertEqual(response.context['query'], 'java')

@@ -39,8 +39,8 @@
                     <!-- Botão para mostrar a barra lateral em telas pequenas -->
                     <button class="btn btn-primary d-xl-none btn-menu" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <!-- Barra de pesquisa -->
-                    <form class="d-flex flex-grow-1 me-2" role="search">
-                        <input class="form-control search-bar me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+                    <form class="d-flex flex-grow-1 me-2" role="search" method="get" action="{% url 'search_forum' %}">
+                        <input class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
