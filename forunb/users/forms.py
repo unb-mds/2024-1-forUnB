@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
+from main.models import *
 
 def validate_unb_email(value):
     if not value.endswith('@aluno.unb.br'):
@@ -9,11 +10,11 @@ def validate_unb_email(value):
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(validators=[validate_unb_email])
-    
+
     class Meta:
         model = CustomUser
         fields = ('email',)
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email  # Define o username como o email
@@ -25,3 +26,10 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('email', 'username', 'followed_forums', 'liked_questions', 'created_questions', 'created_answers', 'is_active', 'is_staff')
+        field_classes = {
+            'created_questions': forms.ModelMultipleChoiceField,
+            'created_answers': forms.ModelMultipleChoiceField,
+        }
+    created_questions = forms.ModelMultipleChoiceField(queryset=Question.objects.all(), required=False)
+    created_answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.all(), required=False)
+
