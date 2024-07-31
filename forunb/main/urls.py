@@ -10,6 +10,7 @@ urlpatterns = [
     path('forums/', views.forum_list, name='forum_list'),
     path('new_question/<int:forum_id>/', views.new_question, name='new_question'),
     path('new_answer/<int:question_id>/', views.new_answer, name='new_answer'),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # Estes paths entraram em desuso, vou utilizar os caminhos do app users
+    # path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    # path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
