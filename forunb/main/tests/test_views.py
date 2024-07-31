@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from main.models import Forum, Question, Answer
-from main.forms import ForumForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-# Testando esse modelo de teste
+User = get_user_model()
+
 class IndexViewTest(TestCase):
 
     def setUp(self):
@@ -18,12 +18,11 @@ class IndexViewTest(TestCase):
         response = self.client.get(reverse('index'))
         self.assertTemplateUsed(response, 'main/index.html')
 
-# Utilzando um modelo geral
 class ViewsTestCase(TestCase):
 
     def setUp(self):
         # Create test user
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
 
         # Create a Forum
         self.forum = Forum.objects.create(title="Test Forum", description="Test Forum Description")
@@ -65,7 +64,7 @@ class ViewsTestCase(TestCase):
         self.assertContains(response, self.question.title)
 
     def test_new_question_view(self):
-        self.client.login(username='testuser', password='12345')
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
         response = self.client.get(reverse('new_question', args=[self.forum.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_question.html')
@@ -78,7 +77,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect after success
 
     def test_new_answer_view(self):
-        self.client.login(username='testuser', password='12345')
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
         response = self.client.get(reverse('new_answer', args=[self.question.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_answer.html')

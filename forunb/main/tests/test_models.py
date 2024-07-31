@@ -1,7 +1,9 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from main.models import Forum, Question, Answer
+
+User = get_user_model()
 
 class ForumModelTest(TestCase):
     @classmethod
@@ -24,7 +26,7 @@ class ForumModelTest(TestCase):
 class QuestionModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(username='testuser', password='12345')
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
         cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
         cls.question = Question.objects.create(
             title='Test Question',
@@ -58,7 +60,7 @@ class QuestionModelTest(TestCase):
 class AnswerModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(username='testuser', password='12345')
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
         cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
         cls.question = Question.objects.create(
             title='Test Question',
