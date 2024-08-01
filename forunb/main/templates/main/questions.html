@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Lista de Perguntas{% endblock %}
 
@@ -25,7 +25,7 @@
         <ul class="list-group questions-list">
             {% for question in questions %}
             <li class="list-group-item">
-                <a href="{% url 'question_detail' question.id %}">{{ question.title }}</a>
+                <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
             </li>
             {% empty %}
             <li class="list-group-item">Nenhuma pergunta encontrada.</li>
