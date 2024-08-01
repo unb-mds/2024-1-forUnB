@@ -1,5 +1,6 @@
 from django.test import TestCase
 from main.forms import *
+from users.forms import *
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -44,25 +45,64 @@ class AnswerFormTest(TestCase):
         self.assertIn('text', form.errors)  # Deve haver erro para o campo 'text'
 
 
+from users.forms import CustomUserCreationForm, CustomUserChangeForm
+from users.models import CustomUser
 
-class UnbEmailRegistrationFormTest(TestCase):
+class CustomUserFormTests(TestCase):
 
-    def test_unb_email_form_valid_data(self):
-        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br', 'password': 'password123'})
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido com um e-mail UNB válido
+    def test_invalid_unb_email(self):
+        """Testa se o formulário rejeita um email que não é da UNB."""
+        form_data = {'email': 'invalid@example.com', 'password1': 'password', 'password2': 'password'}
+        form = CustomUserCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
-    def test_unb_email_form_invalid_email(self):
-        form = UnbEmailRegistrationForm(data={'email': 'student@example.com', 'password': 'password123'})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido com um e-mail não-UNB
-        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
+    def test_valid_unb_email(self):
+        """Testa se o formulário aceita um email válido da UNB."""
+        form_data = {'email': 'valid@aluno.unb.br', 'password1': 'password1010', 'password2': 'password1010'}
+        form = CustomUserCreationForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_unb_email_form_existing_email(self):
-        User.objects.create_user(username='testuser', email='existing@aluno.unb.br', password='password123')
-        form = UnbEmailRegistrationForm(data={'email': 'existing@aluno.unb.br', 'password': 'password123'})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido se o e-mail já estiver em uso
-        self.assertIn('email', form.errors)  # Deve haver erro para o campo 'email'
+    def test_create_user(self):
+        """Testa se o formulário cria um usuário com sucesso."""
+        form_data = {'email': 'valid@aluno.unb.br', 'password1': 'password1010', 'password2': 'password1010'}
+        form = CustomUserCreationForm(data=form_data)
+        if form.is_valid():
+            user = form.save(commit=False)
+            self.assertEqual(user.email, 'valid@aluno.unb.br')
+            self.assertEqual(user.username, 'valid@aluno.unb.br')
+            user.save()
+            self.assertEqual(CustomUser.objects.count(), 1)
+        else:
+            self.fail(form.errors)
 
-    def test_unb_email_form_missing_password(self):
-        form = UnbEmailRegistrationForm(data={'email': 'student@aluno.unb.br'})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma senha
-        self.assertIn('password', form.errors)  # Deve haver erro para o campo 'password'
+    def test_change_user(self):
+        #Testa se o formulário de mudança de usuário permite atualizações.
+            
+        # Criar usuário inicial
+        user = CustomUser.objects.create_user(email='valid@aluno.unb.br', password='password')
+        
+        # Dados para atualização
+        form_data = {
+            'email': 'valid@aluno.unb.br',  # O email deve permanecer o mesmo para passar pela validação
+            'username': 'newusername',  # Novo nome de usuário
+            'is_active': True,  # Atualizando estado de atividade
+            'is_staff': False  # Atualizando permissão de staff
+        }
+        
+        # Formulário de mudança com os novos dados
+        form = CustomUserChangeForm(data=form_data, instance=user)
+        
+        # Verificando se o formulário é válido
+        self.assertTrue(form.is_valid(), form.errors)  # Incluindo form.errors para debug
+        updated_user = form.save(commit=False)
+        self.assertEqual(updated_user.username, 'newusername')
+        updated_user.save()
+        
+        # Verificando se a atualização foi aplicada
+        user.refresh_from_db()  # Recarregar do banco de dados
+        self.assertEqual(user.username, 'newusername')
+        self.assertEqual(user.is_active, True)
+        self.assertEqual(user.is_staff, False)
+
+
