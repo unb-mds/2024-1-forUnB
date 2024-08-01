@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -7,7 +7,7 @@
     <div class="question-item">
         <div class="question-info">
             <div class="return-container">
-                <a href="{% url 'forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
+                <a href="{% url 'main:forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
                 <span class="question-author">{{ question.author.username }}</span> • 
@@ -19,14 +19,14 @@
                 <button class="btn btn-like" onclick="toggleLike(this);">
                     <i class="bi bi-heart"></i>
                 </button>
-                <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
             </div>   
             <div class="response-area">
                 <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
-                    <form method="post" action="{% url 'new_answer' question.id %}">
+                    <form method="post" action="{% url 'main:new_answer' question.id %}">
                         {% csrf_token %}
                         <textarea name="text" class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
                         <div class="mt-1">
@@ -52,7 +52,7 @@
                         <button class="btn btn-like" onclick="toggleLike(this);">
                             <i class="bi bi-heart"></i>
                         </button>
-                        <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                        <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                             <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                         </a>
                     </div>   

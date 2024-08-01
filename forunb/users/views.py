@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 def register(request): 
     if request.method == 'POST': 
@@ -21,7 +21,7 @@ def register(request):
             authenticated_user = authenticate(username=user.email, password=request.POST['password1'])  # Autentica o usuário recém-criado 
             if authenticated_user is not None: 
                 login(request, authenticated_user) 
-                return redirect('index') 
+                return redirect('main:index') 
             else: 
                 print("Falha na autenticação") 
         else: 
@@ -35,11 +35,24 @@ def register(request):
 
 def Logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('main:index'))
 
+# nao esta sendo usado
+# def login_redirect(view_func):
+#     return user_passes_test(lambda u: u.is_authenticated, login_url='/users/login/')(view_func)
 
-def login_redirect(view_func):
-    return user_passes_test(lambda u: u.is_authenticated, login_url='/login')(view_func)
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            if "next" in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect("main:index")
+    else:
+        form = AuthenticationForm()
+    return render(request, 'users/login.html', {"form": form})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':

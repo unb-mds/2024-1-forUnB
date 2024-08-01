@@ -11,11 +11,11 @@ class IndexViewTest(TestCase):
         self.client = Client()
 
     def test_index_view_status_code(self):
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('main:index'))
         self.assertEqual(response.status_code, 200)
 
     def test_index_view_template_used(self):
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('main:index'))
         self.assertTemplateUsed(response, 'main/index.html')
 
 class ViewsTestCase(TestCase):
@@ -34,43 +34,43 @@ class ViewsTestCase(TestCase):
         self.answer = Answer.objects.create(text="Test Answer", question=self.question, author=self.user)
 
     def test_index_view(self):
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('main:index'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/index.html')
         self.assertContains(response, self.question.title)
 
     def test_forum_detail_view(self):
-        response = self.client.get(reverse('forum_detail', args=[self.forum.id]))
+        response = self.client.get(reverse('main:forum_detail', args=[self.forum.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/forum_detail.html')
         self.assertContains(response, self.forum.title)
 
     def test_forum_list_view(self):
-        response = self.client.get(reverse('forum_list'))
+        response = self.client.get(reverse('main:forum_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/forums.html')
         self.assertContains(response, self.forum.title)
 
     def test_questions_view(self):
-        response = self.client.get(reverse('questions'))
+        response = self.client.get(reverse('main:questions'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/questions.html')
         self.assertContains(response, self.question.title)
 
     def test_question_detail_view(self):
-        response = self.client.get(reverse('question_detail', args=[self.question.id]))
+        response = self.client.get(reverse('main:question_detail', args=[self.question.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/question_detail.html')
         self.assertContains(response, self.question.title)
 
     def test_new_question_view(self):
         self.client.login(email='test@aluno.unb.br', password='senha1010')
-        response = self.client.get(reverse('new_question', args=[self.forum.id]))
+        response = self.client.get(reverse('main:new_question', args=[self.forum.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_question.html')
 
         # Test posting a new question
-        response = self.client.post(reverse('new_question', args=[self.forum.id]), {
+        response = self.client.post(reverse('main:new_question', args=[self.forum.id]), {
             'title': 'Another Test Question',
             'description': 'Another Test Question Description',
         })
@@ -78,12 +78,12 @@ class ViewsTestCase(TestCase):
 
     def test_new_answer_view(self):
         self.client.login(email='test@aluno.unb.br', password='senha1010')
-        response = self.client.get(reverse('new_answer', args=[self.question.id]))
+        response = self.client.get(reverse('main:new_answer', args=[self.question.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/new_answer.html')
 
         # Test posting a new answer
-        response = self.client.post(reverse('new_answer', args=[self.question.id]), {
+        response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {
             'text': 'Another Test Answer',
         })
         self.assertEqual(response.status_code, 302)  # Redirect after success
@@ -102,7 +102,7 @@ class SearchForumTestCase(TestCase):
 
     def test_search_forum_with_query(self):
         # Envia uma solicitação GET com um parâmetro de pesquisa
-        response = self.client.get(reverse('search_forum') + '?search=python')
+        response = self.client.get(reverse('search:search_forum') + '?search=python')
         
         # Verifica se a resposta foi bem-sucedida
         self.assertEqual(response.status_code, 200)
@@ -121,7 +121,7 @@ class SearchForumTestCase(TestCase):
 
     def test_search_forum_with_no_results(self):
         # Envia uma solicitação GET com um parâmetro de pesquisa que não deve retornar resultados
-        response = self.client.get(reverse('search_forum') + '?search=java')
+        response = self.client.get(reverse('search:search_forum') + '?search=java')
         
         # Verifica se a resposta foi bem-sucedida
         self.assertEqual(response.status_code, 200)

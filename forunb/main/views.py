@@ -43,7 +43,7 @@ def question_detail(request, question_id):
     return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
 
-@login_required
+@login_required(login_url='/users/login')
 def new_question(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
@@ -53,13 +53,13 @@ def new_question(request, forum_id):
             question.forum = forum
             question.author = request.user
             question.save()
-            return redirect('forum_detail', forum_id=forum.id)
+            return redirect('main:forum_detail', forum_id=forum.id)
     else:
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
 
-@login_required
+@login_required(login_url='/users/login')
 def new_answer(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
@@ -69,7 +69,7 @@ def new_answer(request, question_id):
             answer.question = question
             answer.author = request.user
             answer.save()
-            return redirect('question_detail', question_id=question.id)
+            return redirect('main:question_detail', question_id=question.id)
     else:
         form = AnswerForm()
     return render(request, 'main/new_answer.html', {'form': form, 'question': question})

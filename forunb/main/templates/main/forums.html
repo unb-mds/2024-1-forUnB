@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <style>
@@ -60,7 +60,7 @@
 <div class="scroll-container p-3 rounded container">
     {% for forum in forums %}
         <div class="list-group col-xxl-12">
-            <a class="foruns list-group-item list-group-item-action" href="{% url 'forum_detail' forum.id %}">
+            <a class="foruns list-group-item list-group-item-action" href="{% url 'main:forum_detail' forum.id %}">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="fw-bold mb-1">{{ forum.title }}</h5>
                 </div>
