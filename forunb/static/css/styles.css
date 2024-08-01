@@ -195,11 +195,11 @@ body, html {
 .forum-header {
     position: sticky;
     top: 0;
-    padding-bottom: 10px;
+    padding-bottom: 40px;
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 3px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
     display: flex;
     justify-content: flex-start;
@@ -580,9 +580,6 @@ html, body {
 .home-container {
     max-width: 100%;
     margin: 0 auto; /* Centraliza horizontalmente */
-    margin-right: 0px;
-    margin-left: 0px;
-    margin-top: 50px;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -592,7 +589,6 @@ html, body {
     word-break: break-word;
     overflow: auto;
     background-color: #ffffff;
-    z-index: 0;
 }
 
 .home-head {
