@@ -15,7 +15,10 @@
                 <div class="home-meta">
                     <span class="question-author">{{ question.author.username }}</span> • 
                     <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
-                    <span class="forum-label">{{ question.forum.title }}</span>
+                    <span class="forum-label">
+                        <span class="label-full">{{ question.forum.title }}</span>
+                        <span class="label-short">{{ question.forum.title|first_word }}</span>
+                    </span>
                 </div>
                 <a href="{% url 'main:question_detail' question.id %}">
                     <h5 class="question-title">{{ question.title }}</h5>

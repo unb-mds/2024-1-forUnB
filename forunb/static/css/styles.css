@@ -617,6 +617,22 @@ html, body {
     margin-right: 0px !important;
 }
 
+.label-full, .label-short {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .label-full {
+        display: inline; /* Mostra o nome completo em telas grandes */
+    }
+}
+
+@media (max-width: 768px) {
+    .label-short {
+        display: inline; /* Mostra a primeira palavra em telas pequenas */
+    }
+}
+
 @media (max-width: 400px) {
     .home-meta {
         flex-wrap: wrap;
