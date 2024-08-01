@@ -56,6 +56,11 @@
     flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
 }
 
+/* Ajusta o padding-left quando há uma label de fórum */
+.form-label + .search-bar {
+    padding-left: 175px; /* Desloca o texto 150px à frente */
+}
+
 .search-bar::placeholder {
     color: #003366; 
     font-weight: bolder;
@@ -561,4 +566,22 @@ html, body {
 .btn-return:hover {
     background-color: #004c26;
     color: #C7D2DD;
+}
+
+
+.search-label {
+    position: absolute;
+    top: 5px; /* Ajuste conforme necessário */
+    left: 100px; /* Ajuste conforme necessário */
+    background-color: #006400; /* Tom de verde */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 1;
+    max-width: 150px; /* Comprimento máximo */
+    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+    overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
+    text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
 }
