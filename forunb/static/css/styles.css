@@ -247,6 +247,13 @@ body, html {
     flex-direction: column;
     word-wrap: break-word; /* Quebra palavras longas */
     overflow-wrap: break-word; /* Garante que o texto não transborde */
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.question-item:hover {
+    background-color: #C7D2DD;
 }
 
 .question-item a, .answer-item a {
@@ -254,7 +261,7 @@ body, html {
 }
 
 .question-item .btn-info, .btn-like {
-    background-color: #ffffff;
+    background-color: #a0b0c0;
     border: none;
     color: #003366;
     padding: 4px 8px;
@@ -269,7 +276,7 @@ body, html {
 }
 
 .answer-item .btn-info, .btn-like {
-    background-color: #ffffff;
+    background-color: #a0b0c0;
     border: none;
     color: #003366;
     padding: 4px 8px;
