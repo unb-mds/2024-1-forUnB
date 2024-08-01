@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <style>
@@ -55,7 +55,7 @@
     {% for question in latest_questions %}
         <div class="question-card">
             <div class="forum-label">{{ question.forum.title }}</div> <!-- Nome do fórum -->
-            <h5><a href="{% url 'question_detail' question.id %}">{{ question.title }}</a></h5>
+            <h5><a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a></h5>
             <p>{{ question.description }}</p>
             <p class="text-muted">Postado em {{ question.created_at|date:"d M Y H:i" }}</p>
         </div>
