@@ -242,7 +242,7 @@ body, html {
 }
 
 .question-item, .answer-item {
-    padding: 0px 0; /* Espaço acima e abaixo do item */
+    padding: 0px 0px 5px 5px;
     display: flex;
     flex-direction: column;
     word-wrap: break-word; /* Quebra palavras longas */
