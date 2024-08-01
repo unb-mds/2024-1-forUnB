@@ -39,8 +39,12 @@
                     <!-- Botão para mostrar a barra lateral em telas pequenas -->
                     <button class="btn btn-primary d-xl-none btn-menu" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <!-- Barra de pesquisa -->
-                    <form class="d-flex flex-grow-1 me-2" role="search" method="get" action="{% url 'search:search_forum' %}">
-                        <input class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
+                    <form class="d-flex flex-grow-1 me-2 position-relative" role="search" method="get" action="{% url 'search:search_forum' %}">
+                        {% if forum %}
+                            <input type="hidden" name="forum_id" value="{{ forum.id }}">
+                            <label for="search-bar" class="form-label search-label">{{ forum.title }}</label>
+                        {% endif %}
+                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
