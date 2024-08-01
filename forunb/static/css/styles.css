@@ -615,6 +615,13 @@ html, body {
     max-width: fit-content;
     margin-left: auto;
     margin-right: 0px !important;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.forum-label:hover {
+    color: #ffffff;
+    background-color: #004c26;
 }
 
 .label-full, .label-short {
