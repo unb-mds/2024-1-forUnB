@@ -43,15 +43,15 @@ def Logout_view(request):
 
 def login_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            # if "next" in request.POST:
-            #     return redirect(request.POST.get('next'))
-            # else:
-            #     return redirect("main:index")
+            if "next" in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect("main:index")
     else:
-        form = CustomUserCreationForm()
+        form = AuthenticationForm()
     return render(request, 'users/login.html', {"form": form})
 
 # def register_unb_email(request):
