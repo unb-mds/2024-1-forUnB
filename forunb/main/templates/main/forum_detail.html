@@ -4,6 +4,17 @@
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
         <h1 class="forum-title">{{ forum.title }}</h1>
+        
+        {% if user.is_authenticated %}
+            <button id="follow-toggle" class="btn btn-primary" data-forum-id="{{ forum.id }}">
+                {% if is_following %}
+                    Unfollow
+                {% else %}
+                    Follow
+                {% endif %}
+            </button>
+        {% endif %}
+
         <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
     </div>
 
@@ -14,7 +25,13 @@
             {% for question in questions %}
                 <div class="question-item">
                     <div class="question-meta">
-                        <span class="question-author">{{ question.author.username }}</span> • 
+                        <span class="question-author">
+                            {% if question.is_anonymous %}
+                                Anônimo
+                            {% else %}
+                                {{ question.author.username }}
+                            {% endif %}
+                        </span> • 
                         <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
                     </div>
                     <a href="{% url 'main:question_detail' question.id %}">
@@ -49,5 +66,28 @@
             icon.classList.add('bi-heart');
         }
     }
+</script>
+
+<script>
+    document.getElementById('follow-toggle').addEventListener('click', function() {
+        var button = this;
+        var forumId = button.getAttribute('data-forum-id');
+        var action = button.textContent.trim() === 'Follow' ? 'follow' : 'unfollow';
+
+        fetch(`/follow-forum/${forumId}/${action}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                button.textContent = action === 'follow' ? 'Unfollow' : 'Follow';
+            }
+        });
+    });
 </script>
 {% endblock %}
