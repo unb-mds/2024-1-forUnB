@@ -200,11 +200,11 @@ body, html {
 .forum-header {
     position: sticky;
     top: 0;
-    padding-bottom: 10px;
+    padding-bottom: 40px;
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 3px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
     display: flex;
     justify-content: flex-start;
@@ -247,11 +247,18 @@ body, html {
 }
 
 .question-item, .answer-item {
-    padding: 0px 0; /* Espaço acima e abaixo do item */
+    padding: 0px 0px 5px 5px;
     display: flex;
     flex-direction: column;
     word-wrap: break-word; /* Quebra palavras longas */
     overflow-wrap: break-word; /* Garante que o texto não transborde */
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.question-item:hover {
+    background-color: #C7D2DD;
 }
 
 .question-item a, .answer-item a {
@@ -259,7 +266,7 @@ body, html {
 }
 
 .question-item .btn-info, .btn-like {
-    background-color: #ffffff;
+    background-color: #a0b0c0;
     border: none;
     color: #003366;
     padding: 4px 8px;
@@ -274,7 +281,7 @@ body, html {
 }
 
 .answer-item .btn-info, .btn-like {
-    background-color: #ffffff;
+    background-color: #a0b0c0;
     border: none;
     color: #003366;
     padding: 4px 8px;
@@ -359,10 +366,13 @@ a {
 .question-author, .answer-author {
     font-weight: bold;
     color: #003366;
+    display: inline;
 }
 
 .question-date, .answer-date {
     color: #999999;
+    display: inline;
+    margin-right: 10px !important;
 }
 
 /* Ajustes para telas menores que 992px */
@@ -450,9 +460,9 @@ html, body {
 
 .custom-container {
     max-width: 100%;
-    max-width: none;
-    margin: 0 auto; /* Centraliza horizontalmente */
+    margin: 0 auto;
     margin-right: 0px;
+    margin-left: 0px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -568,7 +578,6 @@ html, body {
     color: #C7D2DD;
 }
 
-
 .search-label {
     position: absolute;
     top: 5px; /* Ajuste conforme necessário */
@@ -585,7 +594,6 @@ html, body {
     overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
     text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
 }
-
 
 /* INDEX.HTML */
 .home-container {

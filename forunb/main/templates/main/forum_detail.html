@@ -14,7 +14,13 @@
             {% for question in questions %}
                 <div class="question-item">
                     <div class="question-meta">
-                        <span class="question-author">{{ question.author.username }}</span> • 
+                        <span class="question-author">
+                            {% if question.is_anonymous %}
+                                Anônimo
+                            {% else %}
+                                {{ question.author.username }}
+                            {% endif %}
+                        </span> • 
                         <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
                     </div>
                     <a href="{% url 'main:question_detail' question.id %}">
