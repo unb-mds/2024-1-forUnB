@@ -457,6 +457,7 @@ html, body {
     margin-right: 0px;
     margin-left: 0px;
     padding: 20px;
+    padding-bottom: 0px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -467,7 +468,7 @@ html, body {
 }
 
 .questions-item {
-    padding: 0px 0px 5px 5px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     word-wrap: break-word; /* Quebra palavras longas */
@@ -492,6 +493,14 @@ html, body {
     color: #003366;
 }
 
+.question-info {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff; 
+    z-index: 100; 
+    padding: 0px;
+}
+
 .response-area {
     margin-top: 5px;
     margin-bottom: 30px;
@@ -502,7 +511,7 @@ html, body {
 
 .response-area input {
     width: 100%;
-    background-color: #C7D2DD !important;
+    background-color: #a0b0c0 !important;
     color: #003366 !important;
     border: none;
     padding: 10px 20px;
@@ -595,14 +604,10 @@ html, body {
     color: #C7D2DD;
 }
 
-.answer-container {
+.answer-list {
+    margin-top: 5px;
+    max-height: 100%;
     overflow-y: auto;
-    padding-right: 10px;
-    margin-bottom: 0px;
-    height: 100vh;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
 .answer-item {
