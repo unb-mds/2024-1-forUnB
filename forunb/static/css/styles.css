@@ -673,3 +673,45 @@ html, body {
         text-align: left;
     }
 }
+
+
+
+/* FORUNS.HTML */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.foruns {
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 8px;
+}
+
+.forum-header {
+    background-color: #fff;
+    padding: 10px;
+    padding-bottom: 20px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.titulo{
+    color: #003366;
+}
+
+.scroll-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    padding-top: 0px !important;
+}
