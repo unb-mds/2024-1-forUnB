@@ -4,7 +4,7 @@
 
 {% load custom_filters %}
 <div class="custom-container mt-5 ms-0">
-    <div class="question-item">
+    <div class="questions-item">
         <div class="question-info">
             <div class="return-container">
                 <a href="{% url 'main:forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
@@ -39,31 +39,33 @@
         </div>
     </div>
 
-    {% if answers %}
-        {% for answer in answers %}
-            <div class="answer-item">
-                <div class="answer-info">
-                    <div class="answer-meta">
-                        <span class="answer-author">{{ answer.author.username }}</span> • 
-                        <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
+    <div class="answer-list">
+        {% if answers %}
+            {% for answer in answers %}
+                <div class="answer-item">
+                    <div class="answer-info">
+                        <div class="answer-meta">
+                            <span class="answer-author">{{ answer.author.username }}</span> • 
+                            <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
+                        </div>
+                        <p class="answer-text">{{ answer.text }}</p>
+                        <div class="action-buttons-answer">
+                            <button class="btn btn-like" onclick="toggleLike(this);">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                                <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
+                            </a>
+                        </div>   
                     </div>
-                    <p class="answer-text">{{ answer.text }}</p>
-                    <div class="action-buttons-answer">
-                        <button class="btn btn-like" onclick="toggleLike(this);">
-                            <i class="bi bi-heart"></i>
-                        </button>
-                        <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
-                            <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
-                        </a>
-                    </div>   
-                </div>
-                <hr class="answer-separator">
-        {% empty %}
+                    <hr class="answer-separator">
+            {% empty %}
+                <p>Nenhuma resposta encontrada para esta pergunta.</p>
+            {% endfor %}
+        {% else %}
             <p>Nenhuma resposta encontrada para esta pergunta.</p>
-        {% endfor %}
-    {% else %}
-        <p>Nenhuma resposta encontrada para esta pergunta.</p>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 
 <script>

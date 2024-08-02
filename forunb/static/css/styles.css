@@ -466,6 +466,32 @@ html, body {
     overflow: auto;
 }
 
+.questions-item {
+    padding: 0px 0px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.questions-item .btn-info, .btn-like {
+    background-color: #a0b0c0;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.questions-item .btn-info:hover, .btn-like:hover {
+    background-color: #C7D2DD;
+    color: #003366;
+}
+
 .response-area {
     margin-top: 5px;
     margin-bottom: 30px;
