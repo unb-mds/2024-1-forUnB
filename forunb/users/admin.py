@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
     # Excluindo 'date_joined' dos fieldsets
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('username',)}),
+        ('Personal Info', {'fields': ('username', 'created_questions', 'created_answers')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),  # Não incluímos 'date_joined'
     )

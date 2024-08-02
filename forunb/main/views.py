@@ -53,6 +53,7 @@ def new_question(request, forum_id):
             question.forum = forum
             question.author = request.user
             question.save()
+            request.user.created_questions.add(question)
             return redirect('main:forum_detail', forum_id=forum.id)
     else:
         form = QuestionForm()
@@ -69,6 +70,7 @@ def new_answer(request, question_id):
             answer.question = question
             answer.author = request.user
             answer.save()
+            request.user.created_answers.add(answer)
             return redirect('main:question_detail', question_id=question.id)
     else:
         form = AnswerForm()
