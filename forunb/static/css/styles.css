@@ -585,3 +585,90 @@ html, body {
     overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
     text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
 }
+
+
+/* INDEX.HTML */
+.home-container {
+    max-width: 100%;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow: auto;
+    background-color: #ffffff;
+}
+
+.home-head {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.home-meta {
+    font-size: 0.9rem;
+    color: #a0b0c0;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.forum-label {
+    background-color: #006633;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Evita que o texto quebre em múltiplas linhas */
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: 0px !important;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.forum-label:hover {
+    color: #ffffff;
+    background-color: #004c26;
+}
+
+.label-full, .label-short {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .label-full {
+        display: inline; /* Mostra o nome completo em telas grandes */
+    }
+}
+
+@media (max-width: 768px) {
+    .label-short {
+        display: inline; /* Mostra a primeira palavra em telas pequenas */
+    }
+}
+
+@media (max-width: 400px) {
+    .home-meta {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .question-author,
+    .question-date {
+        margin-right: 0;
+    }
+
+    .forum-label {
+        margin-top: 5px; 
+        margin-left: 0;
+        width: auto;
+        text-align: left;
+    }
+}
