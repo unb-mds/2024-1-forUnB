@@ -34,6 +34,11 @@ def questions(request):
     questions = Question.objects.all()
     return render(request, 'main/questions.html', {'questions': questions})
 
+@login_required(login_url='/users/login')
+def user_questions(request):
+    questions = Question.objects.filter(author=request.user)
+    return render(request, 'main/questions.html', {'questions': questions})
+
 
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
