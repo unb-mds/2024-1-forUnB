@@ -186,7 +186,6 @@
 
 
 /* FORUM_DETAIL.HTML */
-/* Remove o efeito de foco padrão */
 button:focus, a:focus, .btn:focus {
     outline: none;
     box-shadow: none; /* Também remove qualquer sombra de caixa que possa aparecer */
@@ -194,7 +193,9 @@ button:focus, a:focus, .btn:focus {
 
 body, html {
     width: 100%;
-    overflow-x: hidden; /* Impede que o conteúdo transborde horizontalmente */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 .container-fluid {
@@ -244,10 +245,10 @@ body, html {
 
 
 .questions-container, .answer-container {
-    overflow-y: auto; /* Habilita a rolagem vertical */
+    overflow-y: auto;
     padding-right: 10px;
-    margin-bottom: 20px;
-    height: calc(100vh - 208px);
+    margin-bottom: 0px;
+    height: 100vh;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
