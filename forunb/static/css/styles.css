@@ -244,7 +244,7 @@ body, html {
 }
 
 
-.questions-container, .answer-container {
+.questions-container {
     overflow-y: auto;
     padding-right: 10px;
     margin-bottom: 0px;
@@ -254,7 +254,7 @@ body, html {
     flex-direction: column;
 }
 
-.question-item, .answer-item {
+.question-item {
     padding: 0px 0px 5px 5px;
     display: flex;
     flex-direction: column;
@@ -269,7 +269,7 @@ body, html {
     background-color: #C7D2DD;
 }
 
-.question-item a, .answer-item a {
+.question-item a {
     text-decoration: none;
 }
 
@@ -284,21 +284,6 @@ body, html {
 }
 
 .question-item .btn-info:hover, .btn-like:hover {
-    background-color: #C7D2DD;
-    color: #003366;
-}
-
-.answer-item .btn-info, .btn-like {
-    background-color: #a0b0c0;
-    border: none;
-    color: #003366;
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-weight: bold;
-    outline: none;
-}
-
-.answer-item .btn-info:hover, .btn-like:hover {
     background-color: #C7D2DD;
     color: #003366;
 }
@@ -489,7 +474,6 @@ html, body {
     overflow: auto;
 }
 
-/* Estilo para o campo de entrada inicial (input) */
 .response-area input {
     width: 100%;
     background-color: #C7D2DD !important;
@@ -509,7 +493,6 @@ html, body {
     box-shadow: none;
 }
 
-/* Estilo para o formulário de resposta (textarea e botões) */
 .response-form {
     margin-top: 10px;
     width: 100%;
@@ -586,6 +569,58 @@ html, body {
     color: #C7D2DD;
 }
 
+.answer-container {
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 0px;
+    height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.answer-item {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.answer-item a {
+    text-decoration: none;
+}
+
+.answer-item .btn-info, .btn-like {
+    background-color: #a0b0c0;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.answer-item .btn-info:hover, .btn-like:hover {
+    background-color: #C7D2DD;
+    color: #003366;
+}
+
+.action-buttons-answer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.answer-meta {
+    font-size: 0.9rem;
+    color: #a0b0c0;
+    margin-bottom: 5px;
+}
 
 
 
