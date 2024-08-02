@@ -1,64 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    .custom-container {
-        max-width: 800px; /* Define o máximo desejado */
-        margin: 0px;
-        padding: 10px;
-        height: 10hv;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
 
-    .question-card {
-        margin-bottom: 20px;
-        width: 100%;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        border-radius: 8px;
-        position: relative; /* Necessário para posicionamento absoluto do fórum */
-    }
+<div class="container-fluid mt-5 ms-0">
+    <div class="forum-header">
+        <h2 class="home-head">Últimas Perguntas</h2>
+    </div>
 
-    .question-card h5 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
+    {% load custom_filters %}
 
-    .question-card p {
-        font-size: 1rem;
-    }
+    <div class="home-container">
+        {% for question in latest_questions %}
+            <div class="question-item">
+                <div class="home-meta">
+                    <span class="question-author">{{ question.author.username }}</span> • 
+                    <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+                    <a href="{% url 'main:forum_detail' question.forum.id %}" class="forum-label">
+                        <span class="label-full">{{ question.forum.title }}</span>
+                        <span class="label-short">{{ question.forum.title|first_word }}</span>
+                    </a>
+                </div>
+                <a href="{% url 'main:question_detail' question.id %}">
+                    <h5 class="question-title">{{ question.title }}</h5>
+                    <p class="question-description">{{ question.description }}</p>
+                </a>
+                <div class="action-buttons">
+                    <button class="btn btn-like" onclick="toggleLike(this);">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                        <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                    </a>
+                </div>                    
+            </div>
+            <hr class="question-separator">
+        {% endfor %}
+    </div>
 
-    .forum-label {
-        position: absolute;
-        top: 10px;
-        right: 10px; /* Posiciona o label no canto superior direito */
-        background-color: #006633; /* Cor de fundo */
-        color: #ffffff; /* Cor do texto */
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.9rem;
-    }
-
-    .heading {
-        margin-top: 10px; /* Espaçamento acima do título */
-        margin-bottom: 20px; /* Espaçamento abaixo do título */
-    }
-</style>
-
-<div class="custom-container mt-5">
-    <h2 class="heading">Últimas Perguntas</h2>
-    <hr>
-    {% for question in latest_questions %}
-        <div class="question-card">
-            <div class="forum-label">{{ question.forum.title }}</div> <!-- Nome do fórum -->
-            <h5><a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a></h5>
-            <p>{{ question.description }}</p>
-            <p class="text-muted">Postado em {{ question.created_at|date:"d M Y H:i" }}</p>
-        </div>
-    {% endfor %}
-</div>
-{% endblock %}
+    <script>
+        function toggleLike(element) {
+            var icon = element.querySelector('i');
+            if (icon.classList.contains('bi-heart')) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+        }
+    </script>
+    {% endblock %}
