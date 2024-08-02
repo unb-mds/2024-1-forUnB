@@ -17,6 +17,17 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['title', 'description']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control form-control-sm mt-2 fw-bold input-title',
+                'placeholder': 'Titulo'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control mt-2 fw-bold',
+                'placeholder': 'Escreva sua pergunta...'
+            })
+        }
+        
 
 class AnswerForm(forms.ModelForm):
     class Meta:

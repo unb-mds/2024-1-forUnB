@@ -1,13 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5 ms-0">
-    <h2>Nova Pergunta em {{ forum.title }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+
+{% load custom_filters %}
+<style>
+    .nome{
+        color:#003366;
+    }
+
+    .btn-cancel{
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    }
+
+    .btn-cancel:hover {
+    background-color: #a0b0c0;
+    }
+
+    .btn-send{
+    background-color: #006633;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    }
+
+    .btn-send:hover {
+    background-color: #004c26;
+    }
+
+    .response-form{
+    max-width: 50vw;
+    height: 70vh;
+    width: 100%;
+    }
+
+    .input-title {
+    width: 50%;
+    font-size: 1.25rem; /* Tamanho do texto maior */
+    color: #003366;       /* Cor do texto digitado */
+    }
+</style>
+
+<div class="custom-container mt-5 ms-0">
+    <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
+        <div class="response-form ">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="mt-2">
+                    <a class="btn btn-cancel" type="button" href="{% url 'main:forum_detail' forum.id %}">Cancelar</a>
+                    <button type="submit" class="btn btn-send">Enviar</button> 
+                </div>
+            </form>
+        </div>   
 </div>
 {% endblock %}
+
+
 
