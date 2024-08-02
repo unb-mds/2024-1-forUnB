@@ -16,12 +16,12 @@ class ForumForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'is_anonymous']
 
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['text']
+        fields = ['text', 'is_anonymous']
         labels = {
             'text': ''
         }
