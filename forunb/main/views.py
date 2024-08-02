@@ -37,6 +37,11 @@ def forum_list(request):
     forums = Forum.objects.all()
     return render(request, 'main/forums.html', {'forums': forums})
 
+@login_required(login_url='/users/login')
+def followed_forums(request):
+    user = request.user
+    followed_forums = user.followed_forums.all()
+    return render(request, 'main/forums.html', {'forums': followed_forums})
 
 def questions(request):
     # Ajuste conforme necessário para filtrar as perguntas desejadas
@@ -51,7 +56,7 @@ def question_detail(request, question_id):
     forum = question.forum
     return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
-@login_required
+@login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
     if request.method == 'POST':
         forum = get_object_or_404(Forum, id=forum_id)
