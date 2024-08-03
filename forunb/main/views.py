@@ -34,10 +34,16 @@ def questions(request):
     questions = Question.objects.all()
     return render(request, 'main/questions.html', {'questions': questions})
 
-@login_required(login_url='/users/login')
-def user_questions(request):
-    questions = Question.objects.filter(author=request.user)
-    return render(request, 'main/questions.html', {'questions': questions})
+@login_required
+def user_posts(request):
+    user = request.user
+    questions = Question.objects.filter(author=user)
+    answers = Answer.objects.filter(author=user)
+    context = {
+        'questions': questions,
+        'answers': answers,
+    }
+    return render(request, 'main/questions.html', context)
 
 
 def question_detail(request, question_id):
