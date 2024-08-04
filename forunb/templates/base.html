@@ -56,9 +56,13 @@
                                     <li><a class="dropdown-item" href="{% url 'users:logout' %}">
                                         <i class="bi bi-box-arrow-in-left"></i>Sair</a></li>
                                 </ul>
-                                <a class="btn btn-login d-flex d-sm-none" href="#">
+                                <button class="btn btn-login dropdown-toggle d-flex d-sm-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-fill"></i>
-                                </a>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'users:logout' %}">
+                                        <i class="bi bi-box-arrow-in-left"></i>Sair</a></li>
+                                </ul>
                             {% else %}
                                 <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
                             {% endif %}
