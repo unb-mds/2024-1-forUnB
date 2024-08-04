@@ -27,9 +27,6 @@
                     <a class="btn btn-home btn-sm" href="{% url 'main:index' %}"><i class="bi bi-house-door"></i>Home</a>
                     <a class="btn btn-home btn-sm" href="{% url 'main:forum_list' %}"><i class="bi bi-star"></i>Fóruns</a>
                     <a class="btn btn-home btn-sm" href="{% url 'main:followed_forums' %}"><i class="bi bi-star-fill"></i>Meus Fóruns</a>
-                        {% if user.is_authenticated %}                                
-                            <a class="text-white fw-bold nav-link text-dark" href="{% url 'users:logout' %}">Sair</a>
-                        {% endif %}
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">&copy; 2024 Meu Fórum</p>
@@ -37,7 +34,7 @@
             </div>
             <!-- Conteúdo principal -->
             <div class="col-xl-9">
-                <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="el-margin d-flex justify-content-between align-items-center mt-2">
                     <!-- Botão para mostrar a barra lateral em telas pequenas -->
                     <button class="btn btn-menu d-xl-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <!-- Barra de pesquisa -->
@@ -51,18 +48,23 @@
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
                         {% if user.is_authenticated %}
-                            <a class="btn btn-login d-none d-sm-flex align-items-center" href="#">
-                                <i class="bi bi-person-fill me-2"></i> {{ user.username }}
-                            </a>
-                            <a class="btn btn-login d-flex d-sm-none" href="#">
-                                <i class="bi bi-person-fill"></i>
-                            </a>
-                        {% else %}
-                            <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
-                        {% endif %}
+                            <div class="dropdown">
+                                <button class="btn btn-login dropdown-toggle d-none d-sm-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-fill me-2"></i> {{ user.username }}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'users:logout' %}">
+                                        <i class="bi bi-box-arrow-in-left"></i>Sair</a></li>
+                                </ul>
+                                <a class="btn btn-login d-flex d-sm-none" href="#">
+                                    <i class="bi bi-person-fill"></i>
+                                </a>
+                            {% else %}
+                                <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <!-- Conteúdo principal -->
                 {% block content %} {% endblock %}
             </div>
         </div>

@@ -67,13 +67,15 @@
     font-size: 1.1rem;
 }
 
-/* Botão do menu para telas pequenas */
 #sidebarToggle {
-    margin-right: 15px; /* Espaço entre a barra de pesquisa e o botão do menu */
-    display: none; /* Inicialmente oculto */
+    margin-right: 15px; 
+    display: none;
 }
 
-/* Ajustes para botões */
+.el-margin {
+    margin-right: 15px;
+}
+
 .btn-login {
     background-color: #C7D2DD;
     color: #003366;
@@ -81,12 +83,32 @@
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
-    margin-right: 15px;
     font-size: 1.1rem;
 }
 
 .btn-login:hover {
     background-color: #a0b0c0;
+    color: #003366;
+}
+
+.dropdown-menu {
+    background-color: #C7D2DD;
+    border: none;
+    border-radius: 20px;
+    min-width: 100%;
+}
+
+.dropdown-item {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bolder;
+    font-size: 1.1rem;
+    border-radius: 20px;
+}
+
+.dropdown-item:hover {
+    background-color: #a0b0c0;
+    color: #003366;
 }
 
 .btn-home {
