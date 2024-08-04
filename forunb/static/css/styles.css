@@ -2,7 +2,7 @@
 
 /* Ajustes gerais */
 .bg-green {
-    background-color: #006633;
+    background: linear-gradient(to bottom, #006633, #006633, #04A356);
     padding: 15px;
     width: 230px;
 }
@@ -90,7 +90,7 @@
 }
 
 .btn-home {
-    background-color: #003366;
+    background-image: linear-gradient(45deg, #003366, #0056a0) !important;
     color: #C7D2DD;
     font-weight: bolder;
     border: none;
@@ -98,10 +98,17 @@
     border-radius: 20px;
     margin-bottom: 10px;
     font-size: 1rem;
+    transition: background-image 0.3s ease, transform 0.3s ease;
 }
 
 .btn-home:hover {
-    background-color: #02305e;
+    background-image: linear-gradient(45deg, #003366, #0056a0) !important;
+    transform: scale(1.05) !important;
+}
+
+.btn-home i {
+    margin-right: 8px; 
+    color: inherit;
 }
 
 .btn-menu {
@@ -109,6 +116,11 @@
     color: #C7D2DD;
     border: none;
     margin-left: 10px;
+}
+
+.btn-menu:hover {
+    background-color: #004c26 !important;
+    color: #C7D2DD;
 }
 
 /* Ajustes para telas menores que 1200px */
@@ -179,7 +191,6 @@
 
 
 /* FORUM_DETAIL.HTML */
-/* Remove o efeito de foco padrão */
 button:focus, a:focus, .btn:focus {
     outline: none;
     box-shadow: none; /* Também remove qualquer sombra de caixa que possa aparecer */
@@ -187,7 +198,9 @@ button:focus, a:focus, .btn:focus {
 
 body, html {
     width: 100%;
-    overflow-x: hidden; /* Impede que o conteúdo transborde horizontalmente */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 .container-fluid {
@@ -219,6 +232,24 @@ body, html {
     margin-bottom: 0;
     padding: 0;
     text-align: left;
+    margin-right: 5px;
+}
+
+.forum-title i {
+    font-size: 2.5rem;
+    margin-left: 5px;
+    color: #003366;
+}
+
+.follow-toggle {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.follow-toggle:focus {
+    outline: none;
 }
 
 .btn-question {
@@ -236,17 +267,17 @@ body, html {
 }
 
 
-.questions-container, .answer-container {
-    overflow-y: auto; /* Habilita a rolagem vertical */
+.questions-container {
+    overflow-y: auto;
     padding-right: 10px;
-    margin-bottom: 20px;
-    height: calc(100vh - 208px);
+    margin-bottom: 0px;
+    height: 100vh;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
 }
 
-.question-item, .answer-item {
+.question-item {
     padding: 0px 0px 5px 5px;
     display: flex;
     flex-direction: column;
@@ -261,7 +292,7 @@ body, html {
     background-color: #C7D2DD;
 }
 
-.question-item a, .answer-item a {
+.question-item a {
     text-decoration: none;
 }
 
@@ -276,21 +307,6 @@ body, html {
 }
 
 .question-item .btn-info:hover, .btn-like:hover {
-    background-color: #C7D2DD;
-    color: #003366;
-}
-
-.answer-item .btn-info, .btn-like {
-    background-color: #a0b0c0;
-    border: none;
-    color: #003366;
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-weight: bold;
-    outline: none;
-}
-
-.answer-item .btn-info:hover, .btn-like:hover {
     background-color: #C7D2DD;
     color: #003366;
 }
@@ -390,6 +406,10 @@ a {
         width: 100%;
     }
 
+    .forum-title i {
+        font-size: 2rem;
+    }
+
     .btn-question {
         width: auto;
         align-self: flex-start;
@@ -428,6 +448,10 @@ a {
         width: 100%;
     }
 
+    .forum-title i {
+        font-size: 1.5rem;
+    }
+
     .btn-question {
         width: auto;
         align-self: flex-start;
@@ -464,6 +488,7 @@ html, body {
     margin-right: 0px;
     margin-left: 0px;
     padding: 20px;
+    padding-bottom: 0px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -471,6 +496,40 @@ html, body {
     word-wrap: break-word;
     word-break: break-word;
     overflow: auto;
+}
+
+.questions-item {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.questions-item .btn-info, .btn-like {
+    background-color: #a0b0c0;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.questions-item .btn-info:hover, .btn-like:hover {
+    background-color: #C7D2DD;
+    color: #003366;
+}
+
+.question-info {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff; 
+    z-index: 100; 
+    padding: 0px;
 }
 
 .response-area {
@@ -481,10 +540,9 @@ html, body {
     overflow: auto;
 }
 
-/* Estilo para o campo de entrada inicial (input) */
 .response-area input {
     width: 100%;
-    background-color: #C7D2DD !important;
+    background-color: #a0b0c0 !important;
     color: #003366 !important;
     border: none;
     padding: 10px 20px;
@@ -501,7 +559,6 @@ html, body {
     box-shadow: none;
 }
 
-/* Estilo para o formulário de resposta (textarea e botões) */
 .response-form {
     margin-top: 10px;
     width: 100%;
@@ -578,6 +635,55 @@ html, body {
     color: #C7D2DD;
 }
 
+.answer-list {
+    margin-top: 5px;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.answer-item {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.answer-item a {
+    text-decoration: none;
+}
+
+.answer-item .btn-info, .btn-like {
+    background-color: #a0b0c0;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.answer-item .btn-info:hover, .btn-like:hover {
+    background-color: #C7D2DD;
+    color: #003366;
+}
+
+.action-buttons-answer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.answer-meta {
+    font-size: 0.9rem;
+    color: #a0b0c0;
+    margin-bottom: 5px;
+}
+
 .search-label {
     position: absolute;
     top: 5px; /* Ajuste conforme necessário */
@@ -594,6 +700,8 @@ html, body {
     overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
     text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
 }
+
+
 
 /* INDEX.HTML */
 .home-container {
@@ -679,4 +787,46 @@ html, body {
         width: auto;
         text-align: left;
     }
+}
+
+
+
+/* FORUNS.HTML */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.foruns {
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 8px;
+}
+
+.forum-header {
+    background-color: #fff;
+    padding: 10px;
+    padding-bottom: 20px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.titulo{
+    color: #003366;
+}
+
+.scroll-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    padding-top: 0px !important;
 }
