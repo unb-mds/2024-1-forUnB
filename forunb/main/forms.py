@@ -19,12 +19,14 @@ class QuestionForm(forms.ModelForm):
         fields = ['title', 'description']
         widgets = {
             'title': forms.TextInput(attrs={
-                'class': 'form-control form-control-sm mt-2 fw-bold input-title',
+                'class': 'texto form-control form-control-sm mt-2 input-title',
                 'placeholder': 'Titulo'
             }),
             'description': forms.Textarea(attrs={
-                'class': 'form-control mt-2 fw-bold',
-                'placeholder': 'Escreva sua pergunta...'
+                'class': 'texto descricao form-control mt-2',
+                'placeholder': 'Escreva sua pergunta...',
+                'rows': 5,  # Ajuste o número de linhas conforme necessário
+                'cols': 50  # Ajuste o número de colunas conforme necessário
             })
         }
         

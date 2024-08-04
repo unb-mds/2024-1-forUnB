@@ -8,20 +8,20 @@
         color:#003366;
     }
 
-    .btn-cancel{
-    background-color: #C7D2DD;
-    color: #003366;
+    .btn-cancelar{
+    background-color: #003366;
+    color: #ffffff;
     font-weight: bold;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
     }
 
-    .btn-cancel:hover {
+    .btn-cancelar:hover {
     background-color: #a0b0c0;
     }
 
-    .btn-send{
+    .btn-enviar{
     background-color: #006633;
     color: white;
     border: none;
@@ -30,7 +30,7 @@
     font-weight: bold;
     }
 
-    .btn-send:hover {
+    .btn-enviar:hover {
     background-color: #004c26;
     }
 
@@ -39,23 +39,50 @@
     height: 70vh;
     width: 100%;
     }
-
+    
     .input-title {
     width: 50%;
     font-size: 1.25rem; /* Tamanho do texto maior */
     color: #003366;       /* Cor do texto digitado */
     }
+
+    .cancel{
+        color: white;
+    }
+
+    .texto{
+    background-color: #C7D2DD;
+    color: #003366;
+    }
+
+    .texto::placeholder {
+    color: #003366; /* Exemplo de cor do placeholder */
+    opacity: 1; /* Garantir que a cor aplicada seja visível */
+    font-weight: bold; /*fonte em negrito*/
+    }
+
+    .descricao.texto {
+      height: 200px; /* Ajuste a altura conforme necessário */
+  }
+
+  @media (max-width: 767px) {
+    .response-form{
+    max-width: 100vw;
+    height: 100vh;
+    width: 100%;
+    }
+  }
 </style>
 
 <div class="custom-container mt-5 ms-0">
     <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
-        <div class="response-form ">
+        <div class="response-form">
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <div class="mt-2">
-                    <a class="btn btn-cancel" type="button" href="{% url 'main:forum_detail' forum.id %}">Cancelar</a>
-                    <button type="submit" class="btn btn-send">Enviar</button> 
+                <div class="flex-column flex-sm-row justify-content-between mt-2">
+                    <a class="cancel btn btn-cancelar" type="button" href="{% url 'main:forum_detail' forum.id %}">Cancelar</a>
+                    <button type="submit" class="btn btn-enviar">Enviar</button> 
                 </div>
             </form>
         </div>   
