@@ -87,6 +87,24 @@
 
 .btn-login:hover {
     background-color: #a0b0c0;
+    color: #003366;
+}
+
+.dropdown-menu {
+    background-color: #C7D2DD;
+    border-radius: 20px;
+}
+
+.dropdown-item {
+    color: #003366;
+    font-weight: bolder;
+    border-radius: 20px;
+    font-size: 1.1rem;
+}
+
+.dropdown-item:hover {
+    background-color: #a0b0c0;
+    color: #003366;
 }
 
 .btn-home {
