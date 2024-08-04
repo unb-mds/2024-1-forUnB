@@ -232,6 +232,24 @@ body, html {
     margin-bottom: 0;
     padding: 0;
     text-align: left;
+    margin-right: 5px;
+}
+
+.forum-title i {
+    font-size: 2.5rem;
+    margin-left: 5px;
+    color: #003366;
+}
+
+.follow-toggle {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.follow-toggle:focus {
+    outline: none;
 }
 
 .btn-question {
@@ -388,6 +406,10 @@ a {
         width: 100%;
     }
 
+    .forum-title i {
+        font-size: 2rem;
+    }
+
     .btn-question {
         width: auto;
         align-self: flex-start;
@@ -424,6 +446,10 @@ a {
         margin-bottom: 10px;
         text-align: left;
         width: 100%;
+    }
+
+    .forum-title i {
+        font-size: 1.5rem;
     }
 
     .btn-question {
