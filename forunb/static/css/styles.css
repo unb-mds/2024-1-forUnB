@@ -1,49 +1,42 @@
 /* BASE.HTML */
-
-/* Ajustes gerais */
 .bg-green {
     background: linear-gradient(to bottom, #006633, #006633, #04A356);
     padding: 15px;
     width: 230px;
 }
 
-/* Barra lateral fixa em telas grandes */
 .custom-height {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* Barra lateral */
 #accordionSidebar {
-    display: none; /* Inicialmente oculta em telas pequenas */
+    display: none;
 }
 
-/* Ajustes para a largura da barra lateral em telas grandes */
 @media (min-width: 1200px) {
     .bg-green {
         width: 230px;
     }
     #accordionSidebar {
-        display: flex; /* Exibe a barra lateral em telas grandes */
+        display: flex; 
     }
     #sidebarToggle {
-        display: none; /* Esconde o botão de menu em telas grandes */
+        display: none; 
     }
 }
 
-/* Ajuste para o container principal */
 .col-xl-9 {
-    padding: 0; /* Remove o padding para evitar espaço extra */
-    flex: 1; /* Garante que o conteúdo principal ocupe o espaço restante */
+    padding: 0;
+    flex: 1; 
     display: flex;
     flex-direction: column;
-    margin-left: 0; /* Garante que não há margem esquerda que cause deslocamento */
+    margin-left: 0;
     overflow: hidden;
     height: 100vh;
 }
 
-/* Ajustes para a barra de pesquisa */
 .search-bar {
     background-color: #C7D2DD;
     color: #003366;
@@ -53,7 +46,7 @@
     border-radius: 20px;
     max-width: 700px;
     margin-left: 90px;
-    flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
+    flex-grow: 1;
 }
 
 /* Ajusta o padding-left quando há uma label de fórum */
@@ -145,10 +138,9 @@
     color: #C7D2DD;
 }
 
-/* Ajustes para telas menores que 1200px */
 @media (max-width: 1199px) {
     .search-bar {
-        margin-left: 0; /* Remove a margem à esquerda */
+        margin-left: 0; 
     }
 
     #accordionSidebar {
@@ -159,15 +151,15 @@
         top: 0;
         left: 0;
         z-index: 1000;
-        background-color: #006633; /* Garante que a cor de fundo seja a mesma */
-        overflow-y: auto; /* Adiciona rolagem se necessário */
+        background-color: #006633; 
+        overflow-y: auto; 
     }
     #accordionSidebar.show {
         display: block;
     }
 
     #sidebarToggle {
-        display: block; /* Mostra o botão do menu em telas menores */
+        display: block; 
     }
 
     #sidebarClose {
@@ -175,11 +167,10 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        z-index: 1100; /* Garante que o botão de fechar esteja acima do conteúdo da barra lateral */
+        z-index: 1100; 
     }
 }
 
-/* Ajustes para telas menores que 576px */
 @media (max-width: 575.98px) {
     .btn-login {
         display: flex;
@@ -187,26 +178,25 @@
     }
 
     .btn-login .bi-person-fill {
-        margin-right: 0; /* Remove a margem à direita quando o nome de usuário está escondido */
+        margin-right: 0; 
     }
 
     .btn-login span {
-        display: none; /* Esconde o nome de usuário em telas pequenas */
+        display: none;
     }
 }
 
-/* Ajustes para telas maiores que 576px */
 @media (min-width: 576px) {
     .btn-login.d-none.d-sm-flex {
-        display: flex !important; /* Mostra o botão com nome e ícone em telas maiores */
+        display: flex !important;
     }
 
     .btn-login.d-flex.d-sm-none {
-        display: none !important; /* Esconde o botão com apenas ícone em telas maiores */
+        display: none !important; 
     }
 
     .btn-login span {
-        display: inline; /* Garante que o nome de usuário seja exibido em telas maiores */
+        display: inline; 
     }
 }
 
@@ -215,7 +205,7 @@
 /* FORUM_DETAIL.HTML */
 button:focus, a:focus, .btn:focus {
     outline: none;
-    box-shadow: none; /* Também remove qualquer sombra de caixa que possa aparecer */
+    box-shadow: none; 
 }
 
 body, html {
@@ -240,7 +230,7 @@ body, html {
     padding-left: 20px;
     padding-right: 3px;
     margin-bottom: 0px;
-    width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -303,8 +293,8 @@ body, html {
     padding: 0px 0px 5px 5px;
     display: flex;
     flex-direction: column;
-    word-wrap: break-word; /* Quebra palavras longas */
-    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
     background-color: #ffffff;
     transition: background-color 0.3s ease;
     border-radius: 5px;
@@ -351,14 +341,14 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 2px; /* Espaçamento entre os botões */
+    margin-right: 2px;
     outline: none;
     font-size: 1.12rem;
 }
 
 .btn-like i, .btn-info i {
-    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
-    color: inherit; /* Garante que a cor do ícone herde a cor do texto */
+    margin-right: 5px;
+    color: inherit;
 }
 
 .question-title {
@@ -368,7 +358,7 @@ body, html {
     margin: 0;
     max-width: 100%;
     overflow: hidden;
-    text-overflow: ellipsis; /* Adiciona "..." no final do texto que transborda */
+    text-overflow: ellipsis;
 }
 
 .question-description, .answer-text {
@@ -382,14 +372,14 @@ body, html {
 
 a {
     display: block;
-    max-width: 100%; /* Garante que o link não ultrapasse os limites do contêiner */
+    max-width: 100%;
     overflow: hidden;
     text-decoration: none;
 }
 
 .question-separator, .answer-separator {
     border: 0;
-    border-top: 1px solid #006633; /* Linha horizontal */
+    border-top: 1px solid #006633;
     border-bottom: 1px solid #006633;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -413,11 +403,10 @@ a {
     margin-right: 10px !important;
 }
 
-/* Ajustes para telas menores que 992px */
 @media (max-width: 992px) {
     .forum-header {
         flex-direction: column;
-        align-items: flex-start; /* Alinhar elementos à esquerda */
+        align-items: flex-start;
         padding-left: 0px;
     }
 
@@ -435,8 +424,8 @@ a {
     .btn-question {
         width: auto;
         align-self: flex-start;
-        padding: 8px 16px; /* Reduz o padding do botão */
-        font-size: 0.9rem; /* Reduz o tamanho da fonte do botão */
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 
     .question-title {
@@ -455,11 +444,10 @@ a {
     }
 }
 
-/* Ajustes para telas menores que 576px */
 @media (max-width: 576px) {
     .forum-header {
         flex-direction: column;
-        align-items: flex-start; /* Alinhar elementos à esquerda */
+        align-items: flex-start;
         padding-left: 0px;
     }
 
@@ -499,7 +487,7 @@ a {
 /* QUESTION_DETAIL.HTML */
 html, body {
     height: 100%;
-    overflow: auto; /* Permite rolagem se necessário */
+    overflow: auto;
     margin: 0;
     padding: 0;
 }
@@ -514,7 +502,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
     overflow: auto;
@@ -524,8 +512,8 @@ html, body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    word-wrap: break-word; /* Quebra palavras longas */
-    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
     background-color: #ffffff;
     transition: background-color 0.3s ease;
     border-radius: 5px;
@@ -708,19 +696,19 @@ html, body {
 
 .search-label {
     position: absolute;
-    top: 5px; /* Ajuste conforme necessário */
-    left: 100px; /* Ajuste conforme necessário */
-    background-color: #006400; /* Tom de verde */
+    top: 5px;
+    left: 100px;
+    background-color: #006400;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-weight: bold;
     font-size: 0.9rem;
     z-index: 1;
-    max-width: 150px; /* Comprimento máximo */
-    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-    overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
-    text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
+    max-width: 150px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 
 
@@ -728,12 +716,12 @@ html, body {
 /* INDEX.HTML */
 .home-container {
     max-width: 100%;
-    margin: 0 auto; /* Centraliza horizontalmente */
+    margin: 0 auto; 
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    overflow-wrap: break-word; /* Garante que o texto não transborde */
+    overflow-wrap: break-word; 
     word-wrap: break-word;
     word-break: break-word;
     overflow: auto;
@@ -763,7 +751,7 @@ html, body {
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.9rem;
-    white-space: nowrap; /* Evita que o texto quebre em múltiplas linhas */
+    white-space: nowrap; 
     max-width: fit-content;
     margin-left: auto;
     margin-right: 0px !important;
@@ -782,13 +770,13 @@ html, body {
 
 @media (min-width: 769px) {
     .label-full {
-        display: inline; /* Mostra o nome completo em telas grandes */
+        display: inline;
     }
 }
 
 @media (max-width: 768px) {
     .label-short {
-        display: inline; /* Mostra a primeira palavra em telas pequenas */
+        display: inline;
     }
 }
 
