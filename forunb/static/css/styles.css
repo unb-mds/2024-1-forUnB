@@ -724,7 +724,7 @@ html, body {
 /* INDEX.HTML */
 .home-container {
     max-width: 100%;
-    margin: 0 auto; /* Centraliza horizontalmente */
+    margin: 0; 
     padding: 0;
     display: flex;
     flex-direction: column;
