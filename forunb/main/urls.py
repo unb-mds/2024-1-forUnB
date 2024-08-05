@@ -9,6 +9,7 @@ urlpatterns = [
     path('forum/<int:forum_id>/', views.forum_detail, name='forum_detail'),
     path('question/<int:question_id>/', views.question_detail, name='question_detail'),
     path('questions/', views.questions, name='questions'),
+    path('user_posts/', views.user_posts, name='user_posts'),
     path('forums/', views.forum_list, name='forum_list'),
     path('new_question/<int:forum_id>/', views.new_question, name='new_question'),
     path('new_answer/<int:question_id>/', views.new_answer, name='new_answer'),

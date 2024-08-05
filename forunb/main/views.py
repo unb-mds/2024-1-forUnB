@@ -48,6 +48,17 @@ def questions(request):
     questions = Question.objects.all()
     return render(request, 'main/questions.html', {'questions': questions})
 
+@login_required(login_url='/users/login')
+def user_posts(request):
+    user = request.user
+    questions = Question.objects.filter(author=user)
+    answers = Answer.objects.filter(author=user)
+    context = {
+        'questions': questions,
+        'answers': answers,
+    }
+    return render(request, 'main/questions.html', context)
+
 
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
@@ -77,6 +88,7 @@ def new_question(request, forum_id):
             question.forum = forum
             question.author = request.user
             question.save()
+            request.user.created_questions.add(question)
             return redirect('main:forum_detail', forum_id=forum.id)
     else:
         form = QuestionForm()
@@ -93,6 +105,7 @@ def new_answer(request, question_id):
             answer.question = question
             answer.author = request.user
             answer.save()
+            request.user.created_answers.add(answer)
             return redirect('main:question_detail', question_id=question.id)
     else:
         form = AnswerForm()
