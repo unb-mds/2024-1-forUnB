@@ -13,7 +13,13 @@
         {% for question in latest_questions %}
             <div class="question-item">
                 <div class="home-meta">
-                    <span class="question-author">{{ question.author.username }}</span> • 
+                    <span class="question-author">
+                        {% if question.is_anonymous %}
+                            Anônimo
+                        {% else %}
+                            {{ question.author.username }}
+                        {% endif %}
+                    </span> • 
                     <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
                     <a href="{% url 'main:forum_detail' question.forum.id %}" class="forum-label">
                         <span class="label-full">{{ question.forum.title }}</span>
