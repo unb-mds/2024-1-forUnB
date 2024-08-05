@@ -1,13 +1,106 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5 ms-0">
-    <h2>Nova Pergunta em {{ forum.title }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+
+{% load custom_filters %}
+<style>
+    .nome{
+        color:#003366;
+    }
+
+    .btn-cancelar{
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    }
+
+    .btn-cancelar:hover {
+    background-color: #a0b0c0;
+    }
+
+    .btn-enviar{
+    background-color: #006633;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    }
+
+    .btn-enviar:hover {
+    background-color: #004c26;
+    }
+
+    .response-form{
+    max-width: 50vw;
+    height: 70vh;
+    width: 100%;
+    }
+    
+    .input-title {
+    width: 50%;
+    font-size: 1.25rem; /* Tamanho do texto maior */
+    color: #003366;       /* Cor do texto digitado */
+    }
+
+    .cancel{
+        color: white;
+    }
+
+    .texto{
+    background-color: #C7D2DD;
+    color: #003366;
+    }
+
+    .texto::placeholder {
+    color: #003366; /* Exemplo de cor do placeholder */
+    opacity: 1; /* Garantir que a cor aplicada seja visível */
+    font-weight: bold; /*fonte em negrito*/
+    }
+
+    .descricao.texto {
+      height: 200px; /* Ajuste a altura conforme necessário */
+  }
+
+  .custom-label {
+    color: #003366; 
+    font-weight: bold;
+}
+
+  @media (max-width: 767px) {
+    .response-form{
+    max-width: 100vw;
+    height: 100vh;
+    width: 100%;
+    }
+  }
+</style>
+
+<div class="custom-container mt-5 ms-0">
+    <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
+        <div class="response-form">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                </div>
+                <div class="form-group mb-4">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+                <div class="form-group">
+                    <label class="custom-label">{{ form.is_anonymous.label_tag }}</label>
+                    {{ form.is_anonymous }}
+                </div>
+                <div class="flex-column flex-sm-row justify-content-between mt-2">
+                    <a class="cancel btn btn-cancelar" type="button" href="{% url 'main:forum_detail' forum.id %}">Cancelar</a>
+                    <button type="submit" class="btn btn-enviar">Enviar</button> 
+                </div>
+            </form>
+        </div>   
 </div>
 {% endblock %}
-
