@@ -34,7 +34,7 @@ def questions(request):
     questions = Question.objects.all()
     return render(request, 'main/questions.html', {'questions': questions})
 
-@login_required
+@login_required(login_url='/users/login')
 def user_posts(request):
     user = request.user
     questions = Question.objects.filter(author=user)
