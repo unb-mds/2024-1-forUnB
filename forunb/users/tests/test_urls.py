@@ -21,3 +21,9 @@ class UsersURLTests(TestCase):
         # Como o logout redireciona, verificamos o código de status 302
         self.assertEqual(response.status_code, 302)
 
+    def test_login_url(self):
+        """ Testa se a URL de login está correta. """
+        url = reverse('users:login')
+        self.assertEqual(resolve(url).func, login_view)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
