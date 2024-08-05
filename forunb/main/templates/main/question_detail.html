@@ -35,6 +35,10 @@
                     <form method="post" action="{% url 'main:new_answer' question.id %}">
                         {% csrf_token %}
                         <textarea name="text" class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
+                            <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
+                        </div>
                         <div class="mt-1">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
                             <button type="submit" class="btn btn-send">Enviar</button>
@@ -51,7 +55,13 @@
                 <div class="answer-item">
                     <div class="answer-info">
                         <div class="answer-meta">
-                            <span class="answer-author">{{ answer.author.username }}</span> • 
+                            <span class="answer-author">
+                                {% if answer.is_anonymous %}
+                                    Anônimo
+                                {% else %}
+                                    {{ answer.author.username }}
+                                {% endif %}
+                            </span> • 
                             <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
                         </div>
                         <p class="answer-text">{{ answer.text }}</p>
@@ -112,6 +122,5 @@
         }
     }
 </script>
-
 
 {% endblock %}
