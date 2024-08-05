@@ -29,6 +29,9 @@
 
     .list-group-item {
         margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     @media (max-width: 768px) {
@@ -46,6 +49,10 @@
             {% for question in questions %}
             <li class="list-group-item">
                 <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
+                <form action="{% url 'main:delete_question' question.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                </form>
             </li>
             {% endfor %}
         </ul>
@@ -63,6 +70,10 @@
             {% for answer in answers %}
             <li class="list-group-item">
                 <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
+                <form action="{% url 'main:delete_answer' answer.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                </form>
             </li>
             {% endfor %}
         </ul>

@@ -15,6 +15,8 @@ urlpatterns = [
     path('new_answer/<int:question_id>/', views.new_answer, name='new_answer'),
     path('follow-forum/<int:forum_id>/<str:action>/', views.follow_forum, name='follow_forum'),
     path('followed_forums/', views.followed_forums, name='followed_forums'),
+    path('delete_question/<int:pk>/', views.delete_question, name='delete_question'),
+    path('delete_answer/<int:pk>/', views.delete_answer, name='delete_answer'),
     # path('users/', include('users.urls')),  # Inclui as URLs do app 'users'
     #path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     #path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
