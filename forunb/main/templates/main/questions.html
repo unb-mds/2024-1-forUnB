@@ -39,6 +39,32 @@
             width: 100%;
         }
     }
+
+    .confirm-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .confirm-popup-content {
+        text-align: center;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .confirm-popup button {
+        margin: 5px;
+    }
+
 </style>
 
 <div class="custom-container mt-5">
@@ -49,10 +75,7 @@
             {% for question in questions %}
             <li class="list-group-item">
                 <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
-                <form action="{% url 'main:delete_question' question.id %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                </form>
+                <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_question' question.id %}'); return false;">Excluir</a>
             </li>
             {% endfor %}
         </ul>
@@ -70,10 +93,7 @@
             {% for answer in answers %}
             <li class="list-group-item">
                 <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
-                <form action="{% url 'main:delete_answer' answer.id %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                </form>
+                <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_answer' answer.id %}'); return false;">Excluir</a>
             </li>
             {% endfor %}
         </ul>
@@ -84,4 +104,31 @@
         {% endif %}
     </div>
 </div>
+
+<!-- Popup de Confirmação -->
+<div id="confirm-delete-popup" class="confirm-popup hidden">
+    <div class="confirm-popup-content">
+        <h4>Tem certeza que deseja excluir este post?</h4>
+        <form id="delete-form" method="post" action="">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+            <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showDeletePopup(url) {
+        const popup = document.getElementById('confirm-delete-popup');
+        const form = document.getElementById('delete-form');
+        form.action = url; // Define a URL do formulário de exclusão
+        
+        popup.classList.remove('hidden');
+    }
+    
+    function closePopup() {
+        document.getElementById('confirm-delete-popup').classList.add('hidden');
+    }
+    </script>
+    
 {% endblock %}
