@@ -5,6 +5,10 @@ from django.utils.timesince import timesince
 register = template.Library()
 
 @register.filter
+def first_word(value):
+    return value.split(' ')[0]
+
+@register.filter
 def custom_timesince(value, now=None):
     """
     Retorna o tempo desde que o objeto foi criado, em português.

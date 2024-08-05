@@ -1,10 +1,21 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
-        <h1 class="forum-title">{{ forum.title }}</h1>
-        <a class="btn btn-question" href="{% url 'new_question' forum.id %}">Perguntar</a>
+        <h1 class="forum-title">{{ forum.title }}
+            {% if user.is_authenticated %}
+                <button id="follow-toggle" class="follow-toggle" data-forum-id="{{ forum.id }}">
+                    {% if is_following %}
+                        <i class="bi bi-star-fill"></i>
+                    {% else %}
+                        <i class="bi bi-star"></i>
+                    {% endif %}
+                </button>
+            {% endif %}
+        </h1>
+
+        <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
     </div>
 
     {% load custom_filters %}
@@ -14,10 +25,16 @@
             {% for question in questions %}
                 <div class="question-item">
                     <div class="question-meta">
-                        <span class="question-author">{{ question.author.username }}</span> • 
+                        <span class="question-author">
+                            {% if question.is_anonymous %}
+                                Anônimo
+                            {% else %}
+                                {{ question.author.username }}
+                            {% endif %}
+                        </span> • 
                         <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
                     </div>
-                    <a href="{% url 'question_detail' question.id %}">
+                    <a href="{% url 'main:question_detail' question.id %}">
                         <h5 class="question-title">{{ question.title }}</h5>
                         <p class="question-description">{{ question.description }}</p>
                     </a>
@@ -25,7 +42,7 @@
                         <button class="btn btn-like" onclick="toggleLike(this);">
                             <i class="bi bi-heart"></i>
                         </button>
-                        <a href="{% url 'question_detail' question.id %}" class="btn btn-info">
+                        <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                             <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                         </a>
                     </div>                    
@@ -49,5 +66,35 @@
             icon.classList.add('bi-heart');
         }
     }
+</script>
+
+<script>
+    document.getElementById('follow-toggle').addEventListener('click', function() {
+        var button = this;
+        var icon = button.querySelector('i');
+        var forumId = button.getAttribute('data-forum-id');
+        var action = icon.classList.contains('bi-star') ? 'follow' : 'unfollow';
+
+        fetch(`/follow-forum/${forumId}/${action}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (action === 'follow') {
+                    icon.classList.remove('bi-star');
+                    icon.classList.add('bi-star-fill');
+                } else {
+                    icon.classList.remove('bi-star-fill');
+                    icon.classList.add('bi-star');
+                }
+            }
+        });
+    });
 </script>
 {% endblock %}

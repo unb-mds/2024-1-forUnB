@@ -3,10 +3,10 @@
 {% block content %}
 <p>Cadastre suas credenciais:</p>
 
-<form method="post" action="{% url 'register' %}">
+<form method="post" action="{% url 'users:register' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">Registrar</button>
-    <input type="hidden" name="next" value="{% url 'index' %}" />
+    <input type="hidden" name="next" value="{% url 'main:index' %}" />
 </form>
 {% endblock content %}

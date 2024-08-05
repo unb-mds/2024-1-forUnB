@@ -8,9 +8,9 @@ class Command(BaseCommand):
     help = 'Raspa dados das disciplinas do site Sigaa da UnB e salva como fóruns'
 
     def handle(self, *args, **kwargs):
-        departments = ["518", "524", "673"]  
+        departments = ["508","518", "524", "673"]  
         year = "2024"  
-        period = "1"  
+        period = "2"  
 
         Forum.objects.all().delete()
         self.stdout.write(self.style.WARNING('Todos os fóruns antigos foram removidos.'))

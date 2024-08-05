@@ -2,6 +2,7 @@ from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User 
+from django.contrib.auth import get_user_model
 
 class ForumForm(forms.ModelForm):
     class Meta:
@@ -15,12 +16,27 @@ class ForumForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'is_anonymous']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'texto form-control form-control-sm mt-2 input-title',
+                'placeholder': 'Titulo'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'texto descricao form-control mt-2',
+                'placeholder': 'Escreva sua pergunta...',
+                'rows': 5,  # Ajuste o número de linhas conforme necessário
+                'cols': 50  # Ajuste o número de colunas conforme necessário
+            }),
+        }
+        labels = {
+            'is_anonymous': 'Modo anônimo'
+        }
 
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['text']
+        fields = ['text', 'is_anonymous']
         labels = {
             'text': ''
         }
@@ -28,17 +44,7 @@ class AnswerForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'cols': 80})
         }
 
-def validate_unb_email(value):
-    if not value.endswith('@aluno.unb.br'):
-        raise ValidationError('Por favor, utilize um email da UNB válido.')
+User = get_user_model()
 
-class UnbEmailRegistrationForm(forms.Form):
-    email = forms.EmailField(label='Email UNB', validators=[validate_unb_email])
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        # Verifica se o email já está em uso por outro usuário
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('Este email já está cadastrado.')
-        return email
+

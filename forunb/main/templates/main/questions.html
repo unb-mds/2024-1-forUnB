@@ -1,39 +1,74 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
-{% block title %}Lista de Perguntas{% endblock %}
+{% block title %}Meus Posts{% endblock %}
 
 {% block content %}
 <style>
     .custom-container {
-        max-width: 800px; /* Defina o máximo desejado */
-        margin: 0 auto; /* Centraliza horizontalmente */
-        padding: 20px; /* Ajusta o preenchimento interno conforme necessário */
-        height: 34vh; /* Altura total da viewport */
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        left: 50px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .questions-list, .answers-list {
+        width: 48%;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .list-header {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .list-group-item {
+        margin-bottom: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .questions-list, .answers-list {
+            width: 100%;
+        }
     }
 </style>
 
-<div class="custom-container mt-5 ms-0">
-    <h1 class="mb-4">Lista de Perguntas</h1>
-
-    <div class="questions-content">
+<div class="custom-container mt-5">
+    <div class="questions-list">
+        <div class="list-header">Minhas Perguntas</div>
         {% if questions %}
-        <ul class="list-group questions-list">
+        <ul class="list-group">
             {% for question in questions %}
             <li class="list-group-item">
-                <a href="{% url 'question_detail' question.id %}">{{ question.title }}</a>
+                <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
             </li>
-            {% empty %}
-            <li class="list-group-item">Nenhuma pergunta encontrada.</li>
             {% endfor %}
         </ul>
         {% else %}
         <div class="alert alert-warning" role="alert">
             Nenhuma pergunta encontrada.
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="answers-list">
+        <div class="list-header">Minhas Respostas</div>
+        {% if answers %}
+        <ul class="list-group">
+            {% for answer in answers %}
+            <li class="list-group-item">
+                <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            Nenhuma resposta encontrada.
         </div>
         {% endif %}
     </div>
