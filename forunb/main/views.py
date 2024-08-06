@@ -22,10 +22,21 @@ def index(request):
 
 def forum_detail(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
-    questions = Question.objects.filter(forum=forum).order_by('-created_at')
+    order_by = request.GET.get('order_by', 'date')
+    # Vai ser implementado o upvote ainda
+    # if order_by == 'likes':
+    #     questions = Question.objects.filter(forum=forum).order_by('-likes')  # Ordenar por número de likes
+    # elif order_by == 'dislikes':
+    #     questions = Question.objects.filter(forum=forum).order_by('dislikes')  # Ordenar por número de dislikes
+    if order_by == 'oldest':
+        questions = Question.objects.filter(forum=forum).order_by('created_at')  
+    else:
+        questions = Question.objects.filter(forum=forum).order_by('-created_at') 
+    
     is_following = False
     if request.user.is_authenticated:
         is_following = request.user.followed_forums.filter(id=forum.id).exists()
+    
     return render(request, 'main/forum_detail.html', {
         'forum': forum,
         'questions': questions,
