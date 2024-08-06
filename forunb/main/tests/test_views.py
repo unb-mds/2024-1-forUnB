@@ -113,7 +113,7 @@ class SearchForumTestCase(TestCase):
         # Verifica se o contexto contém os fóruns filtrados
         self.assertIn('forums', response.context)
         forums = response.context['forums']
-        self.assertEqual(forums.count(), 1)
+        self.assertEqual(len(forums), 1)
         self.assertEqual(forums[0], self.forum1)
         
         # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
@@ -132,7 +132,7 @@ class SearchForumTestCase(TestCase):
         # Verifica se o contexto contém a lista de fóruns vazia
         self.assertIn('forums', response.context)
         forums = response.context['forums']
-        self.assertEqual(forums.count(), 0)
+        self.assertEqual(len(forums), 0)
         
         # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
         self.assertEqual(response.context['query'], 'java')
