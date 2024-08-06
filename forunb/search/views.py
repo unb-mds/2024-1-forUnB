@@ -3,9 +3,11 @@ from main.models import Question, Forum
 from unidecode import unidecode
 
 def normalize_string(s):
+    '''Remove os espaços extras e junta as palavras com um espaço entre elas'''
     return ' '.join(s.split())
 
 def search_forum(request):
+    '''Busca por fóruns ou perguntas utilizando o unidecode para remover acentos e normaliza a string'''
     query = request.GET.get('search', '')
     query_normalized = unidecode(normalize_string(query))
     forum_id = request.GET.get('forum_id', None)
