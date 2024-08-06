@@ -6,6 +6,7 @@ app_name = "users"
 
 urlpatterns = [
     path('profile/', views.profile, name='profile'),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),  # URL para editar perfil
     path('register/', views.register, name='register'),
     path('logout/', views.Logout_view, name='logout'),
     path('login/', views.login_view, name='login'),
