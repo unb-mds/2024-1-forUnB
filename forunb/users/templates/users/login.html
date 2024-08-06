@@ -15,11 +15,22 @@
             background-color: #006633;
             width: 30rem;
         }
+        .form-control {
+            color: #003366;
+        }
         .form-floating {
             margin-top: 12px;
             margin-bottom: 0px;
+            border: none;
         }
-        .form-control {
+        .form-floating .form-control:focus {
+            border-color: #006633; 
+        }
+        .form-floating label {
+            color: #003366;
+            font-weight: bold;
+        }
+        .form-floating .form-control:focus ~ label {
             color: #003366;
         }
         .btn-home {
