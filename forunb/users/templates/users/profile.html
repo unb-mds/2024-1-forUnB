@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Perfil</div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nome de usuário</label>
+                        <div id="username-view">
+                            <span>{{ user.username }}</span>
+                            <button id="edit-username-btn" class="btn btn-sm btn-secondary">Editar</button>
+                        </div>
+                        {% if messages %}
+                            <div class="alert alert-dismissible fade show" role="alert">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        <div id="username-edit" style="display: none;">
+                            <form method="post" action="{% url 'users:edit_profile' %}" id="username-edit-form">
+                                {% csrf_token %}
+                                <input type="text" id="id_username" name="username" class="form-control" placeholder="Novo username">
+                                <button type="submit" class="btn btn-primary mt-2">Confirmar</button>
+                                <button type="button" id="cancel-edit-btn" class="btn btn-secondary mt-2">Cancelar</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input type="text" id="id_email" class="form-control" value="{{ user.email }}" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('edit-username-btn').addEventListener('click', function() {
+    document.getElementById('username-view').style.display = 'none';
+    document.getElementById('username-edit').style.display = 'block';
+});
+
+document.getElementById('cancel-edit-btn').addEventListener('click', function() {
+    document.getElementById('username-view').style.display = 'block';
+    document.getElementById('username-edit').style.display = 'none';
+});
+</script>
+{% endblock %}
