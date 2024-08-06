@@ -1,0 +1,25 @@
+<!-- notifications.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Notificações</h2>
+    <ul class="list-group">
+        {% for notification in notifications %}
+        <li class="list-group-item">
+            <strong>{% if notification.answer.is_anonymous %}
+                Anônimo
+            {% else %}
+                {{ notification.answer.author.username }}
+            {% endif %}
+            </strong> respondeu à sua pergunta "
+            <a href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>"
+            <br>
+            <small class="text-muted">{{ notification.created_at }}</small>
+        </li>
+        {% empty %}
+            <li class="list-group-item">Você não tem notificações.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
