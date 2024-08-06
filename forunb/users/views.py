@@ -54,6 +54,9 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'users/login.html', {"form": form})
 
+def profile(request):
+    return render(request, 'users/profile.html')
+
 # def register_unb_email(request):
 #     if request.method == 'POST':
 #         form = UnbEmailRegistrationForm(request.POST)
