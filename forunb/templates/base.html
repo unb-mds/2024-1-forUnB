@@ -56,6 +56,7 @@
                                 <i class="bi bi-person-fill"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'users:profile' %}"><i class="bi bi-person-circle"></i>Perfil</a></li>
                                 <li><a class="dropdown-item" href="{% url 'users:logout' %}"><i class="bi bi-box-arrow-in-left"></i>Sair</a></li>
                             </ul>
                         {% else %}
