@@ -11,6 +11,9 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link rel="icon" type="image/png" href="{% static 'forunb/img/logo_favicon.png' %}" />
     <style>
+        .text-center {
+            margin-top: 20px;
+        }
         .card{
             background-color: #006633;
             width: 30rem;
@@ -57,7 +60,7 @@
     <div class="text-center">
         <img src="{% static 'forunb/img/logo2.jpg' %}" alt="logo" width="380" height="280">
     </div>
-        <form method="post" action="{% url 'users:login' %}" class="px-4 py-3 row justify-content-center align-items-center">
+        <form method="post" action="{% url 'users:login' %}" class="px-4 row justify-content-center align-items-center">
             <div class="card rounded-3">
                 {% csrf_token %}
                 <div class="form-floating">
