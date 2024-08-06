@@ -40,3 +40,4 @@ zipp==3.19.2
 soupsieve==2.5
 style==1.1.0
 update==0.0.1
+unidecode==1.3.2
