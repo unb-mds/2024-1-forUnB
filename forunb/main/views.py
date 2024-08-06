@@ -4,6 +4,7 @@ from .models import Forum, Answer, Question
 from .forms import *
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
@@ -59,7 +60,6 @@ def user_posts(request):
     }
     return render(request, 'main/questions.html', context)
 
-
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     # Supondo que você configurou related_name='answers' no modelo Answer
@@ -110,3 +110,21 @@ def new_answer(request, question_id):
     else:
         form = AnswerForm()
     return render(request, 'main/new_answer.html', {'form': form, 'question': question})
+
+@login_required(login_url='/users/login')
+def delete_question(request, pk):
+    question = get_object_or_404(Question, pk=pk, author=request.user)
+    if request.method == 'POST':
+        question.delete()
+        messages.success(request, 'Pergunta deletada com sucesso.')
+        return redirect('main:user_posts')
+    return render(request, 'main/confirm_delete.html', {'object': question})
+
+@login_required(login_url='/users/login')
+def delete_answer(request, pk):
+    answer = get_object_or_404(Answer, pk=pk, author=request.user)
+    if request.method == 'POST':
+        answer.delete()
+        messages.success(request, 'Resposta deletada com sucesso.')
+        return redirect('main:user_posts')
+    return render(request, 'main/confirm_delete.html', {'object': answer})
