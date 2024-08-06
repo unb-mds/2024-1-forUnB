@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from users.models import CustomUser
 
 # Create your models here.
 
@@ -52,3 +53,12 @@ class Answer(Post):
     def __str__(self):
         """Visualização do text pelo banco de dados."""
         return self.text[:50] + '...'
+
+class Notification(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Notification for {self.user.username} about question {self.question.title}'
