@@ -11,7 +11,10 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import *
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 def register(request): 
     if request.method == 'POST': 
@@ -37,10 +40,6 @@ def Logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))
 
-# nao esta sendo usado
-# def login_redirect(view_func):
-#     return user_passes_test(lambda u: u.is_authenticated, login_url='/users/login/')(view_func)
-
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -55,6 +54,22 @@ def login_view(request):
     return render(request, 'users/login.html', {"form": form})
 
 def profile(request):
+    return render(request, 'users/profile.html')
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        if username:
+            if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
+                messages.error(request, 'Este nome de usuário já está em uso.')
+            else:
+                user = request.user
+                user.username = username
+                user.save()
+                messages.success(request, 'Seu nome de usuário foi atualizado com sucesso!')
+                return redirect('users:profile')
+
     return render(request, 'users/profile.html')
 
 # def register_unb_email(request):
