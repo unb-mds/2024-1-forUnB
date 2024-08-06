@@ -106,6 +106,15 @@ def new_answer(request, question_id):
             answer.author = request.user
             answer.save()
             request.user.created_answers.add(answer)
+
+            # Create notification for the question's author
+            if question.author != request.user:
+                Notification.objects.create(
+                    user=question.author,
+                    question=question,
+                    answer=answer
+                )
+            
             return redirect('main:question_detail', question_id=question.id)
     else:
         form = AnswerForm()
@@ -128,3 +137,8 @@ def delete_answer(request, pk):
         messages.success(request, 'Resposta deletada com sucesso.')
         return redirect('main:user_posts')
     return render(request, 'main/confirm_delete.html', {'object': answer})
+
+@login_required(login_url='/users/login')
+def notifications(request):
+    user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'main/notifications.html', {'notifications': user_notifications})
