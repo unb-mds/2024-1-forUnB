@@ -59,18 +59,15 @@ def profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        if username:
-            if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
-                messages.error(request, 'Este nome de usuário já está em uso.')
-            else:
-                user = request.user
-                user.username = username
-                user.save()
-                messages.success(request, 'Seu nome de usuário foi atualizado com sucesso!')
-                return redirect('users:profile')
-
-    return render(request, 'users/profile.html')
+        form = ProfileEditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Seu perfil foi atualizado com sucesso!')
+            return redirect('users:profile')
+    else:
+        form = ProfileEditForm(instance=request.user)
+    
+    return render(request, 'users/profile.html', {'form': form})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':
