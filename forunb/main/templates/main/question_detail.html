@@ -3,6 +3,18 @@
 {% block content %}
 
 {% load custom_filters %}
+
+<style>
+    .answer-list {
+        min-height: 50vh; /* Define a altura mínima como 50% da altura da tela */
+        max-height: 70vh; /* Define a altura máxima como 70% da altura da tela */
+        overflow-y: auto; /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
+        padding: 1rem; /* Adiciona um espaçamento interno */
+        background-color: #f9f9f9; /* Adiciona uma cor de fundo para melhor visualização */
+        border-radius: 8px; /* Adiciona bordas arredondadas */
+    }
+</style>    
+
 <div class="custom-container mt-5 ms-0">
     <div class="questions-item">
         <div class="question-info">
