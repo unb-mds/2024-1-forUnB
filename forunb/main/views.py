@@ -82,7 +82,7 @@ def follow_forum(request, forum_id, action):
 def new_question(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
             question.forum = forum
@@ -94,12 +94,11 @@ def new_question(request, forum_id):
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
-
 @login_required(login_url='/users/login')
 def new_answer(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
-        form = AnswerForm(request.POST)
+        form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.question = question
