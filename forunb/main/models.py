@@ -34,7 +34,7 @@ class Question(Post):
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE, related_name='questions', verbose_name='Forum', default=3)
     favoritados = models.IntegerField(default=0, verbose_name='Favorited Count')
     is_anonymous = models.BooleanField(default=False, verbose_name='')
-    image = models.ImageField(upload_to='question_images/', blank=True, null=True)  # Adicionado campo para imagem
+    image = models.ImageField(upload_to='media/question_images/', blank=True, null=True)  # Adicionado campo para imagem
 
     def __str__(self):
         return self.title
@@ -44,7 +44,7 @@ class Answer(Post):
     upvotes = models.IntegerField(default=0, verbose_name='Upvotes')
     text = models.TextField(verbose_name='Answer Text')
     is_anonymous = models.BooleanField(default=False, verbose_name='Modo anônimo')
-    image = models.ImageField(upload_to='answer_images/', blank=True, null=True)  # Adicionado campo para imagem
+    image = models.ImageField(upload_to='media/answer_images/', blank=True, null=True)  # Adicionado campo para imagem
 
     class Meta:
         verbose_name_plural = 'answers'
