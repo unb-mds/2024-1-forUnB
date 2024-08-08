@@ -80,7 +80,7 @@ class AnswerModelTest(TestCase):
         self.assertEqual(self.answer.author, self.user)  # Verifica se o autor da resposta é o usuário de teste
         self.assertEqual(self.answer.question, self.question)  # Verifica se a pergunta associada é a pergunta de teste
         self.assertTrue(hasattr(self.answer, 'created_at'))  # Verifica se o atributo 'created_at' existe
-        self.assertEqual(self.answer.upvotes, 0)  # Verifica se o número de upvotes é 0
+        self.assertEqual(self.answer.upvoters.count(), 0)  # Verifica se o número de upvotes é 0
 
     def test_answer_str_method(self):
         self.assertEqual(str(self.answer), 'Test Answer...')  # Verifica se o método __str__ retorna o início do texto da resposta
