@@ -118,10 +118,11 @@ def new_answer(request, question_id):
                     answer=answer
                 )
             
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'question_id': question.id})
         else:
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 @login_required(login_url='/users/login')
 def delete_question(request, pk):

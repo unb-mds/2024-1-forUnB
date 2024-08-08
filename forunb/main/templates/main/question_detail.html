@@ -170,40 +170,45 @@
         const form = event.target;
         document.getElementById('loading-spinner').style.display = 'block';
 
-        if (cropper) {
+        const formData = new FormData(form);
+
+        if (cropper && document.getElementById('image').files.length > 0) {
             cropper.getCroppedCanvas().toBlob((blob) => {
-                const formData = new FormData(form);
-                const fileName = 'cropped_image.png'; // Define o nome do arquivo com a extensão adequada
+                const fileName = 'cropped_image.png';
                 const croppedImage = new File([blob], fileName, { type: 'image/png' });
                 formData.append('image', croppedImage);
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('loading-spinner').style.display = 'none';
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Erro ao enviar a resposta.');
-                        console.error('Erro:', data.errors);
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('loading-spinner').style.display = 'none';
-                    console.error('Erro:', error);
-                    alert('Erro ao enviar a resposta.');
-                });
+                sendFormData(form.action, formData);
             }, 'image/png');
         } else {
-            form.submit();
+            sendFormData(form.action, formData);
         }
     }
+
+    function sendFormData(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Erro ao enviar a resposta.');
+                console.error('Erro:', data.errors);
+            }
+        })
+        .catch(error => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            console.error('Erro:', error);
+            alert('Erro ao enviar a resposta.');
+        });
+    }
+
 
     function showResponseForm() {
         var responseInput = document.querySelector('.response-area input');
