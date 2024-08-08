@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
     # Excluindo 'date_joined' dos fieldsets
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('username', 'followed_forums', 'created_questions', 'created_answers')}),  # Adiciona 'followed_forums'
+        ('Personal Info', {'fields': ('username', 'followed_forums', 'created_questions', 'created_answers', 'liked_questions', 'liked_answers')}),  # Adiciona 'followed_forums'
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
