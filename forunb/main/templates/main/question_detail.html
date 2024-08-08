@@ -24,6 +24,16 @@
         margin: 10px;
         border: 1px solid #ccc;
     }
+    .preformatted-text {
+        white-space: pre-wrap; /* Preserva a formatação original e as quebras de linha */
+        word-wrap: break-word; /* Quebra palavras longas */
+    }
+    /* Estilos para o spinner */
+    #loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 10px;
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -43,7 +53,7 @@
                 <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
             </div>
             <h5 class="question-title">{{ question.title }}</h5>
-            <p class="question-description">{{ question.description }}</p>
+            <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
                 <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
             {% endif %}
@@ -101,7 +111,7 @@
                             </span> • 
                             <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
                         </div>
-                        <p class="answer-text">{{ answer.text }}</p>
+                        <p class="answer-text preformatted-text">{{ answer.text }}</p>
                         {% if answer.image %}
                             <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
                         {% endif %}
@@ -129,36 +139,36 @@
     const image = document.getElementById('cropper-image');
 
     function showCropper(event) {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-        const file = files[0];
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!validImageTypes.includes(file.type)) {
-            alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
-            event.target.value = ''; // Limpa o input
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            image.src = e.target.result;
-            if (cropper) {
-                cropper.destroy();
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validImageTypes.includes(file.type)) {
+                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+                event.target.value = ''; // Limpa o input
+                return;
             }
-            cropper = new Cropper(image, {
-                aspectRatio: 1,
-                viewMode: 1,
-                preview: '.img-preview',
-            });
-        };
-        reader.readAsDataURL(file);
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    preview: '.img-preview',
+                });
+            };
+            reader.readAsDataURL(file);
         }
     }
-
 
     function submitForm(event) {
         event.preventDefault();
         const form = event.target;
+        document.getElementById('loading-spinner').style.display = 'block';
 
         if (cropper) {
             cropper.getCroppedCanvas().toBlob((blob) => {
@@ -176,6 +186,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     if (data.success) {
                         location.reload();
                     } else {
@@ -184,6 +195,7 @@
                     }
                 })
                 .catch(error => {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     console.error('Erro:', error);
                     alert('Erro ao enviar a resposta.');
                 });
