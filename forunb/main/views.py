@@ -89,10 +89,14 @@ def new_question(request, forum_id):
             question.author = request.user
             question.save()
             request.user.created_questions.add(question)
-            return redirect('main:forum_detail', forum_id=forum.id)
+            return JsonResponse({'success': True, 'question_id': question.id})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     else:
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
+
+
 
 @login_required(login_url='/users/login')
 def new_answer(request, question_id):
