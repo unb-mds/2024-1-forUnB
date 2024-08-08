@@ -31,11 +31,11 @@
                     <p class="question-description">{{ question.description }}</p>
                 </a>
                 <div class="action-buttons">
-                    <button class="btn btn-like" onclick="toggleLike(this);">
-                        <i class="bi bi-heart"></i>
+                    <button class="btn btn-like" data-id="{{ question.id }}" data-type="question" onclick="toggleUpvote(this);">
+                        <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ question.upvote_count }}</span>
                     </button>
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
-                        <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                        <i class="bi bi-chat-left-text"></i> {{ question.answers.count }} 
                     </a>
                 </div>                    
             </div>
