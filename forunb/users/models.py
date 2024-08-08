@@ -22,6 +22,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #photo = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     followed_forums = models.ManyToManyField('main.Forum', blank=True, related_name='followers')
     liked_questions = models.ManyToManyField('main.Question', blank=True, related_name='liked_by')
+    liked_answers = models.ManyToManyField('main.Answer', blank=True, related_name='liked_by')
     created_questions = models.ManyToManyField('main.Question', related_name='created_by')
     created_answers = models.ManyToManyField('main.Answer', related_name='created_by')
     date_joined = models.DateTimeField(auto_now_add=True)
