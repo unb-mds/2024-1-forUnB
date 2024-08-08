@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 
 def register(request): 
@@ -59,15 +61,26 @@ def profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Seu perfil foi atualizado com sucesso!')
-            return redirect('users:profile')
-    else:
-        form = ProfileEditForm(instance=request.user)
-    
-    return render(request, 'users/profile.html', {'form': form})
+        username = request.POST.get('username')
+        photo = request.FILES.get('photo')
+
+        if username:
+            if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
+                messages.error(request, 'Este nome de usuário já está em uso.')
+                return JsonResponse({'success': False, 'errors': 'Este nome de usuário já está em uso.'})
+            else:
+                user = request.user
+                user.username = username
+                if photo:
+                    user.photo = photo
+                user.save()
+                messages.success(request, 'Seu perfil foi atualizado com sucesso!')
+                return JsonResponse({'success': True})
+        else:
+            messages.error(request, 'Nome de usuário não pode estar vazio.')
+            return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
+
+    return render(request, 'users/profile.html')
 
 # def register_unb_email(request):
 #     if request.method == 'POST':

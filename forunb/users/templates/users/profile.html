@@ -1,7 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+<style>
+    .img-container {
+        max-width: 100%;
+        max-height: 400px;
+        overflow: hidden;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #cropper-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .img-preview {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        margin: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+    }
+
+    #loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .profile-container {
+        max-height: 80vh; /* Altura máxima da área do perfil */
+        overflow-y: auto; /* Rolagem vertical */
+    }
+</style>
+
+<div class="container mt-5 profile-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -14,7 +54,7 @@
                             <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
                         {% endif %}
                     </div>
-                    <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data">
+                    <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label class="form-label">Nome de usuário</label>
@@ -22,13 +62,20 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Foto de Perfil</label>
-                            <input type="file" name="photo" class="form-control">
+                            <input type="file" name="photo" class="form-control-file" id="photo" accept="image/*" onchange="showCropper(event)">
+                            <div class="img-container mt-3">
+                                <img id="cropper-image">
+                            </div>
+                            <div class="img-preview mt-3"></div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="text" class="form-control" value="{{ user.email }}" readonly>
                         </div>
                         <button type="submit" class="btn btn-primary">Salvar</button>
+                        <div id="loading-spinner">
+                            <p>Carregando...</p>
+                        </div>
                     </form>
                     {% if messages %}
                         <div class="alert alert-dismissible fade show" role="alert">
@@ -45,4 +92,76 @@
         </div>
     </div>
 </div>
+
+<script>
+    let cropper;
+    const image = document.getElementById('cropper-image');
+
+    function showCropper(event) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validImageTypes.includes(file.type)) {
+                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+                event.target.value = ''; // Limpa o input
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    preview: '.img-preview',
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        if (cropper) {
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const formData = new FormData(form);
+                const fileName = 'cropped_image.png';
+                const croppedImage = new File([blob], fileName, { type: 'image/png' });
+                formData.append('photo', croppedImage);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Erro ao salvar o perfil.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    console.error('Erro:', error);
+                    alert('Erro ao salvar o perfil.');
+                });
+            }, 'image/png');
+        } else {
+            form.submit();
+        }
+    }
+</script>
 {% endblock %}
