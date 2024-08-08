@@ -54,5 +54,31 @@
                 icon.classList.add('bi-heart');
             }
         }
+
+        function toggleUpvote(element) {
+    const questionId = element.getAttribute('data-id');
+    const type = element.getAttribute('data-type');
+    const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        const icon = element.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        }
+        element.querySelector('span').innerText = data.upvotes;
+    });
+}
     </script>
     {% endblock %}
