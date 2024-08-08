@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 
 def register(request): 
@@ -60,17 +62,22 @@ def profile(request):
 def edit_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        photo = request.FILES.get('photo')
+
         if username:
             if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
-                messages.error(request, 'Este nome de usuário já está em uso.')
+                return JsonResponse({'success': False, 'errors': 'Este nome de usuário já está em uso.'})
             else:
                 user = request.user
                 user.username = username
+                if photo:
+                    user.photo = photo
                 user.save()
-                messages.success(request, 'Seu nome de usuário foi atualizado com sucesso!')
-                return redirect('users:profile')
+                return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
 
-    return render(request, 'users/profile.html')
+    return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':

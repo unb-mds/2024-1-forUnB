@@ -82,24 +82,27 @@ def follow_forum(request, forum_id, action):
 def new_question(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
             question.forum = forum
             question.author = request.user
             question.save()
             request.user.created_questions.add(question)
-            return redirect('main:forum_detail', forum_id=forum.id)
+            return JsonResponse({'success': True, 'question_id': question.id})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     else:
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
+
 
 
 @login_required(login_url='/users/login')
 def new_answer(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
-        form = AnswerForm(request.POST)
+        form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.question = question
@@ -115,10 +118,11 @@ def new_answer(request, question_id):
                     answer=answer
                 )
             
-            return redirect('main:question_detail', question_id=question.id)
-    else:
-        form = AnswerForm()
-    return render(request, 'main/new_answer.html', {'form': form, 'question': question})
+            return JsonResponse({'success': True, 'question_id': question.id})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 @login_required(login_url='/users/login')
 def delete_question(request, pk):
