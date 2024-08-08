@@ -3,6 +3,39 @@
 {% block content %}
 
 {% load custom_filters %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+<style>
+    .answer-list {
+        min-height: 50vh; /* Define a altura mínima como 50% da altura da tela */
+        max-height: 70vh; /* Define a altura máxima como 70% da altura da tela */
+        overflow-y: auto; /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
+        padding: 1rem; /* Adiciona um espaçamento interno */
+        background-color: #f9f9f9; /* Adiciona uma cor de fundo para melhor visualização */
+        border-radius: 8px; /* Adiciona bordas arredondadas */
+    }
+    /* Estilos adicionais para o Cropper.js */
+    .img-container {
+        max-width: 100%;
+    }
+    .img-preview {
+        overflow: hidden;
+        margin: 10px;
+        border: 1px solid #ccc;
+    }
+    .preformatted-text {
+        white-space: pre-wrap; /* Preserva a formatação original e as quebras de linha */
+        word-wrap: break-word; /* Quebra palavras longas */
+    }
+    /* Estilos para o spinner */
+    #loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 10px;
+    }
+</style>
+
 <div class="custom-container mt-5 ms-0">
     <div class="questions-item">
         <div class="question-info">
@@ -20,7 +53,10 @@
                 <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
             </div>
             <h5 class="question-title">{{ question.title }}</h5>
-            <p class="question-description">{{ question.description }}</p>
+            <p class="question-description preformatted-text">{{ question.description }}</p>
+            {% if question.image %}
+                <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
+            {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question" onclick="toggleUpvote(this);">
                     <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ question.upvote_count }}</span>
@@ -32,9 +68,17 @@
             <div class="response-area">
                 <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
-                    <form method="post" action="{% url 'main:new_answer' question.id %}">
+                    <form method="post" action="{% url 'main:new_answer' question.id %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
                         {% csrf_token %}
                         <textarea name="text" class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
+                        <div class="form-group mt-3">
+                            <label for="image">Imagem:</label>
+                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
+                            <div class="img-container mt-3">
+                                <img id="cropper-image" style="max-width: 100%;">
+                            </div>
+                            <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
+                        </div>
                         <div class="form-check mt-2">
                             <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
                             <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
@@ -42,6 +86,9 @@
                         <div class="mt-1">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
                             <button type="submit" class="btn btn-send">Enviar</button>
+                        </div>
+                        <div id="loading-spinner">
+                            <p>Carregando...</p>
                         </div>
                     </form>
                 </div>
@@ -64,7 +111,10 @@
                             </span> • 
                             <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
                         </div>
-                        <p class="answer-text">{{ answer.text }}</p>
+                        <p class="answer-text preformatted-text">{{ answer.text }}</p>
+                        {% if answer.image %}
+                            <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+                        {% endif %}
                         <div class="action-buttons-answer">
                             <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer" onclick="toggleUpvote(this);">
                                 <i class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ answer.upvote_count }}</span>
@@ -85,6 +135,81 @@
 </div>
 
 <script>
+    let cropper;
+    const image = document.getElementById('cropper-image');
+
+    function showCropper(event) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validImageTypes.includes(file.type)) {
+                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+                event.target.value = ''; // Limpa o input
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    preview: '.img-preview',
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        const formData = new FormData(form);
+
+        if (cropper && document.getElementById('image').files.length > 0) {
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const fileName = 'cropped_image.png';
+                const croppedImage = new File([blob], fileName, { type: 'image/png' });
+                formData.append('image', croppedImage);
+                sendFormData(form.action, formData);
+            }, 'image/png');
+        } else {
+            sendFormData(form.action, formData);
+        }
+    }
+
+    function sendFormData(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Erro ao enviar a resposta.');
+                console.error('Erro:', data.errors);
+            }
+        })
+        .catch(error => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            console.error('Erro:', error);
+            alert('Erro ao enviar a resposta.');
+        });
+    }
+
+
     function showResponseForm() {
         var responseInput = document.querySelector('.response-area input');
         var responseForm = document.querySelector('.response-form');
