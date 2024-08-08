@@ -32,19 +32,29 @@ class Post(models.Model): #descricao perguntas
 class Question(Post): #titulo perguntas
     title = models.CharField(max_length=100, verbose_name='')
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE, related_name='questions', verbose_name='Forum', default=3)  # Substitua '3' pelo ID do fórum padrão, se aplicável
-    favoritados = models.IntegerField(default=0, verbose_name='Favorited Count')
-    is_anonymous = models.BooleanField(default=False, verbose_name='')  # Novo campo
-
+    favoritados = models.IntegerField(default=0, verbose_name='Favorited Count') 
+    is_anonymous = models.BooleanField(default=False, verbose_name='')
+    upvoters = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True)  
 
     def __str__(self):
         return self.title
+    
+    def toggle_upvote(self, user):
+        if user in self.upvoters.all():
+            self.upvoters.remove(user)
+        else:
+            self.upvoters.add(user)
+        self.save()
 
+    @property
+    def upvote_count(self):
+        return self.upvoters.count()
+    
 class Answer(Post):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', verbose_name='Question', default=1)  # Substitua '1' pelo ID da questão padrão, se aplicável
-    upvotes = models.IntegerField(default=0, verbose_name='Upvotes')
     text = models.TextField(verbose_name='Answer Text')  # Incluindo o campo text explicitamente
-    is_anonymous = models.BooleanField(default=False, verbose_name='Modo anônimo')  # Novo campo
-
+    is_anonymous = models.BooleanField(default=False, verbose_name='Modo anônimo')  
+    upvoters = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='upvoted_answers', blank=True)
 
     class Meta:
         """Classe pode ser usada no plural."""
@@ -53,6 +63,17 @@ class Answer(Post):
     def __str__(self):
         """Visualização do text pelo banco de dados."""
         return self.text[:50] + '...'
+    
+    def toggle_upvote(self, user):
+        if user in self.upvoters.all():
+            self.upvoters.remove(user)
+        else:
+            self.upvoters.add(user)
+        self.save()
+        
+    @property
+    def upvote_count(self):
+        return self.upvoters.count()    
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
