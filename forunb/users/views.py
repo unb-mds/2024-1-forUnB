@@ -66,7 +66,6 @@ def edit_profile(request):
 
         if username:
             if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
-                messages.error(request, 'Este nome de usuário já está em uso.')
                 return JsonResponse({'success': False, 'errors': 'Este nome de usuário já está em uso.'})
             else:
                 user = request.user
@@ -74,13 +73,11 @@ def edit_profile(request):
                 if photo:
                     user.photo = photo
                 user.save()
-                messages.success(request, 'Seu perfil foi atualizado com sucesso!')
                 return JsonResponse({'success': True})
         else:
-            messages.error(request, 'Nome de usuário não pode estar vazio.')
             return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
 
-    return render(request, 'users/profile.html')
+    return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':
