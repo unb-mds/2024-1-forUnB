@@ -114,10 +114,10 @@ def new_answer(request, question_id):
                     answer=answer
                 )
             
-            return redirect('main:question_detail', question_id=question.id)
-    else:
-        form = AnswerForm()
-    return render(request, 'main/new_answer.html', {'form': form, 'question': question})
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 @login_required(login_url='/users/login')
 def delete_question(request, pk):

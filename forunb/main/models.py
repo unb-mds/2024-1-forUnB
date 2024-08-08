@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from users.models import CustomUser
+from PIL import Image
+
 
 # Create your models here.
 
@@ -44,13 +46,23 @@ class Answer(Post):
     upvotes = models.IntegerField(default=0, verbose_name='Upvotes')
     text = models.TextField(verbose_name='Answer Text')
     is_anonymous = models.BooleanField(default=False, verbose_name='Modo anônimo')
-    image = models.ImageField(upload_to='media/answer_images/', blank=True, null=True)  # Adicionado campo para imagem
+    image = models.ImageField(upload_to='media/answer_images/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'answers'
 
     def __str__(self):
         return self.text[:50] + '...'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.image:
+            img = Image.open(self.image.path)
+            if img.height > 800 or img.width > 800:
+                output_size = (800, 800)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
