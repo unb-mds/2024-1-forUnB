@@ -21,14 +21,16 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
-                        Recentes</a></li>
-                <!-- <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=likes">Mais
-                                Votadas</a></li>
-                        <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=dislikes">Menos
-                                Votadas</a>
-                        </li> -->
+                        Recentes</a>
+                </li>
                 <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
                         Recentes</a>
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
+                        Votadas</a>
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
+                        Votadas</a>
                 </li>
             </ul>
         </div>
