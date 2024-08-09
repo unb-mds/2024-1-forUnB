@@ -39,8 +39,8 @@
                         <p class="question-description">{{ question.description }}</p>
                     </a>
                     <div class="action-buttons">
-                        <button class="btn btn-like" onclick="toggleLike(this);">
-                            <i class="bi bi-heart"></i>
+                        <button class="btn btn-like" data-id="{{ question.id }}" data-type="question" onclick="toggleUpvote(this);">
+                            <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ question.upvote_count }}</span>
                         </button>
                         <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                             <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
@@ -96,5 +96,31 @@
             }
         });
     });
+
+    function toggleUpvote(element) {
+    const questionId = element.getAttribute('data-id');
+    const type = element.getAttribute('data-type');
+    const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        const icon = element.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        }
+        element.querySelector('span').innerText = data.upvotes;
+    });
+}
 </script>
 {% endblock %}

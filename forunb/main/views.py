@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 
 # Login view vai passar para o app de users
@@ -146,3 +147,18 @@ def delete_answer(request, pk):
 def notifications(request):
     user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'main/notifications.html', {'notifications': user_notifications})
+
+
+@login_required
+@require_POST
+def toggle_upvote_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    question.toggle_upvote(request.user)
+    return JsonResponse({'upvotes': question.upvote_count})
+
+@login_required
+@require_POST
+def toggle_upvote_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    answer.toggle_upvote(request.user)
+    return JsonResponse({'upvotes': answer.upvote_count})

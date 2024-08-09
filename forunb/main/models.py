@@ -37,6 +37,7 @@ class Question(Post):
     favoritados = models.IntegerField(default=0, verbose_name='Favorited Count')
     is_anonymous = models.BooleanField(default=False, verbose_name='')
     image = models.ImageField(upload_to='media/question_images/', blank=True, null=True)
+    upvoters = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True)  
 
     def __str__(self):
         return self.title
@@ -50,13 +51,24 @@ class Question(Post):
                 output_size = (800, 800)
                 img.thumbnail(output_size)
                 img.save(self.image.path)
+                
+    def toggle_upvote(self, user):
+        if user in self.upvoters.all():
+            self.upvoters.remove(user)
+        else:
+            self.upvoters.add(user)
+        self.save()
+
+    @property
+    def upvote_count(self):
+        return self.upvoters.count()
 
 class Answer(Post):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', verbose_name='Question', default=1)
-    upvotes = models.IntegerField(default=0, verbose_name='Upvotes')
     text = models.TextField(verbose_name='Answer Text')
     is_anonymous = models.BooleanField(default=False, verbose_name='Modo anônimo')
     image = models.ImageField(upload_to='media/answer_images/', blank=True, null=True)
+    upvoters = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='upvoted_answers', blank=True)
 
     class Meta:
         verbose_name_plural = 'answers'
@@ -73,6 +85,17 @@ class Answer(Post):
                 output_size = (800, 800)
                 img.thumbnail(output_size)
                 img.save(self.image.path)
+                
+    def toggle_upvote(self, user):
+        if user in self.upvoters.all():
+            self.upvoters.remove(user)
+        else:
+            self.upvoters.add(user)
+        self.save()
+
+    @property
+    def upvote_count(self):
+        return self.upvoters.count()    
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
