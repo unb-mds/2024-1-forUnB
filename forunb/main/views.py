@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Count
 
 
 # Login view vai passar para o app de users
@@ -25,16 +26,15 @@ def index(request):
 def forum_detail(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
     order_by = request.GET.get('order_by', 'date')
-    # Vai ser implementado o upvote ainda
-    # if order_by == 'likes':
-    #     questions = Question.objects.filter(forum=forum).order_by('-likes')  # Ordenar por número de likes
-    # elif order_by == 'dislikes':
-    #     questions = Question.objects.filter(forum=forum).order_by('dislikes')  # Ordenar por número de dislikes
-    if order_by == 'oldest':
-        questions = Question.objects.filter(forum=forum).order_by('created_at')  
+    questions = Question.objects.filter(forum=forum).annotate(total_upvotes=Count('upvoters'))
+    if order_by == 'least_upvoted':
+        questions = questions.order_by('total_upvotes')
+    elif order_by == 'most_upvoted':
+        questions = questions.order_by('-total_upvotes')
+    elif order_by == 'oldest':
+        questions = questions.order_by('created_at')
     else:
-        questions = Question.objects.filter(forum=forum).order_by('-created_at') 
-
+        questions = questions.order_by('-created_at')
     is_following = False
     if request.user.is_authenticated:
         is_following = request.user.followed_forums.filter(id=forum.id).exists()
