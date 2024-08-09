@@ -4,24 +4,20 @@
 
 {% block content %}
 <style>
-    .questions-list, .answers-list {
 
+.full-height {
+            height: 100vh; /* Altura total da viewport */
+            display: flex;
+        }
+    .questions-list, .answers-list {
         font-weight: bolder;
         border-radius: 8px;
     }
 
-    .list-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
-        color: #003366; 
-        font-weight: bold;
-        font-size: 1.5rem;
-        
-    }
 
     .list-group-item {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        border-radius: 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -29,15 +25,52 @@
     }
 
     .scroll-container {
-            height: 400px; /* Defina a altura desejada */
-            overflow-y: auto;
+        flex-grow: 1;
+        height: 400px; /* Defina a altura desejada */
+        overflow-y: scroll; /* Continua permitindo o scroll */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    }
+
+    .scroll-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Opera */
+    }
+
+        .list-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
+            color: #003366;
+            font-weight: bold;
+            font-size: 2rem;
         }
 
     @media (max-width: 768px) {
+        .container-fluid{
+            width: 100vw;
+        }
+        
         .questions-list, .answers-list {
             width: 100%;
         }
+
+        .list-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
+            color: #003366;
+            font-weight: bold;
+            font-size: 2rem;
+        }
     }
+
+    .custom-list-group-item {
+            background-color: #003366; /* Cor de fundo personalizada */
+        }
+
+        .custom-list-group-item a {
+            color: white; /* Cor do texto dos links */
+        }
 
     .confirm-popup {
     position: fixed;
@@ -63,19 +96,18 @@
     .confirm-popup button {
         margin: 5px;
     }
-
 </style>
 
-<div class="container-fluid mb-0">
-    <div class="row">
+<div class="container-fluid mb-0 full-height">
+    <div class="row w-100 no-gutters">
         <div class="col-md-6 p-2 rounded">
             <div class="list-header p-4">Minhas Perguntas</div>
             <div class="scroll-container">
                 {% if questions %}
                 <ul class="list-group">
                     {% for question in questions %}
-                    <li class="list-group-item">
-                        <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
+                    <li class="list-group-item custom-list-group-item">
+                        <a  href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
                         <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_question' question.id %}'); return false;">Excluir</a>
                     </li>
                     {% endfor %}
@@ -94,7 +126,7 @@
                 {% if answers %}
                 <ul class="list-group">
                     {% for answer in answers %}
-                    <li class="list-group-item">
+                    <li class="list-group-item custom-list-group-item">
                         <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
                         <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_answer' answer.id %}'); return false;">Excluir</a>
                     </li>
