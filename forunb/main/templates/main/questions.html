@@ -17,7 +17,7 @@
 
     .list-group-item {
         margin-bottom: 10px;
-        border-radius: 8px;
+        border-radius: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -81,6 +81,23 @@
         font-weight: bold;
         }
 
+        .btn-excluir:hover{
+            background-color: #ff0101;
+        }
+
+        .btn-cancel {
+        background-color: #C7D2DD;
+        color: #003366;
+        font-weight: bold;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 20px;
+        }
+
+        .btn-cancel:hover {
+        background-color: #a0b0c0;
+    }
+
     .confirm-popup {
     position: fixed;
     top: 50%;
@@ -89,13 +106,14 @@
     background: white;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     z-index: 1000;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     .confirm-popup-content {
         text-align: center;
+        color: #003366;
     }
 
     .hidden {
@@ -154,11 +172,11 @@
 <!-- Popup de Confirmação -->
 <div id="confirm-delete-popup" class="confirm-popup hidden">
     <div class="confirm-popup-content">
-        <h4>Tem certeza que deseja excluir este post?</h4>
+        <h4 class="fw-bold">Tem certeza que deseja excluir este post?</h4>
         <form id="delete-form" method="post" action="">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Excluir</button>
-            <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancelar</button>
+            <button type="button" class="btn-cancel" onclick="closePopup()">Cancelar</button>
+            <button type="submit" class="btn-excluir">Excluir</button>
         </form>
     </div>
 </div>
