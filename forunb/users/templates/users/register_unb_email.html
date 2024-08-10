@@ -84,11 +84,11 @@
             {% csrf_token %}
             <!-- Email Input -->
             <div class="form-floating">
-                <input type="email" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="floatingInput" placeholder="name@example.com" name="email" pattern="[0-9]{9}@aluno\.unb\.br" required value="{{ form.username.value }}">
+                <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="floatingInput" placeholder="name@example.com" name="email" pattern="[0-9]{9}@aluno\.unb\.br" required value="{{ form.email.value|default_if_none:'' }}">
                 <label for="floatingInput">Email UnB</label>
                 <div class="invalid-feedback">
-                    {% if form.username.errors %}
-                        {% for error in form.username.errors %}
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
                             {{ error }}
                         {% endfor %}
                     {% else %}
