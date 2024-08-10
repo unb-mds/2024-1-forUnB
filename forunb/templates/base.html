@@ -44,7 +44,7 @@
                             <input type="hidden" name="forum_id" value="{{ forum.id }}">
                             <label for="search-bar" class="form-label search-label">{{ forum.title }}</label>
                         {% endif %}
-                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
+                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ query }}">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
