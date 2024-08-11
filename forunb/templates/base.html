@@ -41,8 +41,7 @@
                     <!-- Barra de pesquisa -->
                     <form class="d-flex flex-grow-1 me-2 position-relative" role="search" method="get" action="{% url 'search:search_forum' %}">
                         {% if forum %}
-                            <input type="hidden" name="forum_id" value="{{ forum.id }}">
-                            <label for="search-bar" class="form-label search-label">{{ forum.title }}</label>
+                            <input type="hidden" name="forum_id" value="{{ forum.id }}" data-forum-title="{{ forum.title }}">
                         {% endif %}
                         <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ query }}">
                     </form>
@@ -94,7 +93,7 @@
                 } else if (window.location.pathname === "/forums/") {
                     searchBar.placeholder = "Digite o nome ou o código da matéria";
                 } else if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
-                    const forumTitle = document.querySelector('.search-label').innerText;
+                    const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
                     searchBar.placeholder = `Pesquisar em ${forumTitle}`;
                 }
             });
