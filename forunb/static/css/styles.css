@@ -56,6 +56,12 @@
     flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
 }
 
+.search-bar:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: #C7D2DD;
+}
+
 /* Ajusta o padding-left quando há uma label de fórum */
 .form-label + .search-bar {
     padding-left: 175px; /* Desloca o texto 150px à frente */
@@ -69,7 +75,7 @@
 
 /* Botão do menu para telas pequenas */
 #sidebarToggle {
-    margin-right: 15px; /* Espaço entre a barra de pesquisa e o botão do menu */
+    margin-right: 15px;
     display: none; /* Inicialmente oculto */
 }
 
