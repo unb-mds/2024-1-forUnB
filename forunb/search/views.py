@@ -20,7 +20,10 @@ def search_forum(request):
             if query_normalized.lower() in unidecode(normalize_string(question.title)).lower()
         ]
         filtered_questions = sorted(filtered_questions, key=lambda q: q.created_at, reverse=True)
-        return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': filtered_questions, 'query': query})
+
+        is_following = forum.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
+        return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': filtered_questions, 'query': query, 'is_following': is_following})
     else:
         forums = Forum.objects.all()
         filtered_forums = [
