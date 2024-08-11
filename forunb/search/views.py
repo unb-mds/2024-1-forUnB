@@ -14,7 +14,7 @@ def search_forum(request):
 
     if forum_id:
         forum = get_object_or_404(Forum, id=forum_id)
-        questions = Question.objects.all()
+        questions = Question.objects.filter(forum=forum)
         filtered_questions = [
             question for question in questions
             if query_normalized.lower() in unidecode(normalize_string(question.title)).lower()
