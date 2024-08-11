@@ -84,6 +84,25 @@
             var sidebar = document.getElementById('accordionSidebar');
             sidebar.classList.remove('show');
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchBar = document.getElementById('search-bar');
+    
+            searchBar.addEventListener('focus', function () {
+                if (window.location.pathname === "{% url 'main:index' %}") {
+                    searchBar.placeholder = "Digite o nome ou o código da matéria";
+                } else if (window.location.pathname === "/forums/") {
+                    searchBar.placeholder = "Digite o nome ou o código da matéria";
+                } else if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+                    const forumTitle = document.querySelector('.search-label').innerText;
+                    searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+                }
+            });
+            searchBar.addEventListener('blur', function () {
+                searchBar.placeholder = "Pesquisar";
+            });
+        });
+
     </script>
 </body>
 
