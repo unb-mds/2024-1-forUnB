@@ -54,6 +54,7 @@
     max-width: 700px;
     margin-left: 90px;
     flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
+    position: relative;
 }
 
 .search-bar:focus {
@@ -62,7 +63,6 @@
     background-color: #C7D2DD;
 }
 
-/* Ajusta o padding-left quando há uma label de fórum */
 .form-label + .search-bar {
     padding-left: 175px; /* Desloca o texto 150px à frente */
 }
@@ -710,19 +710,20 @@ html, body {
 
 .search-label {
     position: absolute;
-    top: 5px; /* Ajuste conforme necessário */
-    left: 100px; /* Ajuste conforme necessário */
-    background-color: #006400; /* Tom de verde */
+    top: 50%;
+    transform: translateY(-50%); /* Ajusta o topo da label para centralizá-la verticalmente */
+    left: 7px;
+    background-color: #006633;
     color: white;
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 20px;
     font-weight: bold;
     font-size: 0.9rem;
     z-index: 1;
-    max-width: 150px; /* Comprimento máximo */
-    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-    overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
-    text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
