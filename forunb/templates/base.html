@@ -43,7 +43,7 @@
                         {% if forum %}
                             <input type="hidden" name="forum_id" value="{{ forum.id }}" data-forum-title="{{ forum.title }}">
                         {% endif %}
-                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ query }}">
+                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ query }}" autocomplete="off">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
@@ -85,22 +85,28 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            const searchBar = document.getElementById('search-bar');
-    
-            searchBar.addEventListener('focus', function () {
-                if (window.location.pathname === "{% url 'main:index' %}") {
-                    searchBar.placeholder = "Digite o nome ou o código da matéria";
-                } else if (window.location.pathname === "/forums/") {
-                    searchBar.placeholder = "Digite o nome ou o código da matéria";
-                } else if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
-                    const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
-                    searchBar.placeholder = `Pesquisar em ${forumTitle}`;
-                }
-            });
-            searchBar.addEventListener('blur', function () {
-                searchBar.placeholder = "Pesquisar";
-            });
-        });
+    const searchBar = document.getElementById('search-bar');
+
+    function setPlaceholder() {
+        if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+            // Se estivermos em uma página de fórum específico
+            const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
+            searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+        } else {
+            // Para todas as outras páginas
+            searchBar.placeholder = "Digite o nome ou o código da matéria";
+        }
+    }
+
+    searchBar.placeholder = "Pesquisar";
+
+    searchBar.addEventListener('focus', setPlaceholder);
+
+    searchBar.addEventListener('blur', function () {
+        searchBar.placeholder = "Pesquisar";
+    });
+});
+
 
     </script>
 </body>
