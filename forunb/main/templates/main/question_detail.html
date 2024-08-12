@@ -114,48 +114,43 @@
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
             </div>
-            <button class="btn btn-warning mt-3" onclick="showReportForm()">Denunciar</button>
+            <button class="btn btn-warning mt-3" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
 
-            <div id="reportModal" class="modal">
+            <div id="reportModal" class="modal" style="display: none;">
                 <div class="modal-content">
                     <span class="close" onclick="closeReportForm()">&times;</span>
-                    <h2 class="modal-header">Denunciar Pergunta</h2>
-                    <div class="modal-body">
-                        <form id="reportForm" method="post" action="{% url 'main:report_question' question.id %}">
-                            {% csrf_token %}
-                            
-                            <!-- Renderização Manual das Opções de Razões -->
-                            <div class="form-group">
-                                <label for="id_reason">Motivo da denúncia</label>
-                                <div class="form-check">
-                                    <input type="radio" id="id_reason_ofensivo" name="reason" value="ofensivo">
-                                    <label for="id_reason_ofensivo">Conteúdo ofensivo</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" id="id_reason_irrelevante" name="reason" value="irrelevante">
-                                    <label for="id_reason_irrelevante">Irrelevante para o fórum</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" id="id_reason_outros" name="reason" value="outros">
-                                    <label for="id_reason_outros">Outros</label>
-                                </div>
+                    <h2>Denunciar <span id="reportType"></span></h2>
+                    <form id="reportForm" method="post" action="">
+                        {% csrf_token %}
+                        <!-- Renderização Manual das Opções de Razões -->
+                        <div class="form-group">
+                            <label for="id_reason">Motivo da denúncia</label>
+                            <div class="form-check">
+                                <input type="radio" id="id_reason_ofensivo" name="reason" value="ofensivo">
+                                <label for="id_reason_ofensivo">Conteúdo ofensivo</label>
                             </div>
+                            <div class="form-check">
+                                <input type="radio" id="id_reason_irrelevante" name="reason" value="irrelevante">
+                                <label for="id_reason_irrelevante">Irrelevante para o fórum</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="id_reason_outros" name="reason" value="outros">
+                                <label for="id_reason_outros">Outros</label>
+                            </div>
+                        </div>
             
-                            <!-- Campo de Detalhes -->
-                            <div class="form-group">
-                                <label for="id_details">Detalhes adicionais</label>
-                                <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
-                            </div>
-                            
-                    </div>
-                    <div class="modal-footer">
+                        <!-- Campo de Detalhes -->
+                        <div class="form-group">
+                            <label for="id_details">Detalhes adicionais</label>
+                            <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                        </div>
+            
                         <button type="button" class="btn btn-secondary" onclick="closeReportForm()">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Enviar Denúncia</button>
-                    </div>
-                        </form>
+                    </form>
                 </div>
             </div>
-            
+
             <div class="response-area">
                 <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
@@ -213,7 +208,8 @@
                             <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                                 <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                             </a>
-                        </div>   
+                        </div> 
+                        <button class="btn btn-warning mt-3" onclick="showReportForm('{{ answer.id }}', 'answer')">Denunciar</button>
                     </div>
                     <hr class="answer-separator">
             {% empty %}
@@ -364,7 +360,10 @@
     });
 }
 
-    function showReportForm() {
+function showReportForm(itemId, itemType) {
+        const form = document.getElementById('reportForm');
+        form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+        document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
         document.getElementById("reportModal").style.display = "block";
     }
 

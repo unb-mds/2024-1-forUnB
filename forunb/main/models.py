@@ -114,11 +114,12 @@ class Report(models.Model):
         ('outros', 'Outros'),
     ]
 
-    question = models.ForeignKey('main.Question', on_delete=models.CASCADE, related_name='reports')
+    question = models.ForeignKey('main.Question', on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
+    answer = models.ForeignKey('main.Answer', on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     reason = models.CharField(max_length=20, choices=REASON_CHOICES)
     details = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.get_reason_display()} - {self.user.username} - {self.question.title}"
+        return f"{self.get_reason_display()} - {self.user.username} - {'Question' if self.question else 'Answer'}"

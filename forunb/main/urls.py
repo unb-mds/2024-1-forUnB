@@ -20,7 +20,7 @@ urlpatterns = [
     path('notifications/', views.notifications, name='notifications'),
     path('toggle-upvote-question/<int:question_id>/', views.toggle_upvote_question, name='toggle_upvote_question'),
     path('toggle-upvote-answer/<int:answer_id>/', views.toggle_upvote_answer, name='toggle_upvote_answer'),
-    path('report_question/<int:question_id>/', views.report_question, name='report_question'), 
+    path('report/<int:item_id>/<str:item_type>/', views.report, name='report'),
     # path('users/', include('users.urls')),  # Inclui as URLs do app 'users'
     #path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     #path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
