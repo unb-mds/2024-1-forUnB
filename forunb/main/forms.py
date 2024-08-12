@@ -47,4 +47,15 @@ class AnswerForm(forms.ModelForm):
 User = get_user_model()
 
 
-
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason', 'details']
+        widgets = {
+            'reason': forms.RadioSelect,
+            'details': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Detalhes adicionais (opcional)'}),
+        }
+        labels = {
+            'reason': 'Motivo da denúncia',
+            'details': 'Detalhes adicionais',
+        }
