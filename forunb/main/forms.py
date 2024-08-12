@@ -42,7 +42,8 @@ class AnswerForm(forms.ModelForm):
             'text': '' 
         } 
         widgets = { 
-            'text': forms.Textarea(attrs={'cols': 80}) 
+            'text': forms.Textarea(attrs={'cols': 80}),
+            'id': 'id_answer_text',
         } 
  
 User = get_user_model()
