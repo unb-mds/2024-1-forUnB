@@ -46,9 +46,13 @@
         }
 
     @media (max-width: 768px) {
-        .container-fluid{
-            width: 100vw;
-        }
+        .scroll-container {
+        flex-grow: 1;
+        height: 250px; /* Defina a altura desejada */
+        overflow-y: scroll; /* Continua permitindo o scroll */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    }
         
         .questions-list, .answers-list {
             width: 100%;
@@ -123,6 +127,12 @@
     .confirm-popup button {
         margin: 5px;
     }
+
+    .alerta{
+        color: white;
+        background-color: #003366;
+        border-radius: 20px;
+    }
 </style>
 
 <div class="container-fluid mb-0 full-height">
@@ -140,7 +150,7 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <div class="alert alert-warning" role="alert">
+                <div class="alerta alert alert-warning fw-bold" role="alert">
                     Nenhuma pergunta encontrada.
                 </div>
                 {% endif %}
@@ -160,7 +170,7 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <div class="alert alert-warning" role="alert">
+                <div class="alerta alert alert-warning fw-bold" >
                     Nenhuma resposta encontrada.
                 </div>
                 {% endif %}
