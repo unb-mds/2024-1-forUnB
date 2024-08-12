@@ -17,8 +17,9 @@ from django.views.decorators.http import require_POST
 
 
 def index(request):
-    latest_questions = Question.objects.all().order_by(
-        '-created_at')  # Ordenar por data de criação
+    # Filtra as perguntas que não têm denúncias associadas
+    latest_questions = Question.objects.filter(reports__isnull=True).order_by('-created_at')
+    
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
 
