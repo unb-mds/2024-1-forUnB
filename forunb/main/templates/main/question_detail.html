@@ -8,26 +8,38 @@
 
 <style>
     .answer-list {
-        min-height: 50vh; /* Define a altura mínima como 50% da altura da tela */
-        max-height: 70vh; /* Define a altura máxima como 70% da altura da tela */
-        overflow-y: auto; /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
-        padding: 1rem; /* Adiciona um espaçamento interno */
-        background-color: #f9f9f9; /* Adiciona uma cor de fundo para melhor visualização */
-        border-radius: 8px; /* Adiciona bordas arredondadas */
+        min-height: 50vh;
+        /* Define a altura mínima como 50% da altura da tela */
+        max-height: 70vh;
+        /* Define a altura máxima como 70% da altura da tela */
+        overflow-y: auto;
+        /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
+        padding: 1rem;
+        /* Adiciona um espaçamento interno */
+        background-color: #f9f9f9;
+        /* Adiciona uma cor de fundo para melhor visualização */
+        border-radius: 8px;
+        /* Adiciona bordas arredondadas */
     }
+
     /* Estilos adicionais para o Cropper.js */
     .img-container {
         max-width: 100%;
     }
+
     .img-preview {
         overflow: hidden;
         margin: 10px;
         border: 1px solid #ccc;
     }
+
     .preformatted-text {
-        white-space: pre-wrap; /* Preserva a formatação original e as quebras de linha */
-        word-wrap: break-word; /* Quebra palavras longas */
+        white-space: pre-wrap;
+        /* Preserva a formatação original e as quebras de linha */
+        word-wrap: break-word;
+        /* Quebra palavras longas */
     }
+
     /* Estilos para o spinner */
     #loading-spinner {
         display: none;
@@ -40,40 +52,47 @@
     <div class="questions-item">
         <div class="question-info">
             <div class="return-container">
-                <a href="{% url 'main:forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i class="bi bi-arrow-return-left"></i></a>
+                <a href="{% url 'main:forum_detail' question.forum.id %}" class="btn btn-return mb-3"><i
+                        class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
                 <span class="question-author">
                     {% if question.is_anonymous %}
-                        Anônimo
+                    Anônimo
                     {% else %}
-                        {{ question.author.username }}
+                    {{ question.author.username }}
                     {% endif %}
-                </span> • 
+                </span> •
                 <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
             </div>
             <h5 class="question-title">{{ question.title }}</h5>
             <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
-                <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
+            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
             {% endif %}
             <div class="action-buttons">
-                <button class="btn btn-like" data-id="{{ question.id }}" data-type="question" onclick="toggleUpvote(this);">
-                    <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ question.upvote_count }}</span>
+                <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
+                    onclick="toggleUpvote(this);">
+                    <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                    <span>{{ question.upvote_count }}</span>
                 </button>
                 <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
-            </div>   
+            </div>
             <div class="response-area">
-                <input type="text" class="form-control" placeholder="Adicionar uma resposta" onclick="showResponseForm()" readonly>
+                <input type="text" class="form-control" placeholder="Adicionar uma resposta"
+                    onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
-                    <form method="post" action="{% url 'main:new_answer' question.id %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
+                    <form method="post" action="{% url 'main:new_answer' question.id %}" enctype="multipart/form-data"
+                        onsubmit="return submitForm(event)">
                         {% csrf_token %}
-                        <textarea name="text" class="form-control mt-2" placeholder="Escreva sua resposta..."></textarea>
+                        <textarea id="id_answer_text" name="text" class="form-control mt-2"
+                            placeholder="Escreva sua resposta..."></textarea>
                         <div class="form-group mt-3">
                             <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
+                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
+                                onchange="showCropper(event)">
                             <div class="img-container mt-3">
                                 <img id="cropper-image" style="max-width: 100%;">
                             </div>
@@ -98,181 +117,253 @@
 
     <div class="answer-list">
         {% if answers %}
-            {% for answer in answers %}
-                <div class="answer-item">
-                    <div class="answer-info">
-                        <div class="answer-meta">
-                            <span class="answer-author">
-                                {% if answer.is_anonymous %}
-                                    Anônimo
-                                {% else %}
-                                    {{ answer.author.username }}
-                                {% endif %}
-                            </span> • 
-                            <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
-                        </div>
-                        <p class="answer-text preformatted-text">{{ answer.text }}</p>
-                        {% if answer.image %}
-                            <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+        {% for answer in answers %}
+        <div class="answer-item">
+            <div class="answer-info">
+                <div class="answer-meta">
+                    <span class="answer-author">
+                        {% if answer.is_anonymous %}
+                        Anônimo
+                        {% else %}
+                        {{ answer.author.username }}
                         {% endif %}
-                        <div class="action-buttons-answer">
-                            <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer" onclick="toggleUpvote(this);">
-                                <i class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ answer.upvote_count }}</span>
-                            </button>
-                            <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
-                                <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
-                            </a>
-                        </div>   
-                    </div>
-                    <hr class="answer-separator">
+                    </span> •
+                    <span class="answer-date">há {{ answer.created_at|custom_timesince }}</span>
+                </div>
+                <p class="answer-text preformatted-text">{{ answer.text }}</p>
+                {% if answer.image %}
+                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+                {% endif %}
+                <div class="action-buttons-answer">
+                    <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer"
+                        onclick="toggleUpvote(this);">
+                        <i
+                            class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                        <span>{{ answer.upvote_count }}</span>
+                    </button>
+                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                        <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
+                    </a>
+                </div>
+            </div>
+            <hr class="answer-separator">
             {% empty %}
-                <p>Nenhuma resposta encontrada para esta pergunta.</p>
-            {% endfor %}
-        {% else %}
             <p>Nenhuma resposta encontrada para esta pergunta.</p>
-        {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>Nenhuma resposta encontrada para esta pergunta.</p>
+            {% endif %}
+        </div>
     </div>
-</div>
 
-<script>
-    let cropper;
-    const image = document.getElementById('cropper-image');
+    <script src="https://cdn.tiny.cloud/1/xnvlz4kucskbnxpfwvjhg9dxecvbsq6lljrsssggdvf0wkc3/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tinymce.init({
+                selector: '#id_answer_text',
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        editor.ui.registry.addButton('mathjax', {
+                            text: 'Math',
+                            onAction: function () {
+                                editor.windowManager.open({
+                                    title: 'Insert Math',
+                                    body: {
+                                        type: 'panel',
+                                        items: [
+                                            {
+                                                type: 'textarea',
+                                                name: 'math',
+                                                label: 'Math Formula',
+                                                placeholder: '\\( E = mc^2 \\)'
+                                            }
+                                        ]
+                                    },
+                                    buttons: [
+                                        {
+                                            type: 'cancel',
+                                            text: 'Cancel'
+                                        },
+                                        {
+                                            type: 'submit',
+                                            text: 'Insert',
+                                            primary: true
+                                        }
+                                    ],
+                                    onSubmit: function (api) {
+                                        var data = api.getData();
+                                        editor.insertContent('\\(' + data.math + '\\)');
+                                        api.close();
+                                    }
+                                });
+                            }
+                        });
+                    });
 
-    function showCropper(event) {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validImageTypes.includes(file.type)) {
-                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
-                event.target.value = ''; // Limpa o input
-                return;
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                },
+                plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
+                toolbar: 'bold italic underline forecolor mathjax code',
+                menubar: false,
+                statusbar: false,
+                height: 400
+            });
+
+            function renderMath() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                image.src = e.target.result;
-                if (cropper) {
-                    cropper.destroy();
-                }
-                cropper = new Cropper(image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    preview: '.img-preview',
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+            // Renderiza o MathJax quando a página é carregada 
+            document.addEventListener('DOMContentLoaded', function () {
+                renderMath();
+            });
 
-    function submitForm(event) {
-        event.preventDefault();
-        const form = event.target;
-        document.getElementById('loading-spinner').style.display = 'block';
-
-        const formData = new FormData(form);
-
-        if (cropper && document.getElementById('image').files.length > 0) {
-            cropper.getCroppedCanvas().toBlob((blob) => {
-                const fileName = 'cropped_image.png';
-                const croppedImage = new File([blob], fileName, { type: 'image/png' });
-                formData.append('image', croppedImage);
-                sendFormData(form.action, formData);
-            }, 'image/png');
-        } else {
-            sendFormData(form.action, formData);
-        }
-    }
-
-    function sendFormData(url, formData) {
-        fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loading-spinner').style.display = 'none';
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erro ao enviar a resposta.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            document.getElementById('loading-spinner').style.display = 'none';
-            console.error('Erro:', error);
-            alert('Erro ao enviar a resposta.');
+            // Renderiza o MathJax quando o conteúdo do editor é atualizado 
+            tinymce.get('id_description').on('change', function () {
+                renderMath();
+            });
         });
-    }
+        let cropper;
+        const image = document.getElementById('cropper-image');
 
+        function showCropper(event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validImageTypes.includes(file.type)) {
+                    alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+                    event.target.value = ''; // Limpa o input
+                    return;
+                }
 
-    function showResponseForm() {
-        var responseInput = document.querySelector('.response-area input');
-        var responseForm = document.querySelector('.response-form');
-        var textarea = responseForm.querySelector('textarea');
-
-        if (responseInput && responseForm && textarea) {
-            responseInput.classList.add('d-none');
-            responseForm.classList.remove('d-none');
-            textarea.focus(); // Coloca o foco no campo de texto
-        } else {
-            console.error('Elementos não encontrados.');
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        preview: '.img-preview',
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
         }
-    }
 
-    function cancelResponse() {
-        var responseInput = document.querySelector('.response-area input');
-        var responseForm = document.querySelector('.response-form');
-        
-        if (responseInput && responseForm) {
-            responseInput.classList.remove('d-none');
-            responseForm.classList.add('d-none');
-        } else {
-            console.error('Elementos não encontrados.');
+        function submitForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            document.getElementById('loading-spinner').style.display = 'block';
+
+            const formData = new FormData(form);
+
+            if (cropper && document.getElementById('image').files.length > 0) {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    const fileName = 'cropped_image.png';
+                    const croppedImage = new File([blob], fileName, { type: 'image/png' });
+                    formData.append('image', croppedImage);
+                    sendFormData(form.action, formData);
+                }, 'image/png');
+            } else {
+                sendFormData(form.action, formData);
+            }
         }
-    }
 
-    function toggleLike(element) {
-        var icon = element.querySelector('i');
-        if (icon.classList.contains('bi-heart')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
+        function sendFormData(url, formData) {
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Erro ao enviar a resposta.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a resposta.');
+                });
         }
-    }
-    
-    function toggleUpvote(element) {
-    const questionId = element.getAttribute('data-id');
-    const type = element.getAttribute('data-type');
-    const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        const icon = element.querySelector('i');
-        if (icon.classList.contains('bi-heart')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
+
+        function showResponseForm() {
+            var responseInput = document.querySelector('.response-area input');
+            var responseForm = document.querySelector('.response-form');
+            var textarea = responseForm.querySelector('textarea');
+
+            if (responseInput && responseForm && textarea) {
+                responseInput.classList.add('d-none');
+                responseForm.classList.remove('d-none');
+                textarea.focus(); // Coloca o foco no campo de texto
+            } else {
+                console.error('Elementos não encontrados.');
+            }
         }
-        element.querySelector('span').innerText = data.upvotes;
-    });
-}
 
-</script>
+        function cancelResponse() {
+            var responseInput = document.querySelector('.response-area input');
+            var responseForm = document.querySelector('.response-form');
 
-{% endblock %}
+            if (responseInput && responseForm) {
+                responseInput.classList.remove('d-none');
+                responseForm.classList.add('d-none');
+            } else {
+                console.error('Elementos não encontrados.');
+            }
+        }
+
+        function toggleLike(element) {
+            var icon = element.querySelector('i');
+            if (icon.classList.contains('bi-heart')) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+        }
+
+        function toggleUpvote(element) {
+            const questionId = element.getAttribute('data-id');
+            const type = element.getAttribute('data-type');
+            const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const icon = element.querySelector('i');
+                    if (icon.classList.contains('bi-heart')) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                    } else {
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
+                    }
+                    element.querySelector('span').innerText = data.upvotes;
+                });
+        }
+
+    </script>
+
+    {% endblock %}
