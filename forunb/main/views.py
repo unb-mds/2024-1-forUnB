@@ -115,6 +115,7 @@ def new_answer(request, question_id):
             answer = form.save(commit=False) 
             answer.question = question 
             answer.author = request.user 
+            answer.text = clean_html(answer.text)
             answer.save() 
             request.user.created_answers.add(answer) 
  
