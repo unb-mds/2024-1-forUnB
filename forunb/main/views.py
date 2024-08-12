@@ -162,3 +162,21 @@ def toggle_upvote_answer(request, answer_id):
     answer = get_object_or_404(Answer, id=answer_id)
     answer.toggle_upvote(request.user)
     return JsonResponse({'upvotes': answer.upvote_count})
+
+@login_required(login_url='/users/login')
+def report_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.question = question
+            report.user = request.user
+            report.save()
+            messages.success(request, 'Sua denúncia foi enviada com sucesso.')
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+    else:
+        form = ReportForm()
+    return render(request, 'main/report_question.html', {'form': form, 'question': question})
