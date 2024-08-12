@@ -48,7 +48,7 @@
     @media (max-width: 768px) {
         .scroll-container {
         flex-grow: 1;
-        height: 250px; /* Defina a altura desejada */
+        height: 170px; /* Defina a altura desejada */
         overflow-y: scroll; /* Continua permitindo o scroll */
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none;  /* Internet Explorer and Edge */
@@ -64,7 +64,7 @@
             z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
             color: #003366;
             font-weight: bold;
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
     }
 
@@ -170,7 +170,7 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <div class="alerta alert alert-warning fw-bold" >
+                <div class="alerta alert alert-warning fw-bold" role="alert">
                     Nenhuma resposta encontrada.
                 </div>
                 {% endif %}
