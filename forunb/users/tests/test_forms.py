@@ -23,3 +23,14 @@ class CustomUserCreationFormTestCase(TestCase):
         form = CustomUserCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('Por favor, utilize um email da UNB válido.', form.errors['email'])
+
+    def test_existing_email(self):
+        CustomUser.objects.create_user(email='testuser@aluno.unb.br', password='testpassword123')
+        form_data = {
+            'email': 'testuser@aluno.unb.br',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123',
+        }
+        form = CustomUserCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Email já cadastrado.', form.errors['email'])
