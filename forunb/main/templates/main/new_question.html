@@ -45,8 +45,10 @@
 
     .input-title {
         width: 50%;
-        font-size: 1.25rem; /* Tamanho do texto maior */
-        color: #003366; /* Cor do texto digitado */
+        font-size: 1.25rem;
+        /* Tamanho do texto maior */
+        color: #003366;
+        /* Cor do texto digitado */
     }
 
     .cancel {
@@ -59,13 +61,17 @@
     }
 
     .texto::placeholder {
-        color: #003366; /* Exemplo de cor do placeholder */
-        opacity: 1; /* Garantir que a cor aplicada seja visível */
-        font-weight: bold; /* Fonte em negrito */
+        color: #003366;
+        /* Exemplo de cor do placeholder */
+        opacity: 1;
+        /* Garantir que a cor aplicada seja visível */
+        font-weight: bold;
+        /* Fonte em negrito */
     }
 
     .descricao.texto {
-        height: 200px; /* Ajuste a altura conforme necessário */
+        height: 200px;
+        /* Ajuste a altura conforme necessário */
     }
 
     .custom-label {
@@ -81,15 +87,20 @@
 
     .img-container {
         width: 100%;
-        max-width: 400px; /* Ajuste conforme necessário */
-        max-height: 400px; /* Ajuste conforme necessário */
+        max-width: 400px;
+        /* Ajuste conforme necessário */
+        max-height: 400px;
+        /* Ajuste conforme necessário */
         overflow: hidden;
-        margin: 0 auto; /* Centraliza o contêiner da imagem */
+        margin: 0 auto;
+        /* Centraliza o contêiner da imagem */
     }
 
     #cropper-image {
-        width: 100%; /* Ajusta a largura da imagem ao contêiner */
-        height: auto; /* Mantém a proporção da imagem */
+        width: 100%;
+        /* Ajusta a largura da imagem ao contêiner */
+        height: auto;
+        /* Mantém a proporção da imagem */
     }
 
     .img-preview {
@@ -107,12 +118,18 @@
             width: 100%;
         }
     }
+
+    .MathJax {
+        font-family: 'Arial', sans-serif;
+        /* Substitua 'Arial' pela fonte desejada */
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
     <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
     <div class="response-form">
-        <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
+        <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data"
+            onsubmit="return submitForm(event)">
             {% csrf_token %}
             <div class="form-group">
                 {{ form.title.label_tag }}
@@ -128,13 +145,15 @@
             </div>
             <div class="form-group mt-3">
                 <label for="image">Imagem:</label>
-                <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
+                <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
+                    onchange="showCropper(event)">
                 <div class="img-container mt-3">
                     <img id="cropper-image" style="max-width: 100%;">
                 </div>
                 <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
             </div>
-            <div class="mt-1">
+            <div class="mt
+-1">
                 <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
                 <button type="submit" class="btn btn-enviar">Enviar</button>
             </div>
@@ -145,7 +164,77 @@
     </div>
 </div>
 
+<script src="https://cdn.tiny.cloud/1/xnvlz4kucskbnxpfwvjhg9dxecvbsq6lljrsssggdvf0wkc3/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        tinymce.init({
+            selector: '#id_description',
+            setup: function (editor) {
+                editor.on('init', function () {
+                    editor.ui.registry.addButton('mathjax', {
+                        text: 'Math',
+                        onAction: function () {
+                            editor.windowManager.open({
+                                title: 'Insert Math',
+                                body: {
+                                    type: 'panel',
+                                    items: [
+                                        {
+                                            type: 'textarea',
+                                            name: 'math',
+                                            label: 'Math Formula',
+                                            placeholder: '\\( E = mc^2 \\)'
+                                        }
+                                    ]
+                                },
+                                buttons: [
+                                    {
+                                        type: 'cancel',
+                                        text: 'Cancel'
+                                    },
+                                    {
+                                        type: 'submit',
+                                        text: 'Insert',
+                                        primary: true
+                                    }
+                                ],
+                                onSubmit: function (api) {
+                                    var data = api.getData();
+                                    editor.insertContent('\\(' + data.math + '\\)');
+                                    api.close();
+                                }
+                            });
+                        }
+                    });
+                });
+
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
+            toolbar: 'bold italic underline forecolor mathjax code'
+            ,
+            menubar: false,  // Remove a barra de menu superior 
+            statusbar: false,  // Remove a barra de status inferior 
+            height: 400
+        });
+        function renderMath() {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
+
+        // Renderiza o MathJax quando a página é carregada 
+        document.addEventListener('DOMContentLoaded', function () {
+            renderMath();
+        });
+
+        // Renderiza o MathJax quando o conteúdo do editor é atualizado 
+        tinymce.get('id_description').on('change', function () {
+            renderMath();
+        });
+    });
+
     let cropper;
     const image = document.getElementById('cropper-image');
 
@@ -161,7 +250,7 @@
             }
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 image.src = e.target.result;
                 if (cropper) {
                     cropper.destroy();
@@ -203,21 +292,21 @@
                 'X-Requested-With': 'XMLHttpRequest',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loading-spinner').style.display = 'none';
-            if (data.success) {
-                window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
-            } else {
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading-spinner').style.display = 'none';
+                if (data.success) {
+                    window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
+                } else {
+                    alert('Erro ao enviar a pergunta.');
+                    console.error('Erro:', data.errors);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading-spinner').style.display = 'none';
+                console.error('Erro:', error);
                 alert('Erro ao enviar a pergunta.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            document.getElementById('loading-spinner').style.display = 'none';
-            console.error('Erro:', error);
-            alert('Erro ao enviar a pergunta.');
-        });
+            });
     }
 
     function cancelForm() {

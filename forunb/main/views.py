@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Count
+from bs4 import BeautifulSoup
 
 
 # Login view vai passar para o app de users
@@ -79,6 +80,10 @@ def question_detail(request, question_id):
     forum = question.forum
     return render(request, 'main/question_detail.html', {'question': question, 'answers': answers})
 
+def clean_html(text):
+    soup = BeautifulSoup(text, 'html.parser')
+    return soup.get_text()
+
 @login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
     if request.method == 'POST':
@@ -99,6 +104,7 @@ def new_question(request, forum_id):
             question = form.save(commit=False)
             question.forum = forum
             question.author = request.user
+            question.description = clean_html(question.description)
             question.save()
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
@@ -106,70 +112,71 @@ def new_question(request, forum_id):
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     else:
         form = QuestionForm()
-    return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
-
-
-
-@login_required(login_url='/users/login')
-def new_answer(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    if request.method == 'POST':
-        form = AnswerForm(request.POST, request.FILES)
-        if form.is_valid():
-            answer = form.save(commit=False)
-            answer.question = question
-            answer.author = request.user
-            answer.save()
-            request.user.created_answers.add(answer)
-
-            # Create notification for the question's author
-            if question.author != request.user:
-                Notification.objects.create(
-                    user=question.author,
-                    question=question,
-                    answer=answer
-                )
-            
-            return JsonResponse({'success': True, 'question_id': question.id})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
-
-
-@login_required(login_url='/users/login')
-def delete_question(request, pk):
-    question = get_object_or_404(Question, pk=pk, author=request.user)
-    if request.method == 'POST':
-        question.delete()
-        messages.success(request, 'Pergunta deletada com sucesso.')
-        return redirect('main:user_posts')
-    return render(request, 'main/confirm_delete.html', {'object': question})
-
-@login_required(login_url='/users/login')
-def delete_answer(request, pk):
-    answer = get_object_or_404(Answer, pk=pk, author=request.user)
-    if request.method == 'POST':
-        answer.delete()
-        messages.success(request, 'Resposta deletada com sucesso.')
-        return redirect('main:user_posts')
-    return render(request, 'main/confirm_delete.html', {'object': answer})
-
-@login_required(login_url='/users/login')
-def notifications(request):
-    user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'main/notifications.html', {'notifications': user_notifications})
-
-
-@login_required
-@require_POST
-def toggle_upvote_question(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    question.toggle_upvote(request.user)
-    return JsonResponse({'upvotes': question.upvote_count})
-
-@login_required
-@require_POST
-def toggle_upvote_answer(request, answer_id):
-    answer = get_object_or_404(Answer, id=answer_id)
-    answer.toggle_upvote(request.user)
+    return render(request, 'main/new_question.html', {'form': form, 'forum': forum}) 
+ 
+ 
+ 
+@login_required(login_url='/users/login') 
+def new_answer(request, question_id): 
+    question = get_object_or_404(Question, id=question_id) 
+    if request.method == 'POST': 
+        form = AnswerForm(request.POST, request.FILES) 
+        if form.is_valid(): 
+            answer = form.save(commit=False) 
+            answer.question = question 
+            answer.author = request.user 
+            answer.text = clean_html(answer.text)
+            answer.save() 
+            request.user.created_answers.add(answer) 
+ 
+            # Create notification for the question's author 
+            if question.author != request.user: 
+                Notification.objects.create( 
+                    user=question.author, 
+                    question=question, 
+                    answer=answer 
+                ) 
+             
+            return JsonResponse({'success': True, 'question_id': question.id}) 
+        else: 
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()}) 
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}) 
+ 
+ 
+@login_required(login_url='/users/login') 
+def delete_question(request, pk): 
+    question = get_object_or_404(Question, pk=pk, author=request.user) 
+    if request.method == 'POST': 
+        question.delete() 
+        messages.success(request, 'Pergunta deletada com sucesso.') 
+        return redirect('main:user_posts') 
+    return render(request, 'main/confirm_delete.html', {'object': question}) 
+ 
+@login_required(login_url='/users/login') 
+def delete_answer(request, pk): 
+    answer = get_object_or_404(Answer, pk=pk, author=request.user) 
+    if request.method == 'POST': 
+        answer.delete() 
+        messages.success(request, 'Resposta deletada com sucesso.') 
+        return redirect('main:user_posts') 
+    return render(request, 'main/confirm_delete.html', {'object': answer}) 
+ 
+@login_required(login_url='/users/login') 
+def notifications(request): 
+    user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at') 
+    return render(request, 'main/notifications.html', {'notifications': user_notifications}) 
+ 
+ 
+@login_required 
+@require_POST 
+def toggle_upvote_question(request, question_id): 
+    question = get_object_or_404(Question, id=question_id) 
+    question.toggle_upvote(request.user) 
+    return JsonResponse({'upvotes': question.upvote_count}) 
+ 
+@login_required 
+@require_POST 
+def toggle_upvote_answer(request, answer_id): 
+    answer = get_object_or_404(Answer, id=answer_id) 
+    answer.toggle_upvote(request.user) 
     return JsonResponse({'upvotes': answer.upvote_count})
