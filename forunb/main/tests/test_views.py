@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from main.models import Forum, Question, Answer
+from main.models import Forum, Question, Answer, Notification, Report
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -130,6 +130,18 @@ class ViewsTestCase(TestCase):
         response = self.client.post(reverse('main:delete_answer', args=[self.answer.id]))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())
+
+    def test_notifications_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula uma notificação
+        Notification.objects.create(user=self.user, question=self.question, answer=self.answer)
+        
+        response = self.client.get(reverse('main:notifications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/notifications.html')
+        self.assertContains(response, self.question.title)
+
 
 
 
