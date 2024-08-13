@@ -50,26 +50,32 @@
     font-weight: bolder;
     border: none;
     padding: 10px 20px;
+    padding-right: 10px;
     border-radius: 20px;
     max-width: 700px;
     margin-left: 90px;
     flex-grow: 1; /* Faz a barra de pesquisa crescer para preencher o espaço disponível */
+    position: relative;
 }
 
-/* Ajusta o padding-left quando há uma label de fórum */
-.form-label + .search-bar {
-    padding-left: 175px; /* Desloca o texto 150px à frente */
+.search-bar:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: #C7D2DD;
 }
 
 .search-bar::placeholder {
     color: #003366; 
     font-weight: bolder;
     font-size: 1.1rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 /* Botão do menu para telas pequenas */
 #sidebarToggle {
-    margin-right: 15px; /* Espaço entre a barra de pesquisa e o botão do menu */
+    margin-right: 15px;
     display: none; /* Inicialmente oculto */
 }
 
@@ -700,23 +706,6 @@ html, body {
     font-size: 0.9rem;
     color: #a0b0c0;
     margin-bottom: 5px;
-}
-
-.search-label {
-    position: absolute;
-    top: 5px; /* Ajuste conforme necessário */
-    left: 100px; /* Ajuste conforme necessário */
-    background-color: #006400; /* Tom de verde */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    z-index: 1;
-    max-width: 150px; /* Comprimento máximo */
-    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-    overflow: hidden; /* Oculta o texto que excede o comprimento máximo */
-    text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
 }
 
 

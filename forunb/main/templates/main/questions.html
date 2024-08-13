@@ -4,40 +4,102 @@
 
 {% block content %}
 <style>
-    .custom-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
 
+.full-height {
+            height: 100vh; /* Altura total da viewport */
+            display: flex;
+        }
     .questions-list, .answers-list {
-        width: 48%;
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 20px;
+        font-weight: bolder;
+        border-radius: 8px;
     }
 
-    .list-header {
-        font-weight: bold;
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
 
     .list-group-item {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        border-radius: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-weight: bold;
     }
 
+    .scroll-container {
+        flex-grow: 1;
+        height: 400px; /* Defina a altura desejada */
+        overflow-y: scroll; /* Continua permitindo o scroll */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    }
+
+    .scroll-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Opera */
+    }
+
+        .list-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
+            color: #003366;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
     @media (max-width: 768px) {
+        .scroll-container {
+        flex-grow: 1;
+        height: 170px; /* Defina a altura desejada */
+        overflow-y: scroll; /* Continua permitindo o scroll */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    }
+        
         .questions-list, .answers-list {
             width: 100%;
         }
+
+        .list-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Mantém o cabeçalho sobre os conteúdos em scroll */
+            color: #003366;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    }
+
+    .custom-list-group-item {
+            background-color: #003366; /* Cor de fundo personalizada */
+        }
+
+        .custom-list-group-item a {
+            color: white; /* Cor do texto dos links */
+        }
+
+        .btn-excluir{
+        background-color:#c61919;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+        }
+
+        .btn-excluir:hover{
+            background-color: #ff0101;
+        }
+
+        .btn-cancel {
+        background-color: #C7D2DD;
+        color: #003366;
+        font-weight: bold;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 20px;
+        }
+
+        .btn-cancel:hover {
+        background-color: #a0b0c0;
     }
 
     .confirm-popup {
@@ -48,13 +110,14 @@
     background: white;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     z-index: 1000;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     .confirm-popup-content {
         text-align: center;
+        color: #003366;
     }
 
     .hidden {
@@ -65,54 +128,65 @@
         margin: 5px;
     }
 
+    .alerta{
+        color: white;
+        background-color: #003366;
+        border-radius: 20px;
+    }
 </style>
 
-<div class="custom-container mt-5">
-    <div class="questions-list">
-        <div class="list-header">Minhas Perguntas</div>
-        {% if questions %}
-        <ul class="list-group">
-            {% for question in questions %}
-            <li class="list-group-item">
-                <a href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
-                <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_question' question.id %}'); return false;">Excluir</a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <div class="alert alert-warning" role="alert">
-            Nenhuma pergunta encontrada.
+<div class="container-fluid mb-0 full-height">
+    <div class="row w-100 no-gutters">
+        <div class="col-md-6 p-2 rounded">
+            <div class="list-header p-4">Minhas Perguntas</div>
+            <div class="scroll-container">
+                {% if questions %}
+                <ul class="list-group">
+                    {% for question in questions %}
+                    <li class="list-group-item custom-list-group-item">
+                        <a  href="{% url 'main:question_detail' question.id %}">{{ question.title }}</a>
+                        <a href="#" class="btn-excluir" onclick="showDeletePopup('{% url 'main:delete_question' question.id %}'); return false;">Excluir</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="alerta alert alert-warning fw-bold" role="alert">
+                    Nenhuma pergunta encontrada.
+                </div>
+                {% endif %}
+            </div>
         </div>
-        {% endif %}
-    </div>
 
-    <div class="answers-list">
-        <div class="list-header">Minhas Respostas</div>
-        {% if answers %}
-        <ul class="list-group">
-            {% for answer in answers %}
-            <li class="list-group-item">
-                <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
-                <a href="#" class="btn btn-danger" onclick="showDeletePopup('{% url 'main:delete_answer' answer.id %}'); return false;">Excluir</a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <div class="alert alert-warning" role="alert">
-            Nenhuma resposta encontrada.
+        <div class="col-md-6 p-2 rounded">
+            <div class="list-header p-4">Minhas Respostas</div>
+            <div class="scroll-container">
+                {% if answers %}
+                <ul class="list-group">
+                    {% for answer in answers %}
+                    <li class="list-group-item custom-list-group-item">
+                        <a href="{% url 'main:question_detail' answer.question.id %}">{{ answer.text|truncatewords:10 }}</a>
+                        <a href="#" class="btn-excluir" onclick="showDeletePopup('{% url 'main:delete_answer' answer.id %}'); return false;">Excluir</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="alerta alert alert-warning fw-bold" role="alert">
+                    Nenhuma resposta encontrada.
+                </div>
+                {% endif %}
+            </div>
         </div>
-        {% endif %}
     </div>
 </div>
 
 <!-- Popup de Confirmação -->
 <div id="confirm-delete-popup" class="confirm-popup hidden">
     <div class="confirm-popup-content">
-        <h4>Tem certeza que deseja excluir este post?</h4>
+        <h4 class="fw-bold">Tem certeza que deseja excluir este post?</h4>
         <form id="delete-form" method="post" action="">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Excluir</button>
-            <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancelar</button>
+            <button type="button" class="btn-cancel" onclick="closePopup()">Cancelar</button>
+            <button type="submit" class="btn-excluir">Excluir</button>
         </form>
     </div>
 </div>
