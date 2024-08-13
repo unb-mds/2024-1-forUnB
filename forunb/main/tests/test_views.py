@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from main.models import Forum, Question, Answer
+from main.models import Forum, Question, Answer, Notification, Report
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -94,6 +94,108 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Expecting a JSON response
         response_json = response.json()
         self.assertTrue(response_json['success'])
+
+    def test_follow_forum_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Test following a forum
+        response = self.client.post(reverse('main:follow_forum', args=[self.forum.id, 'follow']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user.followed_forums.filter(id=self.forum.id).exists())
+        
+        # Test unfollowing a forum
+        response = self.client.post(reverse('main:follow_forum', args=[self.forum.id, 'unfollow']))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.user.followed_forums.filter(id=self.forum.id).exists())
+
+    def test_user_posts_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        response = self.client.get(reverse('main:user_posts'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/questions.html')
+        self.assertContains(response, self.question.title)
+        self.assertContains(response, self.answer.text)
+
+    def test_delete_question_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        response = self.client.post(reverse('main:delete_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Question.objects.filter(id=self.question.id).exists())
+
+    def test_delete_answer_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        response = self.client.post(reverse('main:delete_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())
+
+    def test_notifications_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula uma notificação
+        Notification.objects.create(user=self.user, question=self.question, answer=self.answer)
+        
+        response = self.client.get(reverse('main:notifications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/notifications.html')
+        self.assertContains(response, self.question.title)
+
+    def test_toggle_upvote_question_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula um upvote
+        response = self.client.post(reverse('main:toggle_upvote_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 1)
+        
+        # Simula um downvote
+        response = self.client.post(reverse('main:toggle_upvote_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 0)
+
+    def test_toggle_upvote_answer_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula um upvote
+        response = self.client.post(reverse('main:toggle_upvote_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 1)
+        
+        # Simula um downvote
+        response = self.client.post(reverse('main:toggle_upvote_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 0)
+
+    def test_report_question_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        response = self.client.post(reverse('main:report', args=[self.question.id, 'question']), {
+            'reason': 'ofensivo',
+            'details': 'Conteúdo inadequado',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertTrue(response_json['success'])
+
+    def test_report_answer_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        response = self.client.post(reverse('main:report', args=[self.answer.id, 'answer']), {
+            'reason': 'ofensivo',
+            'details': 'Conteúdo inadequado',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertTrue(response_json['success'])
+    
+
+
 
 
 # TESTANDO VIEWS DO APP SEARCH

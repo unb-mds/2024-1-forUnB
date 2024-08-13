@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from main.models import Forum, Question, Answer
+from main.models import Forum, Question, Answer, Notification, Report
 
 User = get_user_model()
 
@@ -22,6 +22,7 @@ class ForumModelTest(TestCase):
     def test_forum_title_max_length(self):
         max_length = self.forum._meta.get_field('title').max_length
         self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
+
 
 class QuestionModelTest(TestCase):
     @classmethod
@@ -50,6 +51,14 @@ class QuestionModelTest(TestCase):
     def test_question_title_max_length(self):
         max_length = self.question._meta.get_field('title').max_length
         self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
+
+    # Teste para o método toggle_upvote e upvote_count do modelo Question
+    def test_question_toggle_upvote(self):
+        self.assertEqual(self.question.upvote_count, 0)  # Inicialmente, o número de upvotes deve ser 0
+        self.question.toggle_upvote(self.user)
+        self.assertEqual(self.question.upvote_count, 1)  # Após o upvote, o número de upvotes deve ser 1
+        self.question.toggle_upvote(self.user)
+        self.assertEqual(self.question.upvote_count, 0)  # Após remover o upvote, o número de upvotes deve ser 0
 
     '''def test_question_missing_title(self):
         question = Question(description='Test Description', author=self.user, forum=self.forum)
@@ -95,3 +104,81 @@ class AnswerModelTest(TestCase):
         self.question.delete()
         with self.assertRaises(Answer.DoesNotExist):  # Verifica se as respostas associadas são deletadas junto com a pergunta
             Answer.objects.get(question__id=question_id)
+
+    # Teste para o método toggle_upvote e upvote_count do modelo Answer
+    def test_answer_toggle_upvote(self):
+        self.assertEqual(self.answer.upvote_count, 0)  # Inicialmente, o número de upvotes deve ser 0
+        self.answer.toggle_upvote(self.user)
+        self.assertEqual(self.answer.upvote_count, 1)  # Após o upvote, o número de upvotes deve ser 1
+        self.answer.toggle_upvote(self.user)
+        self.assertEqual(self.answer.upvote_count, 0)  # Após remover o upvote, o número de upvotes deve ser 0
+
+# Teste para o modelo Notification
+class NotificationModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
+        cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
+        cls.question = Question.objects.create(
+            title='Test Question',
+            description='Test Description',
+            author=cls.user,
+            forum=cls.forum
+        )
+        cls.answer = Answer.objects.create(
+            text='Test Answer',
+            author=cls.user,
+            question=cls.question
+        )
+        cls.notification = Notification.objects.create(
+            user=cls.user,
+            question=cls.question,
+            answer=cls.answer
+        )
+
+    def test_notification_creation(self):
+        self.assertIsInstance(self.notification, Notification)  # Verifica se o objeto é uma instância de Notification
+        self.assertEqual(self.notification.user, self.user)  # Verifica se o usuário associado está correto
+        self.assertEqual(self.notification.question, self.question)  # Verifica se a pergunta associada está correta
+        self.assertEqual(self.notification.answer, self.answer)  # Verifica se a resposta associada está correta
+        self.assertTrue(hasattr(self.notification, 'created_at'))  # Verifica se o atributo 'created_at' existe
+
+    def test_notification_str_method(self):
+        expected_str = f'Notification for {self.user.username} about question {self.question.title}'
+        self.assertEqual(str(self.notification), expected_str)  # Verifica se o método __str__ retorna a string correta
+
+# Teste para o modelo Report
+class ReportModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
+        cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
+        cls.question = Question.objects.create(
+            title='Test Question',
+            description='Test Description',
+            author=cls.user,
+            forum=cls.forum
+        )
+        cls.answer = Answer.objects.create(
+            text='Test Answer',
+            author=cls.user,
+            question=cls.question
+        )
+        cls.report = Report.objects.create(
+            question=cls.question,
+            user=cls.user,
+            reason='ofensivo',
+            details='Inappropriate content'
+        )
+
+    def test_report_creation(self):
+        self.assertIsInstance(self.report, Report)  # Verifica se o objeto é uma instância de Report
+        self.assertEqual(self.report.question, self.question)  # Verifica se a pergunta associada está correta
+        self.assertEqual(self.report.user, self.user)  # Verifica se o usuário associado está correto
+        self.assertEqual(self.report.reason, 'ofensivo')  # Verifica se a razão da denúncia está correta
+        self.assertEqual(self.report.details, 'Inappropriate content')  # Verifica se os detalhes da denúncia estão corretos
+        self.assertTrue(hasattr(self.report, 'created_at'))  # Verifica se o atributo 'created_at' existe
+
+    def test_report_str_method(self):
+        expected_str = f'Conteúdo ofensivo - {self.user.username} - Question'
+        self.assertEqual(str(self.report), expected_str)  # Verifica se o método __str__ retorna a string correta

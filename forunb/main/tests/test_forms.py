@@ -11,12 +11,10 @@ class ForumFormTest(TestCase):
         form = ForumForm(data={'title': 'Test Forum', 'description': 'This is a test forum.'})
         self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
 
-    # REMOVENDO ESTE TESTE POIS O WEBSCRAPING NAO ESTA COLETANDO DESCRICAO
-
-    # def test_forum_form_no_data(self):
-    #     form = ForumForm(data={})
-    #     self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
-    #     self.assertEqual(len(form.errors), 2)  # Devem haver erros para 'title' e 'description'
+    def test_forum_form_no_data(self):
+        form = ForumForm(data={})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
+        self.assertIn('title', form.errors)  # Deve haver erro para o campo 'title'
 
 
 
@@ -106,3 +104,24 @@ class CustomUserFormTests(TestCase):
         self.assertEqual(user.is_staff, False)
 
 
+class ReportFormTest(TestCase):
+
+    def test_report_form_valid_data(self):
+        form = ReportForm(data={
+            'reason': 'ofensivo',
+            'details': 'This content is offensive.'
+        })
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+
+    def test_report_form_missing_reason(self):
+        form = ReportForm(data={
+            'details': 'This content is offensive.'
+        })
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma razão
+        self.assertIn('reason', form.errors)  # Deve haver erro para o campo 'reason'
+
+    def test_report_form_missing_details(self):
+        form = ReportForm(data={
+            'reason': 'ofensivo',
+        })
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido mesmo sem detalhes
