@@ -64,7 +64,7 @@ def login_view(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
-@login_required
+@login_required(login_url='/users/login')
 def edit_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -82,8 +82,8 @@ def edit_profile(request):
                 return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
-
-    return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':

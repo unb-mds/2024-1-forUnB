@@ -27,3 +27,10 @@ class UsersURLTests(TestCase):
         self.assertEqual(resolve(url).func, login_view)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_edit_profile(self):
+        """ Testa se a URL de edição de perfil está correta. """
+        url = reverse('users:edit_profile')
+        response = self.client.get(url)
+        # Como o usuário não está logado, o código de status deve ser 302
+        self.assertEqual(response.status_code, 302) 
