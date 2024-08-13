@@ -29,3 +29,14 @@ class UserViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(CustomUser.objects.filter(
             email='newuser@aluno.unb.br').exists())
+
+    def test_register_view_post_invalid(self):
+        form_data = {
+            'email': 'newuser@aluno.unb.br',
+            'password1': 'newuserpassword123',
+            'password2': 'differentpassword123'
+        }
+        response = self.client.post(reverse('users:register'), form_data)
+        self.assertEqual(response.status_code, 200)  # Stay on the same page
+        self.assertFalse(CustomUser.objects.filter(
+            email='newuser@aluno.unb.br').exists())
