@@ -46,3 +46,8 @@ class UserViewsTestCase(TestCase):
         response = self.client.get(reverse('users:logout'))
         # Should redirect to main:index
         self.assertEqual(response.status_code, 302)
+
+    def test_login_view_get(self):
+        response = self.client.get(reverse('users:login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/login.html')
