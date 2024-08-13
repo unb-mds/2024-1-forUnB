@@ -95,6 +95,20 @@ class ViewsTestCase(TestCase):
         response_json = response.json()
         self.assertTrue(response_json['success'])
 
+    def test_follow_forum_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Test following a forum
+        response = self.client.post(reverse('main:follow_forum', args=[self.forum.id, 'follow']))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user.followed_forums.filter(id=self.forum.id).exists())
+        
+        # Test unfollowing a forum
+        response = self.client.post(reverse('main:follow_forum', args=[self.forum.id, 'unfollow']))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.user.followed_forums.filter(id=self.forum.id).exists())
+
+
 
 # TESTANDO VIEWS DO APP SEARCH
 
