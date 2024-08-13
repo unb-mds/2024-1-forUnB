@@ -2,7 +2,7 @@ name: Execução de Testes
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -10,23 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout projeto
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
-
-      - name: Configure enviroment
-        run: make config
+          python-version: "3.x"
 
       - name: Updating pip
         run: pip install --upgrade pip
 
       - name: Installing dependecies
         run: pip install -r requirements.txt
+
+      - name: Configure enviroment
+        run: make config
 
       - name: Testing
         run: python forunb/manage.py test main.tests
