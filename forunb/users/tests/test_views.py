@@ -93,3 +93,23 @@ class UserViewsTestCase(TestCase):
         self.assertJSONEqual(response.content, {'success': True})
         self.user.refresh_from_db()
         self.assertEqual(self.user.username, 'newusername')
+
+    # CORRIGIR ESTE TESTE
+    # def test_edit_profile_view_post_invalid(self):
+    #     self.client.login(email=self.user.email, password='testpassword123')
+    #     CustomUser.objects.create_user(
+    #         email='anotheruser@aluno.unb.br', password='anotherpassword123')
+    #     response = self.client.post(reverse('users:edit_profile'), {
+    #         'username': 'existingusername',
+    #         'photo': '',
+    #     })
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertJSONEqual(response.content, {
+    #                          'success': False, 'errors': 'Este nome de usuário já está em uso.'})
+
+    # CORRIGIR ESTE TESTE
+    # def test_edit_profile_view_get(self):
+    #     self.client.login(email=self.user.email, password='testpassword123')
+    #     response = self.client.get(reverse('users:edit_profile'))
+    #     # Method not allowed for GET requests
+    #     self.assertEqual(response.status_code, 405)
