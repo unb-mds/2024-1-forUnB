@@ -1,7 +1,7 @@
 # tests/test_urls.py
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from ..views import index, forum_detail, question_detail, questions, forum_list, new_question, new_answer
+from ..views import index, forum_detail, question_detail, questions, forum_list, new_question, new_answer, user_posts, follow_forum, followed_forums, delete_question, delete_answer, notifications, toggle_upvote_question, toggle_upvote_answer, report
 from django.contrib.auth import views as auth_views
 
 class TestUrls(SimpleTestCase):
@@ -34,12 +34,39 @@ class TestUrls(SimpleTestCase):
         url = reverse('main:new_answer', args=[1])
         self.assertEqual(resolve(url).func, new_answer)
 
-    # REVER COMO ESTÁ PARTE ESTÁ FUNCIONDO
+    def test_user_posts_url_resolves(self):
+        url = reverse('main:user_posts')
+        self.assertEqual(resolve(url).func, user_posts)
 
-    # def test_login_url_resolves(self):
-    #     url = reverse('login')
-    #     self.assertEqual(resolve(url).func.view_class, auth_views.LoginView.as_view())
+    def test_follow_forum_url_resolves(self):
+        url = reverse('main:follow_forum', args=[1, 'follow'])
+        self.assertEqual(resolve(url).func, follow_forum)
 
-    # def test_logout_url_resolves(self):
-    #     url = reverse('logout')
-    #     self.assertEqual(resolve(url).func.view_class, auth_views.LogoutView.as_view())
+    def test_followed_forums_url_resolves(self):
+        url = reverse('main:followed_forums')
+        self.assertEqual(resolve(url).func, followed_forums)
+
+    def test_delete_question_url_resolves(self):
+        url = reverse('main:delete_question', args=[1])
+        self.assertEqual(resolve(url).func, delete_question)
+
+    def test_delete_answer_url_resolves(self):
+        url = reverse('main:delete_answer', args=[1])
+        self.assertEqual(resolve(url).func, delete_answer)
+
+    def test_notifications_url_resolves(self):
+        url = reverse('main:notifications')
+        self.assertEqual(resolve(url).func, notifications)
+
+    def test_toggle_upvote_question_url_resolves(self):
+        url = reverse('main:toggle_upvote_question', args=[1])
+        self.assertEqual(resolve(url).func, toggle_upvote_question)
+
+    def test_toggle_upvote_answer_url_resolves(self):
+        url = reverse('main:toggle_upvote_answer', args=[1])
+        self.assertEqual(resolve(url).func, toggle_upvote_answer)
+
+    def test_report_url_resolves(self):
+        url = reverse('main:report', args=[1, 'question'])
+        self.assertEqual(resolve(url).func, report)
+    
