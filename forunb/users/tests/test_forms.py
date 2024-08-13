@@ -34,3 +34,13 @@ class CustomUserCreationFormTestCase(TestCase):
         form = CustomUserCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('Email já cadastrado.', form.errors['email'])
+
+    def test_password_mismatch(self):
+        form_data = {
+            'email': 'testuser@aluno.unb.br',
+            'password1': 'password1',
+            'password2': 'password2',
+        }
+        form = CustomUserCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Os dois campos de senha não correspondem.', form.errors['password2'])
