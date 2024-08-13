@@ -142,3 +142,7 @@ class NotificationModelTest(TestCase):
         self.assertEqual(self.notification.question, self.question)  # Verifica se a pergunta associada está correta
         self.assertEqual(self.notification.answer, self.answer)  # Verifica se a resposta associada está correta
         self.assertTrue(hasattr(self.notification, 'created_at'))  # Verifica se o atributo 'created_at' existe
+
+    def test_notification_str_method(self):
+        expected_str = f'Notification for {self.user.username} about question {self.question.title}'
+        self.assertEqual(str(self.notification), expected_str)  # Verifica se o método __str__ retorna a string correta
