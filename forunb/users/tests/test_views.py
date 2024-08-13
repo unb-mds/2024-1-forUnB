@@ -68,3 +68,11 @@ class UserViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, 'form', 'username',
                              "Este email não está cadastrado.")
+        
+    def test_login_view_post_invalid_password(self):
+        response = self.client.post(reverse('users:login'), {
+            'username': self.user.email,
+            'password': 'wrongpassword'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response, 'form', 'password', "Senha incorreta.")
