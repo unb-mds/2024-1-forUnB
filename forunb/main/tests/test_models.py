@@ -179,3 +179,6 @@ class ReportModelTest(TestCase):
         self.assertEqual(self.report.details, 'Inappropriate content')  # Verifica se os detalhes da denúncia estão corretos
         self.assertTrue(hasattr(self.report, 'created_at'))  # Verifica se o atributo 'created_at' existe
 
+    def test_report_str_method(self):
+        expected_str = f'Conteúdo ofensivo - {self.user.username} - Question'
+        self.assertEqual(str(self.report), expected_str)  # Verifica se o método __str__ retorna a string correta
