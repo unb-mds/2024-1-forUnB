@@ -19,6 +19,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Configure enviroment
+        run: make config
+
       - name: Updating pip
         run: pip install --upgrade pip
 
