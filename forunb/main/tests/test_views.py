@@ -183,6 +183,17 @@ class ViewsTestCase(TestCase):
         response_json = response.json()
         self.assertTrue(response_json['success'])
 
+    def test_report_answer_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        response = self.client.post(reverse('main:report', args=[self.answer.id, 'answer']), {
+            'reason': 'ofensivo',
+            'details': 'Conteúdo inadequado',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertTrue(response_json['success'])
+    
 
 
 
