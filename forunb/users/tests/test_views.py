@@ -82,3 +82,14 @@ class UserViewsTestCase(TestCase):
         response = self.client.get(reverse('users:profile'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/profile.html')
+
+    def test_edit_profile_view_post_valid(self):
+        self.client.login(email=self.user.email, password='testpassword123')
+        response = self.client.post(reverse('users:edit_profile'), {
+            'username': 'newusername',
+            'photo': '',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'success': True})
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.username, 'newusername')
