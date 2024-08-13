@@ -8,9 +8,11 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 
 import os
-
+from forunb.env import env, BASE_DIR
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'forunb.settings')
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE'))
 
 application = get_asgi_application()
