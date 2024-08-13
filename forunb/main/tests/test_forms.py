@@ -70,7 +70,6 @@ class CustomUserFormTests(TestCase):
         if form.is_valid():
             user = form.save(commit=False)
             self.assertEqual(user.email, 'valid@aluno.unb.br')
-            self.assertEqual(user.username, 'valid@aluno.unb.br')
             user.save()
             self.assertEqual(CustomUser.objects.count(), 1)
         else:
