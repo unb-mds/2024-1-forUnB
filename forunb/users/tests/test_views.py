@@ -40,3 +40,9 @@ class UserViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)  # Stay on the same page
         self.assertFalse(CustomUser.objects.filter(
             email='newuser@aluno.unb.br').exists())
+        
+    def test_logout_view(self):
+        self.client.login(email=self.user.email, password='testpassword123')
+        response = self.client.get(reverse('users:logout'))
+        # Should redirect to main:index
+        self.assertEqual(response.status_code, 302)
