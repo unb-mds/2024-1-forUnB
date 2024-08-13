@@ -104,3 +104,11 @@ class CustomUserFormTests(TestCase):
         self.assertEqual(user.is_staff, False)
 
 
+class ReportFormTest(TestCase):
+
+    def test_report_form_valid_data(self):
+        form = ReportForm(data={
+            'reason': 'ofensivo',
+            'details': 'This content is offensive.'
+        })
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
