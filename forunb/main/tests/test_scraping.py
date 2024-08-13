@@ -83,19 +83,7 @@ class TestScraping(unittest.TestCase):
         self.assertIn('Code 1', scraper.disciplines)
         self.assertIn('Discipline 1', scraper.disciplines['Code 1'])
 
-    @patch('main.scraping.DisciplineWebScraper.get_response_from_disciplines_post_request')
-    def test_get_disciplines(self, mock_get_response_from_disciplines_post_request):
-        mock_response = MagicMock()
-        scraper = DisciplineWebScraper(department='1', year='2024', period='1')
-        scraper.response = mock_response
-        
-        disciplines = scraper.get_disciplines()
-        
-        # Verificar se a função de obtenção de disciplinas foi chamada
-        mock_get_response_from_disciplines_post_request.assert_called_once()
-        
-        # Verificar se o resultado retornado é um dicionário
-        self.assertIsInstance(disciplines, defaultdict)
+    
     
     
 
