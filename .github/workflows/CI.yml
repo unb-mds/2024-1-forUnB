@@ -38,4 +38,4 @@ jobs:
         run: make config
 
       - name: Testing
-        run: python forunb/manage.py test tests
+        run: python forunb/manage.py test
