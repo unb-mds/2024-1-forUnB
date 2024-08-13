@@ -2,20 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
-
-
-# views.py
-
-from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import *
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
 
 
 def register(request): 
@@ -45,6 +37,20 @@ def Logout_view(request):
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
+        
+        '''Verifica se o email existe no banco de dados'''
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if not CustomUser.objects.filter(email=email).exists():
+            error_message = "Este email não está cadastrado."
+            form.add_error('username', error_message)
+        
+        # Se o email existir, mas a senha estiver incorreta
+        elif form.is_valid() == False:
+            error_message = "Senha incorreta."
+            form.add_error('password', error_message)
+        
         if form.is_valid():
             login(request, form.get_user())
             if "next" in request.POST:

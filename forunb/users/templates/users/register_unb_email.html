@@ -6,36 +6,170 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Autenticação</title>
+    <title>forUnB</title>
+    {% load static %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'forunb/img/logo_favicon.png' %}" />
     <style>
-        .fundo{
+        .card{
             background-color: #006633;
-            }
-        .botao{
-            background-color: #003366;
+            width: 30rem;
         }
-        .titulo{
+        .form-control {
             color: #003366;
+        }
+        .form-floating {
+            margin-top: 12px;
+            margin-bottom: 0px;
+            border: none;
+        }
+        .form-floating .form-control:focus {
+            border-color: #006633; 
+        }
+        .form-floating label {
+            color: #003366;
+            font-weight: bold;
+        }
+        .form-floating .form-control:focus ~ label {
+            color: #003366;
+        }
+        .btn-home {
+            width: 15rem;
+            font-size: large;
+        }
+        .form-text{
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+        }
+        .form-text a {
+            color: #003366;
+            font-weight: bold;
+            margin-left: 5px;
+            text-decoration: underline;
+        }
+        .invalid-feedback {
+            display: none;
+            color: #d83838;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+        .password-rules {
+            color: #fff;
+            font-size: 0.875rem;
+            margin-top: 10px;
+        }
+        .password-rules ul {
+            padding-left: 20px;
+            margin-bottom: 5px;
+        }
+        .password-rules li {
+            margin-bottom: 3px;
         }
     </style>
 </head>
 
 <body>
     <div class="text-center">
-        {% load static %} 
-        <img src="{% static 'forunb/img/logo2.jpg' %}" alt="logo" width="400" height="300">
+        <img src="{% static 'forunb/img/logo2.jpg' %}" alt="logo" width="380" height="280">
     </div>
-    <form action="{% url "users:register" %}" method="post" class="px-4 py-3 row justify-content-center align-items-center" style="height: 10vh;">
-        <div class="fundo card rounded-3" style="width: 30rem;">
-            <h4 class="text-center text-white fw-bold mt-2 mb-0">Cadastre-se com seu email Unb</h4>
+    <form action="{% url 'users:register' %}" method="post" class="px-4 row justify-content-center align-items-center" novalidate>
+        <div class="card rounded-3">
+            <h4 class="text-center text-white fw-bold mt-3 mb-0">Cadastre-se com seu email Unb</h4>
             <br>
             {% csrf_token %}
-            {{ form.as_p }}
-        <button type="submit" class="botao row col-6 mx-auto btn btn-primary mb-3 rounded-3 text-white fw-bold" style="width: 15rem;">Registrar</button>
+            <!-- Email Input -->
+            <div class="form-floating">
+                <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="floatingInput" placeholder="name@example.com" name="email" pattern="[0-9]{9}@aluno\.unb\.br" required value="{{ form.email.value|default_if_none:'' }}">
+                <label for="floatingInput">Email UnB</label>
+                <div class="invalid-feedback">
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% else %}
+                        Por favor, insira um email válido da Unb.
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-floating">
+                <input type="password" class="form-control {% if form.password1.errors %}is-invalid{% endif %}" id="floatingPassword" placeholder="Password" name="password1" required>
+                <label for="floatingPassword">Senha</label>
+                <div class="invalid-feedback">
+                    {% if form.password1.errors %}
+                        {% for error in form.password1.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% else %}
+                        Sua senha deve atender aos requisitos abaixo.
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Password Rules -->
+            <div class="password-rules mt-1">
+                <ul>
+                    <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+                    <li>Sua senha não pode ser inteiramente numérica.</li>
+                </ul>
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div class="form-floating mt-0 mb-3">
+                <input type="password" class="form-control {% if form.password2.errors %}is-invalid{% endif %}" id="floatingConfirmPassword" placeholder="Confirm Password" name="password2" required>
+                <label for="floatingConfirmPassword">Confirme a Senha</label>
+                <div class="invalid-feedback">
+                    {% if form.password2.errors %}
+                        {% for error in form.password2.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% else %}
+                        Escreva a senha do mesmo jeito que escrito anteriormente.
+                    {% endif %}
+                </div>
+            </div>
+        <button type="submit" class="btn btn-home mx-auto">Registrar</button>
         </div>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const emailInput = form.querySelector('input[type="email"]');
+    
+            form.addEventListener('submit', function (event) {
+                let isValid = true;
+    
+                if (!emailInput.checkValidity()) {
+                    emailInput.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    emailInput.classList.remove('is-invalid');
+                }
+    
+                if (!isValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+    
+                form.classList.add('was-validated');
+            });
+    
+            emailInput.addEventListener('input', function () {
+                if (emailInput.checkValidity()) {
+                    emailInput.classList.remove('is-invalid');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

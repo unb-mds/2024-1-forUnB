@@ -38,6 +38,7 @@ class Migration(migrations.Migration):
             name='title',
             field=models.CharField(max_length=100, verbose_name=''),
         ),
+
         migrations.CreateModel(
             name='Notification',
             fields=[

@@ -14,13 +14,16 @@ def search_forum(request):
 
     if forum_id:
         forum = get_object_or_404(Forum, id=forum_id)
-        questions = Question.objects.all()
+        questions = Question.objects.filter(forum=forum)
         filtered_questions = [
             question for question in questions
             if query_normalized.lower() in unidecode(normalize_string(question.title)).lower()
         ]
         filtered_questions = sorted(filtered_questions, key=lambda q: q.created_at, reverse=True)
-        return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': filtered_questions, 'query': query})
+
+        is_following = forum.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
+        return render(request, 'main/forum_detail.html', {'forum': forum, 'questions': filtered_questions, 'query': query, 'is_following': is_following})
     else:
         forums = Forum.objects.all()
         filtered_forums = [

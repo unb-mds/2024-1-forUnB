@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<style>
+    .faleconosco{
+    font-size: 0.7rem;
+}
+</style>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>forUnB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     {% load static %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link rel="icon" type="image/png" href="{% static 'forunb/img/logo_favicon.png' %}" />
+    <script src="https://cdn.tiny.cloud/1/your-tiny-api-key/tinymce/6/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body>
@@ -21,16 +30,22 @@
                 <button class="btn btn-menu d-xl-none" id="sidebarClose"><i class="bi bi-list"></i></button>
                 <header class="d-flex justify-content-center mb-5">
                     {% load static %}
-                    <a href="/"><img class="img-fluid" src="{% static 'forunb/img/logo1.jpg' %}" alt="logo" width="300" height="200"></a>
+                    <a href="/"><img class="img-fluid" src="{% static 'forunb/img/logo1.jpg' %}" alt="logo" width="300"
+                            height="200"></a>
                 </header>
-                <nav class="nav flex-column">                    
-                    <a class="btn btn-home btn-sm" href="{% url 'main:index' %}"><i class="bi bi-house-door"></i>Home</a>
-                    <a class="btn btn-home btn-sm" href="{% url 'main:forum_list' %}"><i class="bi bi-star"></i>Fóruns</a>
-                    <a class="btn btn-home btn-sm" href="{% url 'main:followed_forums' %}"><i class="bi bi-star-fill"></i>Meus Fóruns</a>
-                    <a class="btn btn-home btn-sm" href="{% url 'main:user_posts' %}"><i class="bi bi-star"></i> Meus Posts</a>
+                <nav class="nav flex-column">
+                    <a class="btn btn-home btn-sm" href="{% url 'main:index' %}"><i
+                            class="bi bi-house-door"></i>Home</a>
+                    <a class="btn btn-home btn-sm" href="{% url 'main:forum_list' %}"><i
+                            class="bi bi-star"></i>Fóruns</a>
+                    <a class="btn btn-home btn-sm" href="{% url 'main:followed_forums' %}"><i
+                            class="bi bi-star-fill"></i>Meus Fóruns</a>
+                    <a class="btn btn-home btn-sm" href="{% url 'main:user_posts' %}"><i class="bi bi-star"></i> Meus
+                        Posts</a>
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">&copy; 2024 Meu Fórum</p>
+                    <p class="faleconosco text-white ">Fale conosco : forunb24@gmail.com</p>
                 </footer>
             </div>
             <!-- Conteúdo principal -->
@@ -39,29 +54,36 @@
                     <!-- Botão para mostrar a barra lateral em telas pequenas -->
                     <button class="btn btn-menu d-xl-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <!-- Barra de pesquisa -->
-                    <form class="d-flex flex-grow-1 me-2 position-relative" role="search" method="get" action="{% url 'search:search_forum' %}">
+                    <form class="d-flex flex-grow-1 me-2 position-relative" role="search" method="get"
+                        action="{% url 'search:search_forum' %}">
                         {% if forum %}
-                            <input type="hidden" name="forum_id" value="{{ forum.id }}">
-                            <label for="search-bar" class="form-label search-label">{{ forum.title }}</label>
+                        <input type="hidden" name="forum_id" value="{{ forum.id }}"
+                            data-forum-title="{{ forum.title }}">
                         {% endif %}
-                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
+                        <input id="search-bar" class="form-control search-bar me-2" type="search" name="search"
+                            placeholder="Pesquisar" aria-label="Search" value="{{ query }}" autocomplete="off">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
                         {% if user.is_authenticated %}
-                            <button class="btn btn-login d-none d-sm-flex align-items-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-fill me-2"></i> {{ user.username }}
-                            </button>
-                            <button class="btn btn-login d-flex d-sm-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-fill"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'users:profile' %}"><i class="bi bi-person-circle"></i>Perfil</a></li>
-                                <li><a class="dropdown-item" href="{% url 'users:logout' %}"><i class="bi bi-box-arrow-in-left"></i>Sair</a></li>
-                                <li><a class="dropdown-item" href="{% url 'main:notifications' %}"><i class="bi bi-bell"></i>Notificações</a></li>
-                            </ul>
+                        <button class="btn btn-login d-none d-sm-flex align-items-center dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill me-2"></i> {{ user.username }}
+                        </button>
+                        <button class="btn btn-login d-flex d-sm-none dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'users:profile' %}"><i
+                                        class="bi bi-person-circle"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:logout' %}"><i
+                                        class="bi bi-box-arrow-in-left"></i>Sair</a></li>
+                            <li><a class="dropdown-item" href="{% url 'main:notifications' %}"><i
+                                        class="bi bi-bell"></i>Notificações</a></li>
+                        </ul>
                         {% else %}
-                            <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
+                        <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
                         {% endif %}
                     </div>
                 </div>
@@ -75,15 +97,40 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
             var sidebar = document.getElementById('accordionSidebar');
             sidebar.classList.toggle('show');
         });
 
-        document.getElementById('sidebarClose').addEventListener('click', function() {
+        document.getElementById('sidebarClose').addEventListener('click', function () {
             var sidebar = document.getElementById('accordionSidebar');
             sidebar.classList.remove('show');
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const searchBar = document.getElementById('search-bar');
+
+    function setPlaceholder() {
+        if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+            // Se estivermos em uma página de fórum específico
+            const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
+            searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+        } else {
+            // Para todas as outras páginas
+            searchBar.placeholder = "Digite o nome da matéria";
+        }
+    }
+
+    searchBar.placeholder = "Pesquisar";
+
+    searchBar.addEventListener('focus', setPlaceholder);
+
+    searchBar.addEventListener('blur', function () {
+        searchBar.placeholder = "Pesquisar";
+    });
+});
+
+
     </script>
 </body>
 
