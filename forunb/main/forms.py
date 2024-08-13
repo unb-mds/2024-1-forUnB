@@ -1,18 +1,18 @@
-from django import forms 
-from .models import * 
-from django.core.exceptions import ValidationError 
-from django.contrib.auth.models import User  
-from django.contrib.auth import get_user_model 
- 
-class ForumForm(forms.ModelForm): 
-    class Meta: 
-        model = Forum 
-        fields = ['title', 'description'] 
-        labels = { 
-            'title': '', 
-            'description': '' 
-        } 
- 
+from django import forms
+from .models import *
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User 
+from django.contrib.auth import get_user_model
+
+class ForumForm(forms.ModelForm):
+    class Meta:
+        model = Forum
+        fields = ['title', 'description']
+        labels = {
+            'title': '',
+            'description': ''
+        }
+
 class QuestionForm(forms.ModelForm): 
     class Meta: 
         model = Question 
@@ -33,7 +33,7 @@ class QuestionForm(forms.ModelForm):
         labels = { 
             'is_anonymous': 'Modo anônimo' 
         } 
- 
+
 class AnswerForm(forms.ModelForm): 
     class Meta: 
         model = Answer 
@@ -45,5 +45,19 @@ class AnswerForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'cols': 80}),
             'id': 'id_answer_text',
         } 
- 
+
 User = get_user_model()
+
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason', 'details']
+        widgets = {
+            'reason': forms.RadioSelect,
+            'details': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Detalhes adicionais (opcional)'}),
+        }
+        labels = {
+            'reason': 'Motivo da denúncia',
+            'details': 'Detalhes adicionais',
+        }

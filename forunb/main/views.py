@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from bs4 import BeautifulSoup
@@ -19,8 +19,9 @@ from bs4 import BeautifulSoup
 
 
 def index(request):
-    latest_questions = Question.objects.all().order_by(
-        '-created_at')  # Ordenar por data de criação
+    # Filtra as perguntas que não têm denúncias associadas
+    latest_questions = Question.objects.filter(reports__isnull=True).order_by('-created_at')
+    
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
 
@@ -113,9 +114,8 @@ def new_question(request, forum_id):
     else:
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum}) 
- 
- 
- 
+
+
 @login_required(login_url='/users/login') 
 def new_answer(request, question_id): 
     question = get_object_or_404(Question, id=question_id) 
@@ -141,8 +141,8 @@ def new_answer(request, question_id):
         else: 
             return JsonResponse({'success': False, 'errors': form.errors.as_json()}) 
     return JsonResponse({'success': False, 'error': 'Invalid request method'}) 
- 
- 
+
+
 @login_required(login_url='/users/login') 
 def delete_question(request, pk): 
     question = get_object_or_404(Question, pk=pk, author=request.user) 
@@ -160,23 +160,64 @@ def delete_answer(request, pk):
         messages.success(request, 'Resposta deletada com sucesso.') 
         return redirect('main:user_posts') 
     return render(request, 'main/confirm_delete.html', {'object': answer}) 
- 
+
 @login_required(login_url='/users/login') 
 def notifications(request): 
     user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at') 
     return render(request, 'main/notifications.html', {'notifications': user_notifications}) 
- 
- 
+
+
 @login_required 
 @require_POST 
 def toggle_upvote_question(request, question_id): 
     question = get_object_or_404(Question, id=question_id) 
     question.toggle_upvote(request.user) 
     return JsonResponse({'upvotes': question.upvote_count}) 
- 
-@login_required 
-@require_POST 
-def toggle_upvote_answer(request, answer_id): 
-    answer = get_object_or_404(Answer, id=answer_id) 
-    answer.toggle_upvote(request.user) 
+
+@login_required
+@require_POST
+def toggle_upvote_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    answer.toggle_upvote(request.user)
     return JsonResponse({'upvotes': answer.upvote_count})
+
+@login_required(login_url='/users/login')
+def report(request, item_id, item_type):
+    try:
+        if item_type == 'question':
+            item = get_object_or_404(Question, id=item_id)
+        elif item_type == 'answer':
+            item = get_object_or_404(Answer, id=item_id)
+        else:
+            return JsonResponse({'success': False, 'error': 'Tipo de item inválido.'}, status=400)
+
+        if request.method == 'POST':
+            form = ReportForm(request.POST)
+            if form.is_valid():
+                report = form.save(commit=False)
+                if item_type == 'question':
+                    report.question = item
+                else:
+                    report.answer = item
+                report.user = request.user
+                report.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+        return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+
+ 
+ 
+
+ 
+
