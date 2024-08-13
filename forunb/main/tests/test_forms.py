@@ -11,12 +11,10 @@ class ForumFormTest(TestCase):
         form = ForumForm(data={'title': 'Test Forum', 'description': 'This is a test forum.'})
         self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
 
-    # REMOVENDO ESTE TESTE POIS O WEBSCRAPING NAO ESTA COLETANDO DESCRICAO
-
-    # def test_forum_form_no_data(self):
-    #     form = ForumForm(data={})
-    #     self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
-    #     self.assertEqual(len(form.errors), 2)  # Devem haver erros para 'title' e 'description'
+    def test_forum_form_no_data(self):
+        form = ForumForm(data={})
+        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
+        self.assertIn('title', form.errors)  # Deve haver erro para o campo 'title'
 
 
 
