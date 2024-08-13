@@ -51,3 +51,11 @@ class UserViewsTestCase(TestCase):
         response = self.client.get(reverse('users:login'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/login.html')
+
+    def test_login_view_post_valid(self):
+        response = self.client.post(reverse('users:login'), {
+            'username': self.user.email,
+            'password': 'testpassword123'
+        })
+        # Should redirect to main:index
+        self.assertEqual(response.status_code, 302)
