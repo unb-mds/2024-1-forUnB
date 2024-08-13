@@ -117,6 +117,14 @@ class ViewsTestCase(TestCase):
         self.assertContains(response, self.question.title)
         self.assertContains(response, self.answer.text)
 
+    def test_delete_question_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        response = self.client.post(reverse('main:delete_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Question.objects.filter(id=self.question.id).exists())
+
+
 
 
 
