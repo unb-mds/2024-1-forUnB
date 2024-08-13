@@ -55,3 +55,21 @@ class CustomUserCreationFormTestCase(TestCase):
         user = form.save()
         self.assertEqual(user.email, 'testuser@aluno.unb.br')
         self.assertTrue(user.check_password('testpassword123'))
+
+class CustomUserChangeFormTestCase(TestCase):
+
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            email='testuser@aluno.unb.br',
+            password='testpassword123',
+        )
+
+    def test_valid_change_form(self):
+        form_data = {
+            'email': self.user.email,
+            'username': 'newusername',
+        }
+        form = CustomUserChangeForm(data=form_data, instance=self.user)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertEqual(user.username, 'newusername')
