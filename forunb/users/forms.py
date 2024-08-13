@@ -15,6 +15,14 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('email',)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError('Email já cadastrado.')
+        if not email.endswith('@aluno.unb.br'):
+            raise ValidationError('Por favor, utilize um email válido da UnB.')
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email  # Define o username como o email
@@ -33,3 +41,13 @@ class CustomUserChangeForm(UserChangeForm):
     created_questions = forms.ModelMultipleChoiceField(queryset=Question.objects.all(), required=False)
     created_answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.all(), required=False)
 
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'photo']
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if CustomUser.objects.filter(username=username).exclude(id=self.instance.id).exists():
+            raise forms.ValidationError("Este nome de usuário já está em uso.")
+        return username

@@ -2,16 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from .forms import *
+from django.contrib import messages
+from django.http import JsonResponse
 
-
-# views.py
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 def register(request): 
     if request.method == 'POST': 
@@ -37,13 +34,23 @@ def Logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))
 
-# nao esta sendo usado
-# def login_redirect(view_func):
-#     return user_passes_test(lambda u: u.is_authenticated, login_url='/users/login/')(view_func)
-
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
+        
+        '''Verifica se o email existe no banco de dados'''
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if not CustomUser.objects.filter(email=email).exists():
+            error_message = "Este email não está cadastrado."
+            form.add_error('username', error_message)
+        
+        # Se o email existir, mas a senha estiver incorreta
+        elif form.is_valid() == False:
+            error_message = "Senha incorreta."
+            form.add_error('password', error_message)
+        
         if form.is_valid():
             login(request, form.get_user())
             if "next" in request.POST:
@@ -53,6 +60,30 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {"form": form})
+
+def profile(request):
+    return render(request, 'users/profile.html')
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        photo = request.FILES.get('photo')
+
+        if username:
+            if CustomUser.objects.filter(username=username).exclude(id=request.user.id).exists():
+                return JsonResponse({'success': False, 'errors': 'Este nome de usuário já está em uso.'})
+            else:
+                user = request.user
+                user.username = username
+                if photo:
+                    user.photo = photo
+                user.save()
+                return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
+
+    return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':

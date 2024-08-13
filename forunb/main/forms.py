@@ -13,38 +13,51 @@ class ForumForm(forms.ModelForm):
             'description': ''
         }
 
-class QuestionForm(forms.ModelForm):
-    class Meta:
-        model = Question
-        fields = ['title', 'description', 'is_anonymous']
-        widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'texto form-control form-control-sm mt-2 input-title',
-                'placeholder': 'Titulo'
-            }),
-            'description': forms.Textarea(attrs={
-                'class': 'texto descricao form-control mt-2',
-                'placeholder': 'Escreva sua pergunta...',
-                'rows': 5,  # Ajuste o número de linhas conforme necessário
-                'cols': 50  # Ajuste o número de colunas conforme necessário
-            }),
-        }
-        labels = {
-            'is_anonymous': 'Modo anônimo'
-        }
+class QuestionForm(forms.ModelForm): 
+    class Meta: 
+        model = Question 
+        fields = ['title', 'description', 'is_anonymous', 'image'] 
+        widgets = { 
+            'title': forms.TextInput(attrs={ 
+                'class': 'texto form-control form-control-sm mt-2 input-title', 
+                'placeholder': 'Titulo' 
+            }), 
+            'description': forms.Textarea(attrs={ 
+                'id': 'id_description', 
+                'class': 'texto descricao form-control mt-2', 
+                'placeholder': 'Escreva sua pergunta...', 
+                'rows': 5, 
+                'cols': 50 
+            }), 
+        } 
+        labels = { 
+            'is_anonymous': 'Modo anônimo' 
+        } 
 
-class AnswerForm(forms.ModelForm):
-    class Meta:
-        model = Answer
-        fields = ['text', 'is_anonymous']
-        labels = {
-            'text': ''
-        }
-        widgets = {
-            'text': forms.Textarea(attrs={'cols': 80})
-        }
+class AnswerForm(forms.ModelForm): 
+    class Meta: 
+        model = Answer 
+        fields = ['text', 'is_anonymous', 'image'] 
+        labels = { 
+            'text': '' 
+        } 
+        widgets = { 
+            'text': forms.Textarea(attrs={'cols': 80}),
+            'id': 'id_answer_text',
+        } 
 
 User = get_user_model()
 
 
-
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason', 'details']
+        widgets = {
+            'reason': forms.RadioSelect,
+            'details': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Detalhes adicionais (opcional)'}),
+        }
+        labels = {
+            'reason': 'Motivo da denúncia',
+            'details': 'Detalhes adicionais',
+        }
