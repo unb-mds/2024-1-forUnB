@@ -50,11 +50,11 @@
                     <form class="d-flex flex-grow-1 me-2 position-relative" role="search" method="get"
                         action="{% url 'search:search_forum' %}">
                         {% if forum %}
-                        <input type="hidden" name="forum_id" value="{{ forum.id }}">
-                        <label for="search-bar" class="form-label search-label">{{ forum.title }}</label>
+                        <input type="hidden" name="forum_id" value="{{ forum.id }}"
+                            data-forum-title="{{ forum.title }}">
                         {% endif %}
                         <input id="search-bar" class="form-control search-bar me-2" type="search" name="search"
-                            placeholder="Pesquisar" aria-label="Search">
+                            placeholder="Pesquisar" aria-label="Search" value="{{ query }}" autocomplete="off">
                     </form>
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
