@@ -13,7 +13,13 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email',)
+        fields = ('email', 'username', 'password1', 'password2')
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if CustomUser.objects.filter(username=username).exists():
+            raise ValidationError('Este nome de usuário já está em uso.')
+        return username
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -25,7 +31,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = user.email  # Define o username como o email
+        user.username = self.cleaned_data['username']  # Define o username conforme o valor do formulário
         if commit:
             user.save()
         return user

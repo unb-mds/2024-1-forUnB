@@ -83,6 +83,21 @@
             <h4 class="text-center text-white fw-bold mt-3 mb-0">Cadastre-se com seu email Unb</h4>
             <br>
             {% csrf_token %}
+            <!-- Username Input -->
+            <div class="form-floating">
+                <input type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="floatingUsername" placeholder="Nome de usuário" name="username" required value="{{ form.username.value|default_if_none:'' }}">
+                <label for="floatingUsername">Nome de Usuário</label>
+                <div class="invalid-feedback">
+                    {% if form.username.errors %}
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% else %}
+                        Por favor, escolha um nome de usuário único.
+                    {% endif %}
+                </div>
+            </div>
+            
             <!-- Email Input -->
             <div class="form-floating">
                 <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="floatingInput" placeholder="name@example.com" name="email" pattern="[0-9]{9}@aluno\.unb\.br" required value="{{ form.email.value|default_if_none:'' }}">
