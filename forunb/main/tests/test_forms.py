@@ -120,4 +120,8 @@ class ReportFormTest(TestCase):
         self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma razão
         self.assertIn('reason', form.errors)  # Deve haver erro para o campo 'reason'
 
-    
+    def test_report_form_missing_details(self):
+        form = ReportForm(data={
+            'reason': 'ofensivo',
+        })
+        self.assertTrue(form.is_valid())  # O formulário deve ser válido mesmo sem detalhes
