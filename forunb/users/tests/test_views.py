@@ -76,3 +76,9 @@ class UserViewsTestCase(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, 'form', 'password', "Senha incorreta.")
+
+    def test_profile_view(self):
+        self.client.login(email=self.user.email, password='testpassword123')
+        response = self.client.get(reverse('users:profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/profile.html')
