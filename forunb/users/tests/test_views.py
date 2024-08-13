@@ -59,3 +59,12 @@ class UserViewsTestCase(TestCase):
         })
         # Should redirect to main:index
         self.assertEqual(response.status_code, 302)
+
+    def test_login_view_post_invalid_email(self):
+        response = self.client.post(reverse('users:login'), {
+            'username': 'nonexistent@aluno.unb.br',
+            'password': 'somepassword'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response, 'form', 'username',
+                             "Este email não está cadastrado.")
