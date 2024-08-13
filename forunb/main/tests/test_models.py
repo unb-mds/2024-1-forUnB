@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from main.models import Forum, Question, Answer
+from main.models import Forum, Question, Answer, Notification, Report
 
 User = get_user_model()
 
@@ -22,6 +22,7 @@ class ForumModelTest(TestCase):
     def test_forum_title_max_length(self):
         max_length = self.forum._meta.get_field('title').max_length
         self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
+
 
 class QuestionModelTest(TestCase):
     @classmethod
@@ -50,6 +51,14 @@ class QuestionModelTest(TestCase):
     def test_question_title_max_length(self):
         max_length = self.question._meta.get_field('title').max_length
         self.assertEqual(max_length, 100)  # Verifica se o tamanho máximo do título é 100
+
+    # Teste para o método toggle_upvote e upvote_count do modelo Question
+    def test_question_toggle_upvote(self):
+        self.assertEqual(self.question.upvote_count, 0)  # Inicialmente, o número de upvotes deve ser 0
+        self.question.toggle_upvote(self.user)
+        self.assertEqual(self.question.upvote_count, 1)  # Após o upvote, o número de upvotes deve ser 1
+        self.question.toggle_upvote(self.user)
+        self.assertEqual(self.question.upvote_count, 0)  # Após remover o upvote, o número de upvotes deve ser 0
 
     '''def test_question_missing_title(self):
         question = Question(description='Test Description', author=self.user, forum=self.forum)
