@@ -73,3 +73,14 @@ class CustomUserChangeFormTestCase(TestCase):
         self.assertTrue(form.is_valid())
         user = form.save()
         self.assertEqual(user.username, 'newusername')
+
+    # CORRIGIR ESTE TESTE
+    # def test_invalid_username_taken(self):
+    #     CustomUser.objects.create_user(email='otheruser@aluno.unb.br', password='password123', username='newusername')
+    #     form_data = {
+    #         'email': self.user.email,
+    #         'username': 'newusername',
+    #     }
+    #     form = CustomUserChangeForm(data=form_data, instance=self.user)
+    #     self.assertFalse(form.is_valid())
+    #     self.assertIn("Este nome de usuário já está em uso.", form.errors['username'])
