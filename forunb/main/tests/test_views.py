@@ -142,6 +142,22 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'main/notifications.html')
         self.assertContains(response, self.question.title)
 
+    def test_toggle_upvote_question_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula um upvote
+        response = self.client.post(reverse('main:toggle_upvote_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 1)
+        
+        # Simula um downvote
+        response = self.client.post(reverse('main:toggle_upvote_question', args=[self.question.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 0)
+
+
 
 
 
