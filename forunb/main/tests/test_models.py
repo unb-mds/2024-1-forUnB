@@ -112,3 +112,33 @@ class AnswerModelTest(TestCase):
         self.assertEqual(self.answer.upvote_count, 1)  # Após o upvote, o número de upvotes deve ser 1
         self.answer.toggle_upvote(self.user)
         self.assertEqual(self.answer.upvote_count, 0)  # Após remover o upvote, o número de upvotes deve ser 0
+
+# Teste para o modelo Notification
+class NotificationModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
+        cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
+        cls.question = Question.objects.create(
+            title='Test Question',
+            description='Test Description',
+            author=cls.user,
+            forum=cls.forum
+        )
+        cls.answer = Answer.objects.create(
+            text='Test Answer',
+            author=cls.user,
+            question=cls.question
+        )
+        cls.notification = Notification.objects.create(
+            user=cls.user,
+            question=cls.question,
+            answer=cls.answer
+        )
+
+    def test_notification_creation(self):
+        self.assertIsInstance(self.notification, Notification)  # Verifica se o objeto é uma instância de Notification
+        self.assertEqual(self.notification.user, self.user)  # Verifica se o usuário associado está correto
+        self.assertEqual(self.notification.question, self.question)  # Verifica se a pergunta associada está correta
+        self.assertEqual(self.notification.answer, self.answer)  # Verifica se a resposta associada está correta
+        self.assertTrue(hasattr(self.notification, 'created_at'))  # Verifica se o atributo 'created_at' existe
