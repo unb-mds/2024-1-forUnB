@@ -104,7 +104,7 @@ def new_question(request, forum_id):
             question = form.save(commit=False)
             question.forum = forum
             question.author = request.user
-            question.text = clean_html(question.text)
+            question.description = clean_html(question.description)
             question.save()
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
