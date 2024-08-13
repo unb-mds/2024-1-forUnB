@@ -146,3 +146,36 @@ class NotificationModelTest(TestCase):
     def test_notification_str_method(self):
         expected_str = f'Notification for {self.user.username} about question {self.question.title}'
         self.assertEqual(str(self.notification), expected_str)  # Verifica se o método __str__ retorna a string correta
+
+# Teste para o modelo Report
+class ReportModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@aluno.unb.br', password='senha1010')
+        cls.forum = Forum.objects.create(title='Test Forum', description='Test Description')
+        cls.question = Question.objects.create(
+            title='Test Question',
+            description='Test Description',
+            author=cls.user,
+            forum=cls.forum
+        )
+        cls.answer = Answer.objects.create(
+            text='Test Answer',
+            author=cls.user,
+            question=cls.question
+        )
+        cls.report = Report.objects.create(
+            question=cls.question,
+            user=cls.user,
+            reason='ofensivo',
+            details='Inappropriate content'
+        )
+
+    def test_report_creation(self):
+        self.assertIsInstance(self.report, Report)  # Verifica se o objeto é uma instância de Report
+        self.assertEqual(self.report.question, self.question)  # Verifica se a pergunta associada está correta
+        self.assertEqual(self.report.user, self.user)  # Verifica se o usuário associado está correto
+        self.assertEqual(self.report.reason, 'ofensivo')  # Verifica se a razão da denúncia está correta
+        self.assertEqual(self.report.details, 'Inappropriate content')  # Verifica se os detalhes da denúncia estão corretos
+        self.assertTrue(hasattr(self.report, 'created_at'))  # Verifica se o atributo 'created_at' existe
+
