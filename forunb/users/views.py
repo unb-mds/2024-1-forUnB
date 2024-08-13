@@ -64,7 +64,7 @@ def login_view(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
-@login_required
+@login_required(login_url='/users/login')
 def edit_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
