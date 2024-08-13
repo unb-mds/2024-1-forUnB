@@ -108,6 +108,16 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(self.user.followed_forums.filter(id=self.forum.id).exists())
 
+    def test_user_posts_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        response = self.client.get(reverse('main:user_posts'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/questions.html')
+        self.assertContains(response, self.question.title)
+        self.assertContains(response, self.answer.text)
+
+
 
 
 # TESTANDO VIEWS DO APP SEARCH
