@@ -82,8 +82,8 @@ def edit_profile(request):
                 return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
-
-    return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
 # def register_unb_email(request):
 #     if request.method == 'POST':
