@@ -16,7 +16,7 @@ class ForumForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'description', 'is_anonymous']
+        fields = ['title', 'description', 'is_anonymous', 'image']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'texto form-control form-control-sm mt-2 input-title',
@@ -25,8 +25,8 @@ class QuestionForm(forms.ModelForm):
             'description': forms.Textarea(attrs={
                 'class': 'texto descricao form-control mt-2',
                 'placeholder': 'Escreva sua pergunta...',
-                'rows': 5,  # Ajuste o número de linhas conforme necessário
-                'cols': 50  # Ajuste o número de colunas conforme necessário
+                'rows': 5,
+                'cols': 50
             }),
         }
         labels = {
@@ -36,7 +36,7 @@ class QuestionForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['text', 'is_anonymous']
+        fields = ['text', 'is_anonymous', 'image']
         labels = {
             'text': ''
         }

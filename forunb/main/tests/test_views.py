@@ -73,20 +73,27 @@ class ViewsTestCase(TestCase):
         response = self.client.post(reverse('main:new_question', args=[self.forum.id]), {
             'title': 'Another Test Question',
             'description': 'Another Test Question Description',
-        })
-        self.assertEqual(response.status_code, 302)  # Redirect after success
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)  # Expecting a JSON response
+        response_json = response.json()
+        self.assertTrue(response_json['success'])
+        self.assertIn('question_id', response_json)
 
     def test_new_answer_view(self):
         self.client.login(email='test@aluno.unb.br', password='senha1010')
-        response = self.client.get(reverse('main:new_answer', args=[self.question.id]))
+        
+        # Test getting the new answer form
+        response = self.client.get(reverse('main:question_detail', args=[self.question.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'main/new_answer.html')
+        self.assertTemplateUsed(response, 'main/question_detail.html')
 
         # Test posting a new answer
         response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {
             'text': 'Another Test Answer',
-        })
-        self.assertEqual(response.status_code, 302)  # Redirect after success
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)  # Expecting a JSON response
+        response_json = response.json()
+        self.assertTrue(response_json['success'])
 
 
 # TESTANDO VIEWS DO APP SEARCH
@@ -113,7 +120,7 @@ class SearchForumTestCase(TestCase):
         # Verifica se o contexto contém os fóruns filtrados
         self.assertIn('forums', response.context)
         forums = response.context['forums']
-        self.assertEqual(forums.count(), 1)
+        self.assertEqual(len(forums), 1)
         self.assertEqual(forums[0], self.forum1)
         
         # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
@@ -132,7 +139,7 @@ class SearchForumTestCase(TestCase):
         # Verifica se o contexto contém a lista de fóruns vazia
         self.assertIn('forums', response.context)
         forums = response.context['forums']
-        self.assertEqual(forums.count(), 0)
+        self.assertEqual(len(forums), 0)
         
         # Verifica se a consulta de pesquisa foi passada corretamente para o contexto
         self.assertEqual(response.context['query'], 'java')

@@ -44,14 +44,10 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username']
-
-    def __init__(self, *args, **kwargs):
-        self.user_id = kwargs.pop('user_id')
-        super().__init__(*args, **kwargs)
+        fields = ['username', 'photo']
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        if User.objects.filter(username=username).exclude(id=self.user_id).exists():
+        if CustomUser.objects.filter(username=username).exclude(id=self.instance.id).exists():
             raise forms.ValidationError("Este nome de usuário já está em uso.")
         return username

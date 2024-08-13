@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.db.models import Count
 
 
 # Login view vai passar para o app de users
@@ -23,10 +25,20 @@ def index(request):
 
 def forum_detail(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
-    questions = Question.objects.filter(forum=forum).order_by('-created_at')
+    order_by = request.GET.get('order_by', 'date')
+    questions = Question.objects.filter(forum=forum).annotate(total_upvotes=Count('upvoters'))
+    if order_by == 'least_upvoted':
+        questions = questions.order_by('total_upvotes')
+    elif order_by == 'most_upvoted':
+        questions = questions.order_by('-total_upvotes')
+    elif order_by == 'oldest':
+        questions = questions.order_by('created_at')
+    else:
+        questions = questions.order_by('-created_at')
     is_following = False
     if request.user.is_authenticated:
         is_following = request.user.followed_forums.filter(id=forum.id).exists()
+
     return render(request, 'main/forum_detail.html', {
         'forum': forum,
         'questions': questions,
@@ -82,34 +94,47 @@ def follow_forum(request, forum_id, action):
 def new_question(request, forum_id):
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
             question.forum = forum
             question.author = request.user
             question.save()
             request.user.created_questions.add(question)
-            return redirect('main:forum_detail', forum_id=forum.id)
+            return JsonResponse({'success': True, 'question_id': question.id})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     else:
         form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
+
 
 
 @login_required(login_url='/users/login')
 def new_answer(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
-        form = AnswerForm(request.POST)
+        form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.question = question
             answer.author = request.user
             answer.save()
             request.user.created_answers.add(answer)
-            return redirect('main:question_detail', question_id=question.id)
-    else:
-        form = AnswerForm()
-    return render(request, 'main/new_answer.html', {'form': form, 'question': question})
+
+            # Create notification for the question's author
+            if question.author != request.user:
+                Notification.objects.create(
+                    user=question.author,
+                    question=question,
+                    answer=answer
+                )
+            
+            return JsonResponse({'success': True, 'question_id': question.id})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 @login_required(login_url='/users/login')
 def delete_question(request, pk):
@@ -128,3 +153,23 @@ def delete_answer(request, pk):
         messages.success(request, 'Resposta deletada com sucesso.')
         return redirect('main:user_posts')
     return render(request, 'main/confirm_delete.html', {'object': answer})
+
+@login_required(login_url='/users/login')
+def notifications(request):
+    user_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'main/notifications.html', {'notifications': user_notifications})
+
+
+@login_required
+@require_POST
+def toggle_upvote_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    question.toggle_upvote(request.user)
+    return JsonResponse({'upvotes': question.upvote_count})
+
+@login_required
+@require_POST
+def toggle_upvote_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    answer.toggle_upvote(request.user)
+    return JsonResponse({'upvotes': answer.upvote_count})

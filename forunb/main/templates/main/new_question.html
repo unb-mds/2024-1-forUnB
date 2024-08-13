@@ -3,104 +3,231 @@
 {% block content %}
 
 {% load custom_filters %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
 <style>
-    .nome{
-        color:#003366;
+    .nome {
+        color: #003366;
     }
 
-    .btn-cancelar{
-    background-color: #003366;
-    color: #ffffff;
-    font-weight: bold;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
+    .btn-cancelar {
+        background-color: #003366;
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
     }
 
     .btn-cancelar:hover {
-    background-color: #a0b0c0;
+        background-color: #a0b0c0;
     }
 
-    .btn-enviar{
-    background-color: #006633;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: bold;
+    .btn-enviar {
+        background-color: #006633;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: bold;
     }
 
     .btn-enviar:hover {
-    background-color: #004c26;
+        background-color: #004c26;
     }
 
-    .response-form{
-    max-width: 50vw;
-    height: 70vh;
-    width: 100%;
+    .response-form {
+        max-width: 50vw;
+        height: 70vh;
+        width: 100%;
     }
-    
+
     .input-title {
-    width: 50%;
-    font-size: 1.25rem; /* Tamanho do texto maior */
-    color: #003366;       /* Cor do texto digitado */
+        width: 50%;
+        font-size: 1.25rem; /* Tamanho do texto maior */
+        color: #003366; /* Cor do texto digitado */
     }
 
-    .cancel{
+    .cancel {
         color: white;
     }
 
-    .texto{
-    background-color: #C7D2DD;
-    color: #003366;
+    .texto {
+        background-color: #C7D2DD;
+        color: #003366;
     }
 
     .texto::placeholder {
-    color: #003366; /* Exemplo de cor do placeholder */
-    opacity: 1; /* Garantir que a cor aplicada seja visível */
-    font-weight: bold; /*fonte em negrito*/
+        color: #003366; /* Exemplo de cor do placeholder */
+        opacity: 1; /* Garantir que a cor aplicada seja visível */
+        font-weight: bold; /* Fonte em negrito */
     }
 
     .descricao.texto {
-      height: 200px; /* Ajuste a altura conforme necessário */
-  }
-
-  .custom-label {
-    color: #003366; 
-    font-weight: bold;
-}
-
-  @media (max-width: 767px) {
-    .response-form{
-    max-width: 100vw;
-    height: 100vh;
-    width: 100%;
+        height: 200px; /* Ajuste a altura conforme necessário */
     }
-  }
+
+    .custom-label {
+        color: #003366;
+        font-weight: bold;
+    }
+
+    #loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .img-container {
+        width: 100%;
+        max-width: 400px; /* Ajuste conforme necessário */
+        max-height: 400px; /* Ajuste conforme necessário */
+        overflow: hidden;
+        margin: 0 auto; /* Centraliza o contêiner da imagem */
+    }
+
+    #cropper-image {
+        width: 100%; /* Ajusta a largura da imagem ao contêiner */
+        height: auto; /* Mantém a proporção da imagem */
+    }
+
+    .img-preview {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        margin: 10px;
+        border: 1px solid #ccc;
+    }
+
+    @media (max-width: 767px) {
+        .response-form {
+            max-width: 100vw;
+            height: 100vh;
+            width: 100%;
+        }
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
     <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
-        <div class="response-form">
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    {{ form.title.label_tag }}
-                    {{ form.title }}
+    <div class="response-form">
+        <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+            </div>
+            <div class="form-group mb-4">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+            </div>
+            <div class="form-group">
+                <label class="custom-label">{{ form.is_anonymous.label_tag }}</label>
+                {{ form.is_anonymous }}
+            </div>
+            <div class="form-group mt-3">
+                <label for="image">Imagem:</label>
+                <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
+                <div class="img-container mt-3">
+                    <img id="cropper-image" style="max-width: 100%;">
                 </div>
-                <div class="form-group mb-4">
-                    {{ form.description.label_tag }}
-                    {{ form.description }}
-                </div>
-                <div class="form-group">
-                    <label class="custom-label">{{ form.is_anonymous.label_tag }}</label>
-                    {{ form.is_anonymous }}
-                </div>
-                <div class="flex-column flex-sm-row justify-content-between mt-2">
-                    <a class="cancel btn btn-cancelar" type="button" href="{% url 'main:forum_detail' forum.id %}">Cancelar</a>
-                    <button type="submit" class="btn btn-enviar">Enviar</button> 
-                </div>
-            </form>
-        </div>   
+                <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
+            </div>
+            <div class="mt-1">
+                <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
+                <button type="submit" class="btn btn-enviar">Enviar</button>
+            </div>
+            <div id="loading-spinner">
+                <p>Carregando...</p>
+            </div>
+        </form>
+    </div>
 </div>
+
+<script>
+    let cropper;
+    const image = document.getElementById('cropper-image');
+
+    function showCropper(event) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validImageTypes.includes(file.type)) {
+                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+                event.target.value = ''; // Limpa o input
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    preview: '.img-preview',
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        const formData = new FormData(form);
+
+        if (cropper && document.getElementById('image').files.length > 0) {
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const fileName = 'cropped_image.png';
+                const croppedImage = new File([blob], fileName, { type: 'image/png' });
+                formData.append('image', croppedImage);
+                sendFormData(form.action, formData);
+            }, 'image/png');
+        } else {
+            sendFormData(form.action, formData);
+        }
+    }
+
+    function sendFormData(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            if (data.success) {
+                window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
+            } else {
+                alert('Erro ao enviar a pergunta.');
+                console.error('Erro:', data.errors);
+            }
+        })
+        .catch(error => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            console.error('Erro:', error);
+            alert('Erro ao enviar a pergunta.');
+        });
+    }
+
+    function cancelForm() {
+        window.history.back();
+    }
+
+
+    function cancelForm() {
+        window.history.back();
+    }
+</script>
+
 {% endblock %}
