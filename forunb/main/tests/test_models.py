@@ -104,3 +104,11 @@ class AnswerModelTest(TestCase):
         self.question.delete()
         with self.assertRaises(Answer.DoesNotExist):  # Verifica se as respostas associadas são deletadas junto com a pergunta
             Answer.objects.get(question__id=question_id)
+
+    # Teste para o método toggle_upvote e upvote_count do modelo Answer
+    def test_answer_toggle_upvote(self):
+        self.assertEqual(self.answer.upvote_count, 0)  # Inicialmente, o número de upvotes deve ser 0
+        self.answer.toggle_upvote(self.user)
+        self.assertEqual(self.answer.upvote_count, 1)  # Após o upvote, o número de upvotes deve ser 1
+        self.answer.toggle_upvote(self.user)
+        self.assertEqual(self.answer.upvote_count, 0)  # Após remover o upvote, o número de upvotes deve ser 0
