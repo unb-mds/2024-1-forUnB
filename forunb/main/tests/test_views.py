@@ -157,8 +157,22 @@ class ViewsTestCase(TestCase):
         response_json = response.json()
         self.assertEqual(response_json['upvotes'], 0)
 
+    def test_toggle_upvote_answer_view(self):
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Simula um upvote
+        response = self.client.post(reverse('main:toggle_upvote_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 1)
+        
+        # Simula um downvote
+        response = self.client.post(reverse('main:toggle_upvote_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json['upvotes'], 0)
 
-
+    
 
 
 
