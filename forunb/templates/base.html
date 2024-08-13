@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<style>
+    .faleconosco{
+    font-size: 0.7rem;
+}
+</style>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,6 +45,7 @@
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">&copy; 2024 Meu Fórum</p>
+                    <p class="faleconosco text-white ">Fale conosco : forunb24@gmail.com</p>
                 </footer>
             </div>
             <!-- Conteúdo principal -->
@@ -99,6 +106,31 @@
             var sidebar = document.getElementById('accordionSidebar');
             sidebar.classList.remove('show');
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const searchBar = document.getElementById('search-bar');
+
+    function setPlaceholder() {
+        if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+            // Se estivermos em uma página de fórum específico
+            const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
+            searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+        } else {
+            // Para todas as outras páginas
+            searchBar.placeholder = "Digite o nome da matéria";
+        }
+    }
+
+    searchBar.placeholder = "Pesquisar";
+
+    searchBar.addEventListener('focus', setPlaceholder);
+
+    searchBar.addEventListener('blur', function () {
+        searchBar.placeholder = "Pesquisar";
+    });
+});
+
+
     </script>
 </body>
 

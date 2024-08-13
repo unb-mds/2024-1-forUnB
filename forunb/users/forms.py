@@ -15,6 +15,14 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('email',)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError('Email já cadastrado.')
+        if not email.endswith('@aluno.unb.br'):
+            raise ValidationError('Por favor, utilize um email válido da UnB.')
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email  # Define o username como o email
