@@ -1,5 +1,6 @@
 """Views for handling user-related actions in the users application."""
 
+from django.views.decorators.http import require_GET
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -31,7 +32,7 @@ def register(request):
 
     return render(request, 'users/register_unb_email.html', {'form': form})
 
-
+@require_GET 
 def logout_view(request):
     """Handle user logout."""
     logout(request)
