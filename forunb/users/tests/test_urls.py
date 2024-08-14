@@ -1,36 +1,38 @@
+"""Tests for the URL configurations in the users application."""
+
 from django.test import TestCase
 from django.urls import reverse, resolve
-from ..views import register, Logout_view, login_view
+from ..views import register, logout_view, login_view
 
 
 class UsersURLTests(TestCase):
-    """ Testes da URL do app users. """
+    """Test cases for the URLs in the users app."""
 
     def test_register_url(self):
-        """ Testa se a URL de registro está correta. """
+        """Test that the register URL resolves to the correct view."""
         url = reverse('users:register')
         self.assertEqual(resolve(url).func, register)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_logout_url(self):
-        """ Testa se a URL de logout está correta. """
+        """Test that the logout URL resolves to the correct view."""
         url = reverse('users:logout')
-        self.assertEqual(resolve(url).func, Logout_view)
+        self.assertEqual(resolve(url).func, logout_view)
         response = self.client.get(url)
-        # Como o logout redireciona, verificamos o código de status 302
+        # Since logout redirects, we check for status code 302
         self.assertEqual(response.status_code, 302)
 
     def test_login_url(self):
-        """ Testa se a URL de login está correta. """
+        """Test that the login URL resolves to the correct view."""
         url = reverse('users:login')
         self.assertEqual(resolve(url).func, login_view)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_edit_profile(self):
-        """ Testa se a URL de edição de perfil está correta. """
+        """Test that the edit profile URL requires login."""
         url = reverse('users:edit_profile')
         response = self.client.get(url)
-        # Como o usuário não está logado, o código de status deve ser 302
-        self.assertEqual(response.status_code, 302) 
+        # Since the user is not logged in, the status code should be 302
+        self.assertEqual(response.status_code, 302)
