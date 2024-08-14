@@ -1,13 +1,13 @@
-# Obtendo os dados das disciplinas da UnB
+""" Obtendo os dados das disciplinas da UnB. """
 
-from .sessions import URL, HEADERS, create_request_session, get_session_cookie, get_response
-from bs4 import BeautifulSoup
-from collections import defaultdict
 from typing import List, Optional
+from collections import defaultdict
+from bs4 import BeautifulSoup
 import requests
+from .sessions import URL, HEADERS, create_request_session, get_session_cookie, get_response
 
 def get_list_of_departments(response=get_response(create_request_session())) -> Optional[List]:
-    """Obtem a lista de departamentos da UnB."""
+    """ Obtem a lista de departamentos da UnB."""
     soup = BeautifulSoup(response.content, "html.parser")
     departments = soup.find("select", attrs={"id": "formTurma:inputDepto"})
 
@@ -20,6 +20,7 @@ def get_list_of_departments(response=get_response(create_request_session())) -> 
     return department_ids
 
 class DisciplineWebScraper:
+    """ Classe para raspar dados das disciplinas do site Sigaa da UnB. """
     def __init__(self, department: str, year: str, period: str, url=URL, session=None, cookie=None):
         self.disciplines: defaultdict[str, List[str]] = defaultdict(list)
         self.department = department
@@ -41,6 +42,7 @@ class DisciplineWebScraper:
         self.response = None
 
     def get_response_from_disciplines_post_request(self) -> requests.Response:
+        """ Realiza um post request para obter a resposta com as disciplas. """
         self.response = self.session.post(
             self.url,
             headers=HEADERS,
@@ -49,6 +51,7 @@ class DisciplineWebScraper:
         )
 
     def make_disciplines(self, rows: str) -> None:
+        """ Cria um dicionário com as disciplinas. """
         if rows is None or not len(rows):
             return None
 
@@ -64,6 +67,7 @@ class DisciplineWebScraper:
                 self.disciplines[code].append(name)
 
     def retrieve_classes_tables(self, response):
+        """ Obtém as tabelas com as disciplinas. """
         soup = BeautifulSoup(response.content, "html.parser")
         tables = soup.find("table", attrs={"class": "listagem"})
 
@@ -73,6 +77,7 @@ class DisciplineWebScraper:
         return tables
 
     def make_web_scraping_of_disciplines(self, response) -> None:
+        """ Realiza a raspagem de dados das disciplas. """
         tables = self.retrieve_classes_tables(response)
 
         if not tables:
@@ -82,6 +87,7 @@ class DisciplineWebScraper:
         self.make_disciplines(table_rows)
 
     def get_disciplines(self) -> defaultdict[str, List[str]]:
+        """ Retorna um dicionário com as disciplinas. """
         if not self.response:
             self.get_response_from_disciplines_post_request()
         self.make_web_scraping_of_disciplines(self.response)
