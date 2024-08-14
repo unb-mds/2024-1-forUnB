@@ -13,12 +13,12 @@ def validate_unb_email(value):
         raise ValidationError('Por favor, utilize um email da UnB válido.')
 
 
-class CustomUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):  # pylint: disable=R0901
     """Form for creating a new user with additional email validation."""
 
     email = forms.EmailField(validators=[validate_unb_email])
 
-    class Meta:
+    class Meta: # pylint: disable=C0115, R0903
         model = CustomUser
         fields = ('email', 'username', 'password1', 'password2')
 
@@ -50,7 +50,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     """Form for updating an existing user with additional fields."""
 
-    class Meta:
+    class Meta: # pylint: disable=C0115, R0903
         model = CustomUser
         fields = (
             'email', 'username', 'followed_forums', 'liked_questions',
@@ -62,17 +62,17 @@ class CustomUserChangeForm(UserChangeForm):
         }
 
     created_questions = forms.ModelMultipleChoiceField(
-        queryset=Question.objects.all(), required=False
+        queryset=Question.objects.all(), required=False # pylint: disable=E1101
     )
     created_answers = forms.ModelMultipleChoiceField(
-        queryset=Answer.objects.all(), required=False
+        queryset=Answer.objects.all(), required=False # pylint: disable=E1101
     )
 
 
 class ProfileEditForm(forms.ModelForm):
     """Form for editing the user's profile with basic fields."""
 
-    class Meta:
+    class Meta: # pylint: disable=C0115, R0903
         model = CustomUser
         fields = ['username', 'photo']
 

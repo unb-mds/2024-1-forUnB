@@ -3,7 +3,7 @@
 from django.urls import path
 from . import views
 
-APP_NAME = "users"  # Conform to UPPER_CASE naming style
+app_name = "users"  # pylint: disable=C0103
 
 urlpatterns = [
     path('profile/', views.profile, name='profile'),

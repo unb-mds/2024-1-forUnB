@@ -53,7 +53,7 @@ class CustomUserAdmin(UserAdmin):
     def get_form(self, request, obj=None, **kwargs):
         """Customize form to include the 'followed_forums' field with appropriate queryset."""
         form = super().get_form(request, obj, **kwargs)
-        form.base_fields['followed_forums'].queryset = Forum.objects.all()
+        form.base_fields['followed_forums'].queryset = Forum.objects.all() # pylint: disable=E1101
         return form
 
     def get_readonly_fields(self, request, obj=None):
