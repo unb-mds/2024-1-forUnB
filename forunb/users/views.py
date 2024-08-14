@@ -32,7 +32,7 @@ def register(request):
 
     return render(request, 'users/register_unb_email.html', {'form': form})
 
-@require_GET 
+@require_GET
 def logout_view(request):
     """Handle user logout."""
     logout(request)
