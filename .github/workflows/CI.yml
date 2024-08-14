@@ -1,8 +1,9 @@
-name: Execução de Testes
+name: Tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
 
 jobs:
