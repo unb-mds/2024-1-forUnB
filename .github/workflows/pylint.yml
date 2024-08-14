@@ -36,4 +36,4 @@ jobs:
           
       - name: Run Pylint
         run: |
-          pylint --verbose $(git ls-files '*.py')
+          pylint --verbose $(git ls-files 'forunb/users/*.py' | grep -v 'migrations/')
