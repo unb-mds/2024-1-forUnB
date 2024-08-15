@@ -60,3 +60,12 @@ class CustomUserModelTest(TestCase):
         self.answer.toggle_upvote(self.user)
         self.assertNotIn(self.user, self.answer.upvoters.all())
         self.assertEqual(self.answer.upvote_count, 0)
+
+    def test_notification_creation(self):
+        """ Test that a notification can be created """
+        notification = Notification.objects.create(
+            user=self.user, answer=self.answer, question=self.question
+        )
+        self.assertEqual(str(
+            notification),
+            f'Notification for {self.user.username} about question {self.question.title}')
