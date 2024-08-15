@@ -50,3 +50,13 @@ class CustomUserModelTest(TestCase):
         self.question.toggle_upvote(self.user)
         self.assertNotIn(self.user, self.question.upvoters.all())
         self.assertEqual(self.question.upvote_count, 0)
+
+    def test_upvote_answer(self):
+        """ Test that a user can upvote an answer """
+        self.answer.toggle_upvote(self.user)
+        self.assertIn(self.user, self.answer.upvoters.all())
+        self.assertEqual(self.answer.upvote_count, 1)
+
+        self.answer.toggle_upvote(self.user)
+        self.assertNotIn(self.user, self.answer.upvoters.all())
+        self.assertEqual(self.answer.upvote_count, 0)
