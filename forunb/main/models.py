@@ -159,8 +159,4 @@ class Report(models.Model):
 
     def __str__(self):
         """ String representation of a report. """
-        if self.question == "Question":
-            answer = "Question"
-        else:
-            answer = "Answer"
-        return f"{self.get_reason_display()} - {self.user.username} - {answer}"
+        return f"{self.get_reason_display()} - {self.user.username} - {'Question' if self.question else 'Answer'}"
