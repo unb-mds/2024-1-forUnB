@@ -77,3 +77,11 @@ class CustomUserModelTest(TestCase):
         )
         self.assertEqual(
             str(report), f"Conteúdo ofensivo - {self.user.username} - Question")
+        
+    def test_report_creation_for_answer(self):
+        """ Test that a report can be created for an answer """
+        report = Report.objects.create(
+            answer=self.answer, user=self.user, reason='irrelevante', details='Irrelevant content'
+        )
+        self.assertEqual(
+            str(report), f"Irrelevante para o fórum - {self.user.username} - Answer")
