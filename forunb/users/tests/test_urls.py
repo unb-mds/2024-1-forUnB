@@ -2,7 +2,7 @@
 
 from django.test import TestCase
 from django.urls import reverse, resolve
-from ..views import register, logout_view, login_view
+from users.views import register, logout_view, login_view, profile, edit_profile
 
 
 class UsersURLTests(TestCase):
@@ -33,6 +33,15 @@ class UsersURLTests(TestCase):
     def test_edit_profile(self):
         """Test that the edit profile URL requires login."""
         url = reverse('users:edit_profile')
+        self.assertEqual(resolve(url).func, edit_profile)
+        response = self.client.get(url)
+        # Since the user is not logged in, the status code should be 302
+        self.assertEqual(response.status_code, 302)
+
+    def test_profile(self):
+        """Test that the profile URL requires login."""
+        url = reverse('users:profile')
+        self.assertEqual(resolve(url).func, profile)
         response = self.client.get(url)
         # Since the user is not logged in, the status code should be 302
         self.assertEqual(response.status_code, 302)

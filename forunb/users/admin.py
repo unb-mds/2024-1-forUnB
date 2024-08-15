@@ -3,8 +3,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from main.models import Forum  # Certifique-se de importar o modelo Forum
-from .models import CustomUser
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from users.models import CustomUser
+from users.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 class CustomUserAdmin(UserAdmin):
