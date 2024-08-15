@@ -2,13 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+from forunb.env import env, BASE_DIR
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'forunb.settings')
+    # Read the environment variables from the .env file
+    env.read_env(os.path.join(BASE_DIR, '.env'))
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE'))
     try:
-        from django.core.management import execute_from_command_line
+        from django.core.management import execute_from_command_line # pylint: disable=C0415
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "

@@ -1,3 +1,3 @@
-from django.contrib import admin
+"""Admin configuration for the search application."""
 
-# Register your models here.
+# No models to register currently.

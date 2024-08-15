@@ -1,3 +1,3 @@
-from django.db import models
+"""Models for the search application."""
 
-# Create your models here.
+# No models defined currently.
