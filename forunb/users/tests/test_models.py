@@ -40,3 +40,9 @@ class CustomUserModelTest(TestCase):
     def test_str_method(self):
         """ Test that the __str__ method returns the username """
         self.assertEqual(str(self.user), self.user.username)
+
+    def test_upvote_question(self):
+        """ Test that a user can upvote a question """
+        self.question.toggle_upvote(self.user)
+        self.assertIn(self.user, self.question.upvoters.all())
+        self.assertEqual(self.question.upvote_count, 1)
