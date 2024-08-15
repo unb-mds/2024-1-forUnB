@@ -28,4 +28,11 @@ class CustomUserModelTest(TestCase):
         self.assertTrue(self.user.check_password('password123'))
         self.assertFalse(self.user.is_staff)
 
-    
+    def test_create_superuser(self):
+        """ Test that a superuser can be created """
+        admin_user = CustomUser.objects.create_superuser(
+            email='admin@aluno.unb.br', password='adminpass'
+        )
+        self.assertEqual(admin_user.email, 'admin@aluno.unb.br')
+        self.assertTrue(admin_user.is_superuser)
+        self.assertTrue(admin_user.is_staff)
