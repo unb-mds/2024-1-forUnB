@@ -36,4 +36,4 @@ jobs:
           
       - name: Run Pylint
         run: |
-          pylint --verbose $(git ls-files 'forunb/main/*.py' | grep -v 'migrations/' | grep -v 'management/' | grep -v 'templatetags/')
+          pylint --verbose $(git ls-files 'forunb/*.py' | grep -v 'migrations/' | grep -v 'management/' | grep -v 'templatetags/' | grep -v 'forunb/')

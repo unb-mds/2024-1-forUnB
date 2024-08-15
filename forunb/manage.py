@@ -8,10 +8,10 @@ def main():
     """Run administrative tasks."""
     # Read the environment variables from the .env file
     env.read_env(os.path.join(BASE_DIR, '.env'))
-    
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE'))
     try:
-        from django.core.management import execute_from_command_line
+        from django.core.management import execute_from_command_line # pylint: disable=C0415
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "
