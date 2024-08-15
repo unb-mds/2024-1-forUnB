@@ -59,7 +59,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'users/login.html', {"form": form})
 
-
+@login_required(login_url='/users/login')
 def profile(request):
     """Render the user's profile page."""
     return render(request, 'users/profile.html')
