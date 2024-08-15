@@ -1,19 +1,21 @@
-# Raspagem de dados das disciplinas do site Sigaa da UnB e salva como fóruns
-
+""" Raspagem de dados das disciplinas do site Sigaa da UnB e salva como fóruns """
 from django.core.management.base import BaseCommand
 from main.models import Forum
 from main.scraping import DisciplineWebScraper
 
+
 class Command(BaseCommand):
+    """ Classe de comando para raspar dados das disciplinas do site Sigaa da UnB e salvar como fóruns """
     help = 'Raspa dados das disciplinas do site Sigaa da UnB e salva como fóruns'
 
     def handle(self, *args, **kwargs):
-        departments = ["508","518", "524", "673"]  
-        year = "2024"  
-        period = "2"  
+        departments = ["508", "518", "524", "673"]
+        year = "2024"
+        period = "2"
 
         Forum.objects.all().delete()
-        self.stdout.write(self.style.WARNING('Todos os fóruns antigos foram removidos.'))
+        self.stdout.write(self.style.WARNING(
+            'Todos os fóruns antigos foram removidos.'))
 
         for department in departments:
             scraper = DisciplineWebScraper(department, year, period)
@@ -27,6 +29,8 @@ class Command(BaseCommand):
                         defaults={'description': ''}
                     )
                     if created:
-                        self.stdout.write(self.style.SUCCESS(f'Fórum "{title}" criado com sucesso.'))
+                        self.stdout.write(self.style.SUCCESS(
+                            f'Fórum "{title}" criado com sucesso.'))
                     else:
-                        self.stdout.write(self.style.WARNING(f'Fórum "{title}" já existe.'))
+                        self.stdout.write(self.style.WARNING(
+                            f'Fórum "{title}" já existe.'))
