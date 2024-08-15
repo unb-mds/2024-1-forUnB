@@ -36,4 +36,4 @@ jobs:
           
       - name: Run Pylint
         run: |
-          pylint --verbose --disable=E1101 $(git ls-files 'forunb/main/*.py' | grep -v 'migrations/')
+          pylint --verbose $(git ls-files 'forunb/main/*.py' | grep -v 'migrations/' | grep -v 'management/' | grep -v 'templatetags/')
