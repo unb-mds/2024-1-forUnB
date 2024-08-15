@@ -11,7 +11,7 @@ class ForumModelTest(TestCase):
     """ Test suite for the Forum model."""
     @classmethod
     def setUpTestData(cls):
-        cls.forum = Forum.objects.create(
+        cls.forum = Forum.objects.create( # pylint: disable=E1101
             title='Test Forum', description='Test Description')
 
     def test_forum_creation(self):
@@ -27,7 +27,7 @@ class ForumModelTest(TestCase):
 
     def test_forum_title_max_length(self):
         """ Test the max_length of the title field. """
-        max_length = self.forum._meta.get_field('title').max_length
+        max_length = self.forum._meta.get_field('title').max_length  # pylint: disable=protected-access
         self.assertEqual(max_length, 100)
 
 
@@ -38,9 +38,9 @@ class QuestionModelTest(TestCase):
         """ Set up data for the entire TestCase. """
         cls.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
-        cls.forum = Forum.objects.create(
+        cls.forum = Forum.objects.create( # pylint: disable=E1101
             title='Test Forum', description='Test Description')
-        cls.question = Question.objects.create(
+        cls.question = Question.objects.create( # pylint: disable=E1101
             title='Test Question',
             description='Test Description',
             author=cls.user,
@@ -63,7 +63,7 @@ class QuestionModelTest(TestCase):
 
     def test_question_title_max_length(self):
         """ Test the max_length of the title field. """
-        max_length = self.question._meta.get_field('title').max_length
+        max_length = self.question._meta.get_field('title').max_length  # pylint: disable=protected-access
         self.assertEqual(max_length, 100)
 
     def test_question_toggle_upvote(self):
@@ -88,15 +88,15 @@ class AnswerModelTest(TestCase):
         """ Set up data for the entire TestCase. """
         cls.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
-        cls.forum = Forum.objects.create(
+        cls.forum = Forum.objects.create( # pylint: disable=E1101
             title='Test Forum', description='Test Description')
-        cls.question = Question.objects.create(
+        cls.question = Question.objects.create( # pylint: disable=E1101
             title='Test Question',
             description='Test Description',
             author=cls.user,
             forum=cls.forum
         )
-        cls.answer = Answer.objects.create(
+        cls.answer = Answer.objects.create( # pylint: disable=E1101
             text='Test Answer',
             author=cls.user,
             question=cls.question
@@ -125,8 +125,8 @@ class AnswerModelTest(TestCase):
         """ Test if deleting a question deletes its associated answers. """
         question_id = self.question.id
         self.question.delete()
-        with self.assertRaises(Answer.DoesNotExist):
-            Answer.objects.get(question__id=question_id)
+        with self.assertRaises(Answer.DoesNotExist): # pylint: disable=E1101
+            Answer.objects.get(question__id=question_id) # pylint: disable=E1101
 
     def test_answer_toggle_upvote(self):
         """ Test the toggle_upvote method of the Answer model. """
@@ -144,20 +144,20 @@ class NotificationModelTest(TestCase):
         """ Set up data for the entire TestCase. """
         cls.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
-        cls.forum = Forum.objects.create(
+        cls.forum = Forum.objects.create( # pylint: disable=E1101
             title='Test Forum', description='Test Description')
-        cls.question = Question.objects.create(
+        cls.question = Question.objects.create( # pylint: disable=E1101
             title='Test Question',
             description='Test Description',
             author=cls.user,
             forum=cls.forum
         )
-        cls.answer = Answer.objects.create(
+        cls.answer = Answer.objects.create( # pylint: disable=E1101
             text='Test Answer',
             author=cls.user,
             question=cls.question
         )
-        cls.notification = Notification.objects.create(
+        cls.notification = Notification.objects.create( # pylint: disable=E1101
             user=cls.user,
             question=cls.question,
             answer=cls.answer
@@ -183,20 +183,20 @@ class ReportModelTest(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
-        cls.forum = Forum.objects.create(
+        cls.forum = Forum.objects.create( # pylint: disable=E1101
             title='Test Forum', description='Test Description')
-        cls.question = Question.objects.create(
+        cls.question = Question.objects.create( # pylint: disable=E1101
             title='Test Question',
             description='Test Description',
             author=cls.user,
             forum=cls.forum
         )
-        cls.answer = Answer.objects.create(
+        cls.answer = Answer.objects.create( # pylint: disable=E1101
             text='Test Answer',
             author=cls.user,
             question=cls.question
         )
-        cls.report = Report.objects.create(
+        cls.report = Report.objects.create( # pylint: disable=E1101
             question=cls.question,
             user=cls.user,
             reason='ofensivo',
