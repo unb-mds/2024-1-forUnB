@@ -36,3 +36,7 @@ class CustomUserModelTest(TestCase):
         self.assertEqual(admin_user.email, 'admin@aluno.unb.br')
         self.assertTrue(admin_user.is_superuser)
         self.assertTrue(admin_user.is_staff)
+
+    def test_str_method(self):
+        """ Test that the __str__ method returns the username """
+        self.assertEqual(str(self.user), self.user.username)
