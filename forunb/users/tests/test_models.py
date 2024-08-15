@@ -69,3 +69,11 @@ class CustomUserModelTest(TestCase):
         self.assertEqual(str(
             notification),
             f'Notification for {self.user.username} about question {self.question.title}')
+        
+    def test_report_creation_for_question(self):
+        """ Test that a report can be created for a question """
+        report = Report.objects.create(
+            question=self.question, user=self.user, reason='ofensivo', details='Offensive content'
+        )
+        self.assertEqual(
+            str(report), f"Conteúdo ofensivo - {self.user.username} - Question")
