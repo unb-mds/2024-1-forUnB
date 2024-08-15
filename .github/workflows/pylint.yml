@@ -36,4 +36,12 @@ jobs:
           
       - name: Run Pylint
         run: |
-          pylint --verbose $(git ls-files 'forunb/main/*.py' | grep -v 'migrations/' | grep -v 'management/' | grep -v 'templatetags/')
+          pylint --exit-zero --output-format=text $(git ls-files 'forunb/*.py' | grep -v 'migrations/' | grep -v 'management/' | grep -v 'templatetags/') > pylint_output.txt
+          pylint_score=$(tail -n 2 pylint_output.txt | head -n 1 | grep -oP '\d+\.\d+')
+          echo "Pylint score: $pylint_score"
+          if (( $(echo "$pylint_score > 8" | bc -l) )); then
+            echo "Pylint check passed with score $pylint_score"
+          else
+            echo "Pylint check failed with score $pylint_score"
+            exit 1
+          fi

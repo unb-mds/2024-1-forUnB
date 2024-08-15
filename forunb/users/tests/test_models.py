@@ -11,14 +11,14 @@ class CustomUserModelTest(TestCase):
         self.user = CustomUser.objects.create_user(
             email='testuser@aluno.unb.br', password='password123'
         )
-        self.forum = Forum.objects.create(title='Test Forum')
-        self.question = Question.objects.create(
+        self.forum = Forum.objects.create(title='Test Forum') # pylint: disable=E1101
+        self.question = Question.objects.create( # pylint: disable=E1101
             title='Test Question',
             description='Test Description',
             author=self.user,
             forum=self.forum
         )
-        self.answer = Answer.objects.create(
+        self.answer = Answer.objects.create( # pylint: disable=E1101
             question=self.question, text='Test Answer', author=self.user
         )
 
@@ -63,25 +63,26 @@ class CustomUserModelTest(TestCase):
 
     def test_notification_creation(self):
         """ Test that a notification can be created """
-        notification = Notification.objects.create(
+        notification = Notification.objects.create( # pylint: disable=E1101
             user=self.user, answer=self.answer, question=self.question
         )
         self.assertEqual(str(
             notification),
             f'Notification for {self.user.username} about question {self.question.title}')
-        
+
     def test_report_creation_for_question(self):
         """ Test that a report can be created for a question """
-        report = Report.objects.create(
+        report = Report.objects.create( # pylint: disable=E1101
             question=self.question, user=self.user, reason='ofensivo', details='Offensive content'
         )
         self.assertEqual(
             str(report), f"Conteúdo ofensivo - {self.user.username} - Question")
-        
+
     def test_report_creation_for_answer(self):
         """ Test that a report can be created for an answer """
-        report = Report.objects.create(
+        report = Report.objects.create( # pylint: disable=E1101
             answer=self.answer, user=self.user, reason='irrelevante', details='Irrelevant content'
         )
         self.assertEqual(
             str(report), f"Irrelevante para o fórum - {self.user.username} - Answer")
+        
