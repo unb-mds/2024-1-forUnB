@@ -44,14 +44,14 @@ class ViewsTestCase(TestCase):
         """
         self.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
-        self.forum = Forum.objects.create(
+        self.forum = Forum.objects.create( # pylint: disable=E1101
             title="Test Forum", description="Test Forum Description")
-        self.question = Question.objects.create(
+        self.question = Question.objects.create( # pylint: disable=E1101
             title="Test Question",
             description="Test Question Description",
             forum=self.forum,
             author=self.user)
-        self.answer = Answer.objects.create(
+        self.answer = Answer.objects.create( # pylint: disable=E1101
             text="Test Answer", question=self.question, author=self.user)
 
     def test_index_view(self):
@@ -186,7 +186,7 @@ class ViewsTestCase(TestCase):
         response = self.client.post(
             reverse('main:delete_question', args=[self.question.id]))
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(Question.objects.filter(id=self.question.id).exists())
+        self.assertFalse(Question.objects.filter(id=self.question.id).exists()) # pylint: disable=E1101
 
     def test_delete_answer_view(self):
         """
@@ -198,7 +198,7 @@ class ViewsTestCase(TestCase):
         response = self.client.post(
             reverse('main:delete_answer', args=[self.answer.id]))
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())
+        self.assertFalse(Answer.objects.filter(id=self.answer.id).exists()) # pylint: disable=E1101
 
     def test_notifications_view(self):
         """
@@ -207,7 +207,7 @@ class ViewsTestCase(TestCase):
         """
         self.client.login(email='test@aluno.unb.br', password='senha1010')
 
-        Notification.objects.create(
+        Notification.objects.create( # pylint: disable=E1101
             user=self.user, question=self.question, answer=self.answer)
 
         response = self.client.get(reverse('main:notifications'))
@@ -291,11 +291,11 @@ class SearchForumTestCase(TestCase):
         Set up the test environment with multiple forum objects.
         """
         self.client = Client()
-        self.forum1 = Forum.objects.create(
+        self.forum1 = Forum.objects.create( # pylint: disable=E1101
             title="Python Programming", description="Discuss all things Python.")
-        self.forum2 = Forum.objects.create(
+        self.forum2 = Forum.objects.create( # pylint: disable=E1101
             title="Django Tips", description="Tips and tricks for Django.")
-        self.forum3 = Forum.objects.create(
+        self.forum3 = Forum.objects.create( # pylint: disable=E1101
             title="Web Development", description="General web development discussion.")
 
     def test_search_forum_with_query(self):
