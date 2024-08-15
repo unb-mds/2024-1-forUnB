@@ -1,69 +1,83 @@
+""" Tests for the forms in the main app. """
 from django.test import TestCase
-from main.forms import *
-from users.forms import *
 from django.contrib.auth import get_user_model
+from users.models import CustomUser
+from users.forms import CustomUserCreationForm, CustomUserChangeForm
+from main.forms import ForumForm, QuestionForm, AnswerForm, ReportForm
 
 User = get_user_model()
 
+
 class ForumFormTest(TestCase):
+    """Tests for the forum creation form."""
 
     def test_forum_form_valid_data(self):
-        form = ForumForm(data={'title': 'Test Forum', 'description': 'This is a test forum.'})
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+        """Tests if the form is valid with correct data."""
+        form = ForumForm(data={'title': 'Test Forum',
+                         'description': 'This is a test forum.'})
+        self.assertTrue(form.is_valid())
 
     def test_forum_form_no_data(self):
+        """Tests if the form is invalid without data."""
         form = ForumForm(data={})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem dados
-        self.assertIn('title', form.errors)  # Deve haver erro para o campo 'title'
-
+        self.assertFalse(form.is_valid())
+        self.assertIn('title', form.errors)
 
 
 class QuestionFormTest(TestCase):
+    """Tests for the question creation form."""
 
     def test_question_form_valid_data(self):
-        form = QuestionForm(data={'title': 'Test Question', 'description': 'This is a test question.'})
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+        """Tests if the form is valid with correct data."""
+        form = QuestionForm(
+            data={'title': 'Test Question', 'description': 'This is a test question.'})
+        self.assertTrue(form.is_valid())
 
     def test_question_form_missing_title(self):
-        form = QuestionForm(data={'description': 'This is a test question without a title.'})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem o título
-        self.assertIn('title', form.errors)  # Deve haver erro para o campo 'title'
-
+        """Tests if the form is invalid without a title."""
+        form = QuestionForm(
+            data={'description': 'This is a test question without a title.'})
+        self.assertFalse(form.is_valid())
+        self.assertIn('title', form.errors)
 
 
 class AnswerFormTest(TestCase):
+    """Tests for the answer creation form."""
 
     def test_answer_form_valid_data(self):
+        """Tests if the form is valid with correct data."""
         form = AnswerForm(data={'text': 'This is a test answer.'})
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+        self.assertTrue(form.is_valid())
 
     def test_answer_form_missing_text(self):
+        """Tests if the form is invalid without text."""
         form = AnswerForm(data={})
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem texto
-        self.assertIn('text', form.errors)  # Deve haver erro para o campo 'text'
+        self.assertFalse(form.is_valid())
+        self.assertIn('text', form.errors)
 
-
-from users.forms import CustomUserCreationForm, CustomUserChangeForm
-from users.models import CustomUser
 
 class CustomUserFormTests(TestCase):
+    """Tests for custom user forms."""
 
     def test_invalid_unb_email(self):
-        """Testa se o formulário rejeita um email que não é da UNB."""
-        form_data = {'email': 'invalid@example.com', 'password1': 'password', 'password2': 'password'}
+        """Tests if the form rejects an email that is not from UNB."""
+        form_data = {'email': 'invalid@example.com',
+                     'password1': 'password', 'password2': 'password'}
         form = CustomUserCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('email', form.errors)
 
     def test_valid_unb_email(self):
-        """Testa se o formulário aceita um email válido da UNB."""
-        form_data = {'email': 'valid@aluno.unb.br', 'password1': 'password1010', 'password2': 'password1010'}
+        """Tests if the form accepts a valid UNB email."""
+        form_data = {'email': 'valid@aluno.unb.br',
+                     'password1': 'password1010', 'password2': 'password1010'}
         form = CustomUserCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_create_user(self):
-        """Testa se o formulário cria um usuário com sucesso."""
-        form_data = {'email': 'valid@aluno.unb.br', 'password1': 'password1010', 'password2': 'password1010'}
+        """Tests if the form successfully creates a user."""
+        form_data = {'email': 'valid@aluno.unb.br',
+                     'password1': 'password1010', 'password2': 'password1010'}
         form = CustomUserCreationForm(data=form_data)
         if form.is_valid():
             user = form.save(commit=False)
@@ -74,53 +88,52 @@ class CustomUserFormTests(TestCase):
             self.fail(form.errors)
 
     def test_change_user(self):
-        #Testa se o formulário de mudança de usuário permite atualizações.
-            
-        # Criar usuário inicial
-        user = CustomUser.objects.create_user(email='valid@aluno.unb.br', password='password')
-        
-        # Dados para atualização
+        """Tests if the user change form allows updates."""
+        user = CustomUser.objects.create_user(
+            email='valid@aluno.unb.br', password='password')
+
         form_data = {
-            'email': 'valid@aluno.unb.br',  # O email deve permanecer o mesmo para passar pela validação
-            'username': 'newusername',  # Novo nome de usuário
-            'is_active': True,  # Atualizando estado de atividade
-            'is_staff': False  # Atualizando permissão de staff
+            'email': 'valid@aluno.unb.br',
+            'username': 'newusername',
+            'is_active': True,
+            'is_staff': False
         }
-        
-        # Formulário de mudança com os novos dados
+
         form = CustomUserChangeForm(data=form_data, instance=user)
-        
-        # Verificando se o formulário é válido
-        self.assertTrue(form.is_valid(), form.errors)  # Incluindo form.errors para debug
+
+        self.assertTrue(form.is_valid(), form.errors)
         updated_user = form.save(commit=False)
         self.assertEqual(updated_user.username, 'newusername')
         updated_user.save()
-        
-        # Verificando se a atualização foi aplicada
-        user.refresh_from_db()  # Recarregar do banco de dados
+
+        user.refresh_from_db()
         self.assertEqual(user.username, 'newusername')
         self.assertEqual(user.is_active, True)
         self.assertEqual(user.is_staff, False)
 
 
 class ReportFormTest(TestCase):
+    """Tests for the report form."""
 
     def test_report_form_valid_data(self):
+        """ Tests if the form is valid with correct data. """
         form = ReportForm(data={
             'reason': 'ofensivo',
             'details': 'This content is offensive.'
         })
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido com dados corretos
+        self.assertTrue(form.is_valid())
 
     def test_report_form_missing_reason(self):
+        """Tests if the form is invalid without a reason."""
         form = ReportForm(data={
             'details': 'This content is offensive.'
         })
-        self.assertFalse(form.is_valid())  # O formulário não deve ser válido sem uma razão
-        self.assertIn('reason', form.errors)  # Deve haver erro para o campo 'reason'
+        self.assertFalse(form.is_valid())
+        self.assertIn('reason', form.errors)
 
     def test_report_form_missing_details(self):
+        """Tests if the form is valid even without details."""
         form = ReportForm(data={
             'reason': 'ofensivo',
         })
-        self.assertTrue(form.is_valid())  # O formulário deve ser válido mesmo sem detalhes
+        self.assertTrue(form.is_valid())
