@@ -1,9 +1,9 @@
 """ Tests for the forms in the main app. """
+from django.test import TestCase
+from django.contrib.auth import get_user_model
 from users.models import CustomUser
 from users.forms import CustomUserCreationForm, CustomUserChangeForm
-from django.test import TestCase
 from main.forms import ForumForm, QuestionForm, AnswerForm, ReportForm
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
