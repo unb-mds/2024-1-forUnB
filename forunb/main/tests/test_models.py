@@ -74,11 +74,11 @@ class QuestionModelTest(TestCase):
         self.question.toggle_upvote(self.user)
         self.assertEqual(self.question.upvote_count, 0)
 
-    '''def test_question_missing_title(self):
-        question = Question(description='Test Description', author=self.user, forum=self.forum)
-        with self.assertRaises(ValidationError) as context:  # Verifica se ocorre erro ao criar uma pergunta sem título
-            question.full_clean()
-        self.assertTrue('title' in context.exception.message_dict)  # Verifica se o erro de validação está relacionado ao campo 'title' '''
+    # def test_question_missing_title(self):
+    #     question = Question(description='Test Description', author=self.user, forum=self.forum)
+    #     with self.assertRaises(ValidationError) as context:
+    #         question.full_clean()
+    #     self.assertTrue('title' in context.exception.message_dict)
 
 
 class AnswerModelTest(TestCase):
