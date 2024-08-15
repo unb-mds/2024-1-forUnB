@@ -2,8 +2,7 @@
 from users.models import CustomUser
 from users.forms import CustomUserCreationForm, CustomUserChangeForm
 from django.test import TestCase
-from main.forms import *
-from users.forms import *
+from main.forms import ForumForm, QuestionForm, AnswerForm, ReportForm
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -117,6 +116,7 @@ class ReportFormTest(TestCase):
     """Tests for the report form."""
 
     def test_report_form_valid_data(self):
+        """ Tests if the form is valid with correct data. """
         form = ReportForm(data={
             'reason': 'ofensivo',
             'details': 'This content is offensive.'
