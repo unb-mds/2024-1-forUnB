@@ -65,6 +65,21 @@
         border: 1px solid #ccc;
         display: inline-block;
     }
+    .btn-image {
+        color: #003366;
+        background-color: #C7D2DD;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+    .btn-image:hover, .form-control:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
+    .btn-home {
+        width: auto; 
+        padding: 10px 20px;
+    }
     #loading-spinner {
         display: none;
         text-align: center;
@@ -94,7 +109,11 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Foto de Perfil</label>
-                    <input type="file" name="photo" class="form-control-file" id="photo" accept="image/*" onchange="showCropper(event)">
+                    <div class="custom-file-container"></div>
+                        <input type="file" name="photo" id="photo" accept="image/*" onchange="showCropper(event)" style="display: none;">
+                        <button type="button" class="btn btn-image" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
+                        <span id="file-name" style="margin-left: 10px; color: #003366; font-weight: bolder;"></span>
+                    </div>
                     <div class="img-container mt-3">
                         <img id="cropper-image">
                     </div>
@@ -128,31 +147,36 @@
     const image = document.getElementById('cropper-image');
 
     function showCropper(event) {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validImageTypes.includes(file.type)) {
-                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
-                event.target.value = ''; // Limpa o input
-                return;
-            }
+    const files = event.target.files;
+    const fileNameElement = document.getElementById('file-name');
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                image.src = e.target.result;
-                if (cropper) {
-                    cropper.destroy();
-                }
-                cropper = new Cropper(image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    preview: '.img-preview',
-                });
-            };
-            reader.readAsDataURL(file);
+    if (files && files.length > 0) {
+        const file = files[0];
+        fileNameElement.textContent = file.name; // Mostra o nome do arquivo
+
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validImageTypes.includes(file.type)) {
+            alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+            event.target.value = ''; // Limpa o input
+            fileNameElement.textContent = ''; // Limpa o nome do arquivo
+            return;
         }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            image.src = e.target.result;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                preview: '.img-preview',
+            });
+        };
+        reader.readAsDataURL(file);
     }
+}
 
     function submitForm(event) {
         event.preventDefault();
