@@ -17,21 +17,21 @@ class IndexViewTest(TestCase):
         Set up the test environment with a user, forums, and questions.
         """
         self.client = Client()
-        self.user = User.objects.create_user(
+        self.user = User.objects.create_user( # pylint: disable=E1101
             email='test@aluno.unb.br', password='senha1010'
         )
-        self.forum1 = Forum.objects.create( 
+        self.forum1 = Forum.objects.create( # pylint: disable=E1101
             title="Python Programming", description="Discuss all things Python."
         )
-        self.forum2 = Forum.objects.create( 
+        self.forum2 = Forum.objects.create( # pylint: disable=E1101
             title="Django Tips", description="Tips and tricks for Django."
         )
-        self.question1 = Question.objects.create(
+        self.question1 = Question.objects.create( # pylint: disable=E1101
             title="Python Question 1",
             description="Description for Python Question 1",
             forum=self.forum1
         )
-        self.question2 = Question.objects.create( 
+        self.question2 = Question.objects.create( # pylint: disable=E1101
             title="Django Question 1",
             description="Description for Django Question 1",
             forum=self.forum2
