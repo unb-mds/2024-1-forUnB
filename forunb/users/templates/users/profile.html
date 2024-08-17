@@ -10,6 +10,10 @@
         margin: 0 auto;
         padding: 20px;
     }
+    .profile-container {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
     .profile-header {
         text-align: center;
     }
@@ -49,12 +53,10 @@
         justify-content: center;
         align-items: center;
     }
-
     #cropper-image {
         width: 100%;
         height: auto;
     }
-
     .img-preview {
         width: 150px;
         height: 150px;
@@ -63,16 +65,14 @@
         border: 1px solid #ccc;
         display: inline-block;
     }
-
     #loading-spinner {
         display: none;
         text-align: center;
         padding: 10px;
     }
-
-    .profile-container {
-        max-height: 80vh;
-        overflow-y: auto;
+    #loading-spinner p {
+        font-size: 1.2rem;
+        color: #003366;
     }
 </style>
 
