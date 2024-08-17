@@ -11,9 +11,18 @@ from main.forms import QuestionForm, AnswerForm, ReportForm
 
 
 def index(request):
-    """Render the index page with the latest questions that have no associated reports."""
-    latest_questions = Question.objects.filter( # pylint: disable=E1101
-        reports__isnull=True).order_by('-created_at')
+    """Render the index page with the latest questions."""
+    filter_by = request.GET.get('filter_by', 'latest')
+
+    if filter_by == 'followed' and request.user.is_authenticated:
+        latest_questions = Question.objects.filter(
+            forum__in=request.user.followed_forums.all(), reports__isnull=True
+        ).order_by('-created_at')
+    else:
+        latest_questions = Question.objects.filter(
+            reports__isnull=True
+        ).order_by('-created_at')
+
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
 
