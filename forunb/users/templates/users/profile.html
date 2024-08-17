@@ -6,7 +6,7 @@
 
 <style>
     .container {
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
     }
@@ -79,6 +79,7 @@
     .btn-home {
         width: auto; 
         padding: 10px 20px;
+        font-size: large;
     }
     #loading-spinner {
         display: none;
@@ -109,7 +110,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Foto de Perfil</label>
-                    <div class="custom-file-container"></div>
+                    <div class="custom-file-container">
                         <input type="file" name="photo" id="photo" accept="image/*" onchange="showCropper(event)" style="display: none;">
                         <button type="button" class="btn btn-image" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
                         <span id="file-name" style="margin-left: 10px; color: #003366; font-weight: bolder;"></span>
@@ -123,7 +124,9 @@
                     <label class="form-label">Email</label>
                     <input type="text" class="form-control " value="{{ user.email }}" readonly>
                 </div>
-                <button type="submit" class="btn btn-home">Salvar</button>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-home">Salvar</button>
+                </div>
                 <div id="loading-spinner">
                     <p>Carregando...</p>
                 </div>
