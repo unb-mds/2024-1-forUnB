@@ -8,16 +8,19 @@ from django.db.models import Count
 from bs4 import BeautifulSoup
 from main.models import Forum, Answer, Question, Notification  # pylint: disable=E1101
 from main.forms import QuestionForm, AnswerForm, ReportForm
-
+from django.urls import reverse
 
 def index(request):
     """Render the index page with the latest questions."""
     filter_by = request.GET.get('filter_by', 'latest')
 
-    if filter_by == 'followed' and request.user.is_authenticated:
-        latest_questions = Question.objects.filter(
-            forum__in=request.user.followed_forums.all(), reports__isnull=True
-        ).order_by('-created_at')
+    if filter_by == 'followed':
+        if request.user.is_authenticated:
+            latest_questions = Question.objects.filter(
+                forum__in=request.user.followed_forums.all(), reports__isnull=True
+            ).order_by('-created_at')
+        else:
+            return redirect(f"{reverse('users:login')}?next={request.path}")
     else:
         latest_questions = Question.objects.filter(
             reports__isnull=True
