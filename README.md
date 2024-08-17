@@ -16,7 +16,6 @@ O projeto é software livre e está sob a licença [MIT](./LICENSE).
 ## 📝 Sumário
 
 - [📝 Sumário](#-sumário)
-- [👥 Equipe de Desenvolvimento](#-equipe-de-desenvolvimento)
 - [✨ Início](#-início)
     - [📋 Pré-requisitos](#-pré-requisitos)
     - [💻 Ambiente](#-ambiente)
