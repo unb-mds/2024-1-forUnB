@@ -9,6 +9,10 @@
 [![Python version](https://img.shields.io/badge/python-3.10.12-blue)](https://www.python.org/)
 [![Django version](https://img.shields.io/badge/django-4.2.14-blue)](https://www.djangoproject.com/)
 
+<div align="center">
+    <img src="https://raw.githubusercontent.com/unb-mds/2024-1-forUnB/158-atualizar-o-readme/docs/assets/for_unb.png" style="width:50vw"/>
+</div>
+
 O ForUnB é um projeto da disciplina **Métodos de Desenvolvimento de Software**, que tem como objetivo incentivar os alunos da Universidade de Brasília, campus Gama (UnB), a tirar dúvidas sobre qualquer matéria por meio de um fórum.
 
 O projeto é software livre e está sob a licença [MIT](./LICENSE).
