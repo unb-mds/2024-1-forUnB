@@ -5,10 +5,10 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Count
+from django.urls import reverse
 from bs4 import BeautifulSoup
 from main.models import Forum, Answer, Question, Notification  # pylint: disable=E1101
 from main.forms import QuestionForm, AnswerForm, ReportForm
-from django.urls import reverse
 
 def index(request):
     """Render the index page with the latest questions."""
@@ -16,13 +16,13 @@ def index(request):
 
     if filter_by == 'followed':
         if request.user.is_authenticated:
-            latest_questions = Question.objects.filter(
+            latest_questions = Question.objects.filter( # pylint: disable=E1101
                 forum__in=request.user.followed_forums.all(), reports__isnull=True
             ).order_by('-created_at')
         else:
             return redirect(f"{reverse('users:login')}?next={request.path}")
     else:
-        latest_questions = Question.objects.filter(
+        latest_questions = Question.objects.filter( # pylint: disable=E1101
             reports__isnull=True
         ).order_by('-created_at')
 
