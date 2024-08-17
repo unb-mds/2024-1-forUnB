@@ -184,7 +184,7 @@
         .then(response => response.json())
         .then(data => {
             document.getElementById('loading-spinner').style.display = 'none';
-            location.href = '{% url "users:profile" %}';
+            location.href = '{% url "main:index" %}';
         })
         .catch(error => {
             document.getElementById('loading-spinner').style.display = 'none';
