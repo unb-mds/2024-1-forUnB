@@ -5,6 +5,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .profile-header {
+        text-align: center;
+    }
     .img-container {
         max-width: 100%;
         max-height: 400px;
@@ -44,51 +52,46 @@
 <div class="container mt-5 profile-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Perfil</div>
-                <div class="card-body">
-                    <div class="text-center mb-3">
-                        {% if user.photo %}
-                            <img src="{{ user.photo.url }}" class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;">
-                        {% else %}
-                            <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
-                        {% endif %}
-                    </div>
-                    <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Nome de usuário</label>
-                            <input type="text" name="username" class="form-control" value="{{ user.username }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Foto de Perfil</label>
-                            <input type="file" name="photo" class="form-control-file" id="photo" accept="image/*" onchange="showCropper(event)">
-                            <div class="img-container mt-3">
-                                <img id="cropper-image">
-                            </div>
-                            <div class="img-preview mt-3"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="text" class="form-control" value="{{ user.email }}" readonly>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <div id="loading-spinner">
-                            <p>Carregando...</p>
-                        </div>
-                    </form>
-                    {% if messages %}
-                        <div class="alert alert-dismissible fade show" role="alert">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endif %}
-                </div>
+            <div class="profile-header text-center mb-4">
+                {% if user.photo %}
+                    <img src="{{ user.photo.url }}" class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;">
+                {% else %}
+                    <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
+                {% endif %}
             </div>
+            <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Nome de usuário</label>
+                    <input type="text" name="username" class="form-control" value="{{ user.username }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Foto de Perfil</label>
+                    <input type="file" name="photo" class="form-control-file" id="photo" accept="image/*" onchange="showCropper(event)">
+                    <div class="img-container mt-3">
+                        <img id="cropper-image">
+                    </div>
+                    <div class="img-preview mt-3"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control" value="{{ user.email }}" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <div id="loading-spinner">
+                    <p>Carregando...</p>
+                </div>
+            </form>
+            {% if messages %}
+                <div class="alert alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
