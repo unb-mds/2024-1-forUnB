@@ -13,6 +13,33 @@
     .profile-header {
         text-align: center;
     }
+    .profile-container .form-label {
+        color: #003366;
+        font-weight: bold;
+        margin-bottom: 0px;
+    }
+    .form-control, .form-control[readonly] {
+        background-color: #C7D2DD;
+        color: #003366;
+        font-weight: bolder;
+        border: none;
+        padding: 10px 20px;
+        padding-right: 10px;
+        border-radius: 20px;
+        flex-grow: 1;
+        position: relative;
+    }
+    .form-control:focus {
+        outline: none;
+        box-shadow: none;
+        background-color: #C7D2DD;
+    }
+    .form-control::placeholder {
+        color: #003366; 
+        font-weight: bolder;
+        font-size: 1.1rem;
+        position: absolute;
+    }
     .img-container {
         max-width: 100%;
         max-height: 400px;
@@ -44,8 +71,8 @@
     }
 
     .profile-container {
-        max-height: 80vh; /* Altura máxima da área do perfil */
-        overflow-y: auto; /* Rolagem vertical */
+        max-height: 80vh;
+        overflow-y: auto;
     }
 </style>
 
@@ -75,9 +102,9 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="text" class="form-control" value="{{ user.email }}" readonly>
+                    <input type="text" class="form-control " value="{{ user.email }}" readonly>
                 </div>
-                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="submit" class="btn btn-home">Salvar</button>
                 <div id="loading-spinner">
                     <p>Carregando...</p>
                 </div>
