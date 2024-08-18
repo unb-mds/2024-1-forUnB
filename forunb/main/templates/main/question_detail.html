@@ -212,10 +212,11 @@
                     </form>
                 </div>
             </div>
-            <button class="btn_denuncia" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+            <button class="btn_denuncia mb-2" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
         </div>
     </div>
-
+    <hr class="answer-separator">
+    
     <div class="answer-list">
         {% if answers %}
         {% for answer in answers %}
@@ -246,8 +247,8 @@
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
-                    <button class="btn_denuncia" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
                 </div>
+                <button class="btn_denuncia mt-2" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
             </div>
             <hr class="answer-separator">
             {% empty %}
