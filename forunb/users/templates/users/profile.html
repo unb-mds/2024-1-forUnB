@@ -21,6 +21,7 @@
         color: #003366;
         font-weight: bold;
         margin-bottom: 0px;
+        margin-top: 5px;
     }
     .form-control, .form-control[readonly] {
         background-color: #C7D2DD;
@@ -52,6 +53,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        display: none;
     }
     #cropper-image {
         width: 100%;
@@ -64,6 +66,7 @@
         margin: 10px;
         border: 1px solid #ccc;
         display: inline-block;
+        display: none;
     }
     .btn-image {
         color: #003366;
@@ -176,6 +179,9 @@
                 viewMode: 1,
                 preview: '.img-preview',
             });
+            // Torna visível a área de visualização e a pré-visualização da imagem
+            document.querySelector('.img-container').style.display = 'flex';
+            document.querySelector('.img-preview').style.display = 'block';
         };
         reader.readAsDataURL(file);
     }
