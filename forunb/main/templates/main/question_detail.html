@@ -50,16 +50,14 @@
     #reportModal {
         display: none;
         position: fixed;
-        z-index: 1000;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 400px; /* Largura do modal */
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 20px;
+        width: 80vw; /* Usando 80% da largura da viewport */
+        max-width: 400px; /* Definindo um máximo de largura */
+        height: 60vh; /* Usando 60% da altura da viewport */
+        max-height: 400px; /* Definindo um máximo de altura */
+        border-radius: 20px;
     }
 
     #reportModal .modal-content {
@@ -79,7 +77,7 @@
 
     #reportModal .close:hover,
     #reportModal .close:focus {
-        color: black;
+        color: rgb(255, 255, 255);
         text-decoration: none;
         cursor: pointer;
     }
@@ -109,6 +107,13 @@
         background-color: #9a0303;
         color: #ffffff;
     }
+
+    .modal-content{
+        background-color: #003366;
+        color: #ffffff;
+        border-radius: 20px;
+    }
+    
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -146,7 +151,7 @@
             
 
             <div id="reportModal" class="modal" style="display: none;">
-                <div class="modal-content">
+                <div class="modal-content fw-bold">
                     <span class="close" onclick="closeReportForm()">&times;</span>
                     <h2>Denunciar <span id="reportType"></span></h2>
                     <form id="reportForm" method="post" action="">
