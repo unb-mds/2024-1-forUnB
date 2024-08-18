@@ -11,10 +11,18 @@
     font-size: 1.1rem;
     }
 
-    .dropdown-principal:hover {
+    .dropdown-principal:hover {/* Quando o botão está com o mouse em cima */
     background-color: #a0b0c0;
     color: #003366;
     }
+
+    
+    .dropdown-principal:active,/* Quando o botão está sendo clicado ou o dropdown está aberto */
+    .dropdown-toggle[aria-expanded="true"] {
+    background-color: #a0b0c0;
+    color: #003366;
+}
+
 </style>
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
