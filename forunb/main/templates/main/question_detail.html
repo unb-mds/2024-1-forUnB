@@ -123,9 +123,29 @@
     border-radius: 20px;
     }
 
-.btn-cancel:hover {
+    .btn-cancel:hover {
     background-color: #a0b0c0;
     }
+
+textarea.form-control {
+    border-radius: 20px; /* Bordas mais arredondadas */
+    border-color: #ced4da; /* Cor da borda */
+    padding: 10px; /* Ajuste de espaçamento interno */
+    font-size: 14px; /* Tamanho da fonte */
+    background-color: #a0b0c0 ; /* Cor de fundo clara */
+    }
+
+textarea.form-control:focus {
+    border-color: #80bdff; /* Cor da borda ao focar no campo */
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Efeito de sombra ao focar */
+    }
+
+@media (max-width: 767px) {
+        .form-check{
+            font-size: small;
+        } 
+    }
+    
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -187,8 +207,8 @@
             
                         <!-- Campo de Detalhes -->
                         <div class="form-group">
-                            <label for="id_details">Detalhes adicionais</label>
-                            <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            <label for="id_details"></label>
+                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
                         <div class="d-flex justify-content-center mt-3">
                         <button type="button" class="btn-cancel btn-secondary me-2" onclick="closeReportForm()">Cancelar</button>
