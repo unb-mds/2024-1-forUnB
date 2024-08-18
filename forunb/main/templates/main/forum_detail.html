@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style>
+    .dropdown-principal{
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    }
+</style>
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
         <h1 class="forum-title">{{ forum.title }}
@@ -14,8 +24,8 @@
             </button>
             {% endif %}
         </h1>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+        <div class="dropdown me-3">
+            <button class="btn btn-secondary dropdown-toggle dropdown-principal" type="button" id="dropdownMenuButton"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Ordenar por
             </button>
