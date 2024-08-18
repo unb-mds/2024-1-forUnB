@@ -95,6 +95,20 @@
     .modal-footer {
         text-align: right;
     }
+
+    .btn_denuncia{
+        background-color:#ff0000;
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 20px;
+    }
+
+    .btn_denuncia:hover{
+        background-color: #9a0303;
+        color: #ffffff;
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -129,7 +143,7 @@
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
             </div>
-            <button class="btn btn-warning mt-3" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+            <button class="btn_denuncia btn-warning mt-3" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
 
             <div id="reportModal" class="modal" style="display: none;">
                 <div class="modal-content">
