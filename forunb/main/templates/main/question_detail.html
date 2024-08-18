@@ -114,6 +114,18 @@
         border-radius: 20px;
     }
     
+    .btn-cancel {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bold;
+    border: none;
+    padding: 1px 5px;
+    border-radius: 20px;
+    }
+
+.btn-cancel:hover {
+    background-color: #a0b0c0;
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -178,9 +190,10 @@
                             <label for="id_details">Detalhes adicionais</label>
                             <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
-            
-                        <button type="button" class="btn btn-secondary" onclick="closeReportForm()">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Enviar Denúncia</button>
+                        <div class="d-flex justify-content-center mt-3">
+                        <button type="button" class="btn-cancel btn-secondary me-2" onclick="closeReportForm()">Cancelar</button>
+                        <button type="submit" class="btn_denuncia">Denunciar</button>
+                        </div>
                     </form>
                 </div>
             </div>
