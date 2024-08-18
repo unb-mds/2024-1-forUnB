@@ -246,7 +246,7 @@
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
-                    <button class="btn btn-warning mt-3" onclick="showReportForm('{{ answer.id }}', 'answer')">Denunciar</button>
+                    <button class="btn_denuncia" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
                 </div>
             </div>
             <hr class="answer-separator">
