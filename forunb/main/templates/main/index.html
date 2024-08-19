@@ -5,41 +5,56 @@
 <div class="container-fluid mt-5 ms-0">
     <div class="forum-header">
         <h2 class="home-head">Últimas Perguntas</h2>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar por
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'main:index' %}?filter_by=latest">Últimas Perguntas Gerais</a>
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:index' %}?filter_by=followed">Perguntas dos Fóruns
+                        Seguidos</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     {% load custom_filters %}
 
     <div class="home-container">
         {% for question in latest_questions %}
-            <div class="question-item">
-                <div class="home-meta">
-                    <span class="question-author">
-                        {% if question.is_anonymous %}
-                            Anônimo
-                        {% else %}
-                            {{ question.author.username }}
-                        {% endif %}
-                    </span> • 
-                    <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
-                    <a href="{% url 'main:forum_detail' question.forum.id %}" class="forum-label">
-                        <span class="label-full">{{ question.forum.title }}</span>
-                        <span class="label-short">{{ question.forum.title|first_word }}</span>
-                    </a>
-                </div>
-                <a href="{% url 'main:question_detail' question.id %}">
-                    <h5 class="question-title">{{ question.title }}</h5>
-                    <p class="question-description">{{ question.description }}</p>
+        <div class="question-item">
+            <div class="home-meta">
+                <span class="question-author">
+                    {% if question.is_anonymous %}
+                    Anônimo
+                    {% else %}
+                    {{ question.author.username }}
+                    {% endif %}
+                </span> •
+                <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+                <a href="{% url 'main:forum_detail' question.forum.id %}" class="forum-label">
+                    <span class="label-full">{{ question.forum.title }}</span>
+                    <span class="label-short">{{ question.forum.title|first_word }}</span>
                 </a>
-                <div class="action-buttons">
-                    <button class="btn btn-like" data-id="{{ question.id }}" data-type="question" onclick="toggleUpvote(this);">
-                        <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i> <span>{{ question.upvote_count }}</span>
-                    </button>
-                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
-                        <i class="bi bi-chat-left-text"></i> {{ question.answers.count }} 
-                    </a>
-                </div>                    
             </div>
-            <hr class="question-separator">
+            <a href="{% url 'main:question_detail' question.id %}">
+                <h5 class="question-title">{{ question.title }}</h5>
+                <p class="question-description">{{ question.description }}</p>
+            </a>
+            <div class="action-buttons">
+                <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
+                    onclick="toggleUpvote(this);">
+                    <i class="bi {% if user in question.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                    <span>{{ question.upvote_count }}</span>
+                </button>
+                <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                    <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
+                </a>
+            </div>
+        </div>
+        <hr class="question-separator">
         {% endfor %}
     </div>
 
@@ -56,29 +71,29 @@
         }
 
         function toggleUpvote(element) {
-    const questionId = element.getAttribute('data-id');
-    const type = element.getAttribute('data-type');
-    const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
+            const questionId = element.getAttribute('data-id');
+            const type = element.getAttribute('data-type');
+            const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        const icon = element.querySelector('i');
-        if (icon.classList.contains('bi-heart')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-        }
-        element.querySelector('span').innerText = data.upvotes;
-    });
-}  
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const icon = element.querySelector('i');
+                    if (icon.classList.contains('bi-heart')) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                    } else {
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
+                    }
+                    element.querySelector('span').innerText = data.upvotes;
+                });
+        }  
     </script>
     {% endblock %}
