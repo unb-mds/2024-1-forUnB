@@ -189,6 +189,9 @@ textarea.form-control:focus {
                 <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
+                <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </button>
             </div>
             
 
@@ -260,9 +263,6 @@ textarea.form-control:focus {
                     </form>
                 </div>
             </div>
-            <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
-                <i class="bi bi-exclamation-triangle-fill"></i>
-            </button>
         </div>
     </div>
     <hr class="answer-separator">
@@ -297,8 +297,11 @@ textarea.form-control:focus {
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
+                    <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </button>
                 </div>
-                <button class="btn_denuncia mt-2" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+               
             </div>
             <hr class="answer-separator">
             {% empty %}
