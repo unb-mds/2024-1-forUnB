@@ -16,6 +16,7 @@
         background-color:  #C7D2DD;
         color: #003366;
         width: 50vw;
+        border-radius: 10px;
     }
 
     .list-group-item:hover{
@@ -29,8 +30,8 @@
     }
 </style>
 
-<div class="container mt-4">
-    <h2 class="notificacao fw-bold">Notificações</h2>
+<h2 class="notificacao p-4 fw-bold">Notificações</h2>
+<div class="scroll-container p-4 rounded">
     <ul class="list-group list-group-flush fw-bold mt-4">
         {% for notification in notifications %}
         <li class="list-group-item ">
