@@ -11,13 +11,29 @@
         background-color: #ffffff;
         color: #003366;
     }
+
+    .list-group-item{
+        background-color:  #C7D2DD;
+        color: #003366;
+        width: 50vw;
+    }
+
+    .list-group-item:hover{
+        background-color: #a0b0c0;
+    }
+
+    @media (max-width: 575.98px) {
+        .list-group-item{
+        width: 85vw;
+    } 
+    }
 </style>
 
 <div class="container mt-4">
     <h2 class="notificacao fw-bold">Notificações</h2>
-    <ul class="list-group fw-bold mt-2">
+    <ul class="list-group list-group-flush fw-bold mt-4">
         {% for notification in notifications %}
-        <li class="list-group-item">
+        <li class="list-group-item ">
             <strong>{% if notification.answer.is_anonymous %}
                 Anônimo
             {% else %}
@@ -28,6 +44,7 @@
             <br>
             <small class="text-muted">{{ notification.created_at }}</small>
         </li>
+        <hr>   
         {% empty %}
         <h4 class="text-center notificacao fw-bold mt-4">Você não tem notificações</h4>
         {% endfor %}
