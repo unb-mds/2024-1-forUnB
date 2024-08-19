@@ -23,7 +23,7 @@
     }
     
     .resposta{
-        color: #2672be;
+        color: #0e69c4;
         font-size:x-large;
     }
 
@@ -36,16 +36,16 @@
 
 <h2 class="notificacao p-4 fw-bold">Notificações</h2>
 <div class="scroll-container p-4 rounded">
-    <ul class="list-group list-group-flush fw-bold mt-4">
+    <ul class="list-group list-group-flush mt-4">
         {% for notification in notifications %}
-        <li class="list-group-item ">
+        <li class="list-group-item">
             <strong>{% if notification.answer.is_anonymous %}
                 Anônimo
             {% else %}
                 {{ notification.answer.author.username }} 
             {% endif %}
             </strong> respondeu à sua pergunta
-            <a class="resposta mt-2" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
+            <a class="resposta mt-2 fw-bold" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
             <br>
             <small class="text-muted">{{ notification.created_at }}</small>
         </li>
