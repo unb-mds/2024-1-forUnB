@@ -13,14 +13,18 @@
     }
 
     .list-group-item{
-        background-color:  #C7D2DD;
+        background-color:  #ffffff;
         color: #003366;
-        width: 50vw;
         border-radius: 10px;
     }
 
     .list-group-item:hover{
-        background-color: #a0b0c0;
+        background-color: #C7D2DD;
+    }
+    
+    .resposta{
+        color: #2672be;
+        font-size:x-large;
     }
 
     @media (max-width: 575.98px) {
@@ -40,8 +44,8 @@
             {% else %}
                 {{ notification.answer.author.username }} 
             {% endif %}
-            </strong> respondeu à sua pergunta "
-            <a href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>"
+            </strong> respondeu à sua pergunta
+            <a class="resposta mt-2" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
             <br>
             <small class="text-muted">{{ notification.created_at }}</small>
         </li>
