@@ -127,6 +127,16 @@
     background-color: #a0b0c0;
     }
 
+    .btn-alert {
+    background-color: #a0b0c0;
+    border: none;
+    color: #003366;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
 textarea.form-control {
     border-radius: 20px; /* Bordas mais arredondadas */
     border-color: #ced4da; /* Cor da borda */
@@ -250,7 +260,9 @@ textarea.form-control:focus {
                     </form>
                 </div>
             </div>
-            <button class="btn_denuncia mb-2" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+            <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </button>
         </div>
     </div>
     <hr class="answer-separator">
