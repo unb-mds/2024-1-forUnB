@@ -45,8 +45,7 @@
                 {{ notification.answer.author.username }} 
             {% endif %}
             </strong> respondeu à sua pergunta
-            <a class="resposta mt-2 fw-bold" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
-            <br>
+            <a class="resposta mt-1 mb-1 fw-bold" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
             <small class="text-muted">{{ notification.created_at }}</small>
         </li>
         <hr>   
