@@ -1,9 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style>
+    .dropdown-principal{
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    border: none !important;  
+    box-shadow: none !important;  
+    }
+
+    .dropdown-principal:hover {/* Quando o botão está com o mouse em cima */
+    background-color: #a0b0c0;
+    color: #003366;
+    }
+
+    .btn-question:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
+
+    .dropdown-toggle:focus,/* Quando o botão estiver ativo */
+    .dropdown-toggle.show {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
+</style>
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
-        <h1 class="forum-title">{{ forum.title }}
+        <h1 class="forum-title flex-grow-1">
+            {{ forum.title }}
             {% if user.is_authenticated %}
             <button id="follow-toggle" class="follow-toggle" data-forum-id="{{ forum.id }}">
                 {% if is_following %}
@@ -14,27 +43,28 @@
             </button>
             {% endif %}
         </h1>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Ordenar por
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
-                        Recentes</a>
-                </li>
-                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
-                        Recentes</a>
-                </li>
-                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
-                        Votadas</a>
-                </li>
-                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
-                        Votadas</a>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <div class="dropdown me-3">
+                <button class="btn btn-secondary dropdown-toggle dropdown-principal" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtrar
+                </button>
+                <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
+                            Recentes</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
+                            Recentes</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
+                            Votadas</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
+                            Votadas</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
         </div>
-        <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
     </div>
 
     {% load custom_filters %}
