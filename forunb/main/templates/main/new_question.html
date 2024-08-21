@@ -147,6 +147,18 @@
     .scroll-container::-webkit-scrollbar {
     display: none; /* Oculta a barra de rolagem */
 }
+
+.btn-imagem {
+        color: #003366;
+        background-color: #C7D2DD;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+    .btn-imagem:hover, .form-control:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
 </style>
 
 <h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
@@ -169,8 +181,11 @@
             </div>
             <div class="form-group fw-bold mt-3">
                 <label class ="imagem" for="image">Imagem :</label>
-                <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                    onchange="showCropper(event)">
+               
+                    <input type="file" name="photo" id="photo" accept="image/*" onchange="showCropper(event)" style="display: none;">
+                    <button type="button" class="btn btn-imagem" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
+                    <span id="file-name"></span>
+                
                 <div class="img-container mt-3">
                     <img id="cropper-image" style="max-width: 100%;">
                 </div>
@@ -273,6 +288,7 @@
 
     function showCropper(event) {
         const files = event.target.files;
+        const fileNameElement = document.getElementById('file-name');
         if (files && files.length > 0) {
             const file = files[0];
             const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
