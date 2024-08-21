@@ -60,7 +60,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### No Windows:
+#### No Windows:
 
 Para ativiar o ambiente basta 
 
@@ -95,7 +95,20 @@ python3 manage.py makemigrations
 
 # Aplique as migrações
 python3 manage.py migrate
+```
 
+#### 🧹 Scraping SIGAA
+
+Para carregar os dados do SIGAA, você pode rodar o seguinte comando:
+
+```bash
+# Rode o comando para carregar os dados do SIGAA
+python3 manage.py scraping_sigaa
+```
+
+Para visualizar o projeto, basta utilizar este comando:
+
+```bash
 # Rode o servidor local
 python3 manage.py runserver
 ```
