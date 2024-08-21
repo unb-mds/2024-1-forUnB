@@ -72,6 +72,7 @@
     .descricao.texto {
         height: 200px;
         /* Ajuste a altura conforme necessário */
+        color: #003366;
     }
 
     .custom-label {
@@ -94,6 +95,10 @@
         overflow: hidden;
         margin: 0 auto;
         /* Centraliza o contêiner da imagem */
+    }
+
+    .imagem{
+        color: #003366;
     }
 
     #cropper-image {
@@ -143,8 +148,8 @@
                 <label class="custom-label">{{ form.is_anonymous.label_tag }}</label>
                 {{ form.is_anonymous }}
             </div>
-            <div class="form-group mt-3">
-                <label for="image">Imagem:</label>
+            <div class="form-group fw-bold mt-3">
+                <label class ="imagem" for="image">Imagem :</label>
                 <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
                     onchange="showCropper(event)">
                 <div class="img-container mt-3">
