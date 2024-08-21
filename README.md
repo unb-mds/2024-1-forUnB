@@ -73,11 +73,12 @@ Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de
 ### 📁 Dependências do projeto
 
 ```bash
+# Faça a instalação das dependências do projeto:
+make install
+
 # Instale as dependências do projeto:
 make config
 
-# Faça a instalação das dependências do projeto:
-make install
 ```
 > **Observação:** O primeiro comando irá criar um arquivo chamado .env na raiz do projeto, que contém as variáveis de ambiente necessárias para rodar o projeto. O segundo comando irá instalar as dependências do projeto.
 
