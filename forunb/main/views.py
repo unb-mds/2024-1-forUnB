@@ -83,9 +83,16 @@ def question_detail(request, question_id):
 
 
 def clean_html(text):
-    """Remove HTML tags from a text."""
+    """Remove HTML tags from a text, but keep specific tags."""
+    allowed_tags = ['pre', 'code']
     soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text()
+
+    # Remove tags that are not in the allowed_tags list
+    for tag in soup.find_all(True):
+        if tag.name not in allowed_tags:
+            tag.unwrap()
+    
+    return str(soup)
 
 
 @login_required(login_url='/users/login')
