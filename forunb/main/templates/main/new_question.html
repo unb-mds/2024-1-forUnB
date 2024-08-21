@@ -200,14 +200,13 @@
                         text: 'Math',
                         onAction: function () {
                             editor.windowManager.open({
-                                title: 'Insert Math',
+                                title: 'Inserir Fórmula',
                                 body: {
                                     type: 'panel',
                                     items: [
                                         {
                                             type: 'textarea',
                                             name: 'math',
-                                            label: 'Math Formula',
                                             placeholder: '\\( E = mc^2 \\)'
                                         }
                                     ]
@@ -215,11 +214,11 @@
                                 buttons: [
                                     {
                                         type: 'cancel',
-                                        text: 'Cancel'
+                                        text: 'Cancelar'
                                     },
                                     {
                                         type: 'submit',
-                                        text: 'Insert',
+                                        text: 'Enviar',
                                         primary: true
                                     }
                                 ],
