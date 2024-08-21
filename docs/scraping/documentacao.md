@@ -3,16 +3,16 @@ O scraping realizado têm a finalidade de realizar a raspagem de dados das disci
 
 ## Arquivos Principais
 
-- **main/management/commands/scraping_sigga.py**
+- **main/management/commands/scraping_sigaa.py**
 - **main/scraping.py**
 
 ## Descrição dos Arquivos
 
-### **1. scraping_sigga.py**
+### **1. scraping_sigaa.py**
 Esse arquivo é um comando customizado do Django que realiza a raspagem das disciplinas do site Sigaa da UnB e as salva como fóruns no banco de dados do projeto. Ele faz uso de um raspador de dados implementado na classe DisciplineWebScraper, que está definida no arquivo main/scraping.py.
 
 #### Funcionamento:
-- **Comando Personalizado:** A classe Command herda de BaseCommand, que permite a criação de comandos personalizados que podem ser executados via terminal usando python manage.py scraping_sigga.
+- **Comando Personalizado:** A classe Command herda de BaseCommand, que permite a criação de comandos personalizados que podem ser executados via terminal usando python manage.py scraping_sigaa.
 - **Parâmetros de Configuração:** São definidos parâmetros como os departamentos (departments), o ano (year) e o período (period) para especificar quais disciplinas serão raspadas.
 - **Deleção de Fóruns Antigos:** Antes de iniciar a raspagem, o código deleta todos os fóruns existentes no banco de dados para evitar duplicações.
 - **Raspagem e Criação de Fóruns:** Para cada departamento especificado, o código utiliza o DisciplineWebScraper para obter as disciplinas. Em seguida, cria um fórum no banco de dados para cada disciplina encontrada. Se um fórum já existir, o código apenas avisa que ele já estava presente.
@@ -34,6 +34,6 @@ Esse arquivo contém a lógica para a raspagem das disciplinas a partir do site 
 
  Execute o comando de raspagem:
 
-   ```bash
-   python manage.py scraping_sigga
+   ```
+   $ python manage.py scraping_sigaa
    ```
