@@ -126,31 +126,31 @@
 
 
     #id_description_ifr {
-    background-color: #C7D2DD;
-    border-radius: 5px;
-    box-shadow: none;
-    padding: 10px;
+        background-color: #C7D2DD;
+        border-radius: 5px;
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn,
+    .tox .tox-toolbar__primary .tox-tbtn__select-label,
+    .tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
+        color: #000000;  /* Cor dos ícones e textos */
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn:hover {
+        background-color:#C7D2DD; /* Cor de fundo ao passar o mouse */
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn--enabled {
+        background-color:#C7D2DD; /* Cor de fundo quando o botão está ativado */
+        color: #fff; /* Cor do texto quando o botão está ativado */
+    }
+    .scroll-container::-webkit-scrollbar {
+    display: none; /* Oculta a barra de rolagem */
 }
-
-.tox .tox-toolbar__primary .tox-tbtn,
-.tox .tox-toolbar__primary .tox-tbtn__select-label,
-.tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
-    color: #000000;  /* Cor dos ícones e textos */
-}
-
-.tox .tox-toolbar__primary .tox-tbtn:hover {
-    background-color:#C7D2DD; /* Cor de fundo ao passar o mouse */
-}
-
-.tox .tox-toolbar__primary .tox-tbtn--enabled {
-            background-color:#C7D2DD; /* Cor de fundo quando o botão está ativado */
-            color: #fff; /* Cor do texto quando o botão está ativado */
-        }
-
 </style>
 
 <h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
-<div class="scroll-container ps-3 ms-0">
+<div class="scroll-container ps-3 ms-0 mb-4">
     <div class="response-form">
         <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data"
             onsubmit="return submitForm(event)">
@@ -248,11 +248,10 @@
             font-weight: bold;  
         }
 
-        body:focus {
+            body:focus {
             background-color: #ffff; /* Cor de fundo ao digitar */ 
             color: #000000;
             font-weight: normal;
-        }
     `,
         });
         function renderMath() {
