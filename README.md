@@ -87,6 +87,9 @@ make config
 Para executar o projeto em **ambiente local**, você pode entrar na pasta onde se encontra o arquivo manage.py e rodar os seguintes comandos:
 
 ```bash
+# Entrar na pasta forunb/
+cd forunb/
+
 # Crie as migrações
 python3 manage.py makemigrations
 
