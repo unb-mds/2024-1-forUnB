@@ -128,6 +128,7 @@
 .btn-home:hover {
     background-image: linear-gradient(45deg, #003366, #0056a0) !important;
     transform: scale(1.05) !important;
+    color: white !important;
 }
 
 .btn-home i {
@@ -287,7 +288,8 @@ body, html {
 }
 
 .btn-question:hover {
-    background-color: #02305e;
+    background-color: #012141;
+    color: white;
 }
 
 
@@ -610,7 +612,7 @@ html, body {
 
 .response-form .btn {
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .response-form .btn-send {
@@ -620,23 +622,27 @@ html, body {
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
+    font-size: large;
 }
 
 .response-form .btn-send:hover {
     background-color: #004c26;
+    color: white;
 }
 
 .response-form .btn-cancel {
-    background-color: #C7D2DD;
-    color: #003366;
+    background-color: #003366;
+    color: white;
     font-weight: bold;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
+    font-size: large;
 }
 
 .response-form .btn-cancel:hover {
-    background-color: #a0b0c0;
+    background-color: #012141;
+    color: white;
 }
 
 .return-container {
