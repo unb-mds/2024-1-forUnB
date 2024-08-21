@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn forunb.wsgi --log-file -
+web: gunicorn forunb.forunb.wsgi --log-file -
