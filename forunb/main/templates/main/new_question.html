@@ -69,11 +69,6 @@
         /* Fonte em negrito */
     }
 
-    .descricao.texto {
-        height: 200px;
-        /* Ajuste a altura conforme necessário */
-        color: #003366;
-    }
 
     .custom-label {
         color: #003366;
@@ -137,8 +132,6 @@
     padding: 10px;
 }
 
-
-
 .tox .tox-toolbar__primary .tox-tbtn,
 .tox .tox-toolbar__primary .tox-tbtn__select-label,
 .tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
@@ -156,8 +149,8 @@
 
 </style>
 
-<div class="custom-container mt-5 ms-0">
-    <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
+<h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
+<div class="scroll-container ps-3 ms-0">
     <div class="response-form">
         <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data"
             onsubmit="return submitForm(event)">
@@ -250,6 +243,17 @@
             statusbar: false,  // Remove a barra de status inferior 
             height: 150,
  
+            content_style: `
+            body {
+            font-weight: bold;  
+        }
+
+        body:focus {
+            background-color: #ffff; /* Cor de fundo ao digitar */ 
+            color: #000000;
+            font-weight: normal;
+        }
+    `,
         });
         function renderMath() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
