@@ -129,7 +129,15 @@
         /* Substitua 'Arial' pela fonte desejada */
     }
 
-    
+
+    #id_description_ifr {
+    background-color: #C7D2DD;
+    border-radius: 5px;
+    box-shadow: none;
+    padding: 10px;
+}
+
+
 
 .tox .tox-toolbar__primary .tox-tbtn,
 .tox .tox-toolbar__primary .tox-tbtn__select-label,
@@ -140,6 +148,11 @@
 .tox .tox-toolbar__primary .tox-tbtn:hover {
     background-color:#C7D2DD; /* Cor de fundo ao passar o mouse */
 }
+
+.tox .tox-toolbar__primary .tox-tbtn--enabled {
+            background-color:#C7D2DD; /* Cor de fundo quando o botão está ativado */
+            color: #fff; /* Cor do texto quando o botão está ativado */
+        }
 
 </style>
 
@@ -236,7 +249,7 @@
             menubar: false,  // Remove a barra de menu superior 
             statusbar: false,  // Remove a barra de status inferior 
             height: 150,
-             
+ 
         });
         function renderMath() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
