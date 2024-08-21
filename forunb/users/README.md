@@ -27,6 +27,11 @@ Os usuários podem acessar o sistema através da view de login. O template utili
 ### Perfil
 Os usuários podem visualizar e editar seus perfis através da view de profile, que utiliza o template profile.html.
 
+## Testes:
+Os testes automatizados para este app podem ser encontrados em tests. Execute-os com:
+```bash
+python manage.py test users
+```
 
 ## Licença
 Este projeto está licenciado sob os termos da licença MIT.
