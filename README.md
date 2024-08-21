@@ -10,7 +10,7 @@
 [![Django version](https://img.shields.io/badge/django-4.2.14-blue)](https://www.djangoproject.com/)
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/unb-mds/2024-1-forUnB/158-atualizar-o-readme/docs/assets/for_unb.png" style="width:30vw"/>
+    <img src="./docs/assets/for_unb.png" style="width:30vw"/>
 </div>
 
 O ForUnB é um projeto da disciplina **Métodos de Desenvolvimento de Software**, que tem como objetivo incentivar os alunos da Universidade de Brasília, campus Gama (UnB), a tirar dúvidas sobre qualquer matéria por meio de um fórum.
@@ -50,13 +50,7 @@ Para rodar o projeto, você precisa instalar as dependências globais, que são:
 
 ### 💻 Ambiente
 
-Para configurar o ambiente basta seguir este script. 
-
-```bash
-make config
-```
-> **Observação:** Este comando criará uma pasta .env com as variáveis de ambiente necessárias para o projeto.
-### 📁 Dependências do projeto
+Para configurar o ambiente basta seguir este script na pasta principal do projeto. 
 
 ```bash
 # Cria um ambiente virtual Python e instala as dependências do projeto:
@@ -64,12 +58,9 @@ python3 -m venv .venv
 
 # Com o ambiente virtual criado, ative-o:
 source .venv/bin/activate
-
-# Faça a instalação das dependências do projeto:
-make install
 ```
 
-### No Windows:
+#### No Windows:
 
 Para ativiar o ambiente basta 
 
@@ -79,17 +70,45 @@ Para ativiar o ambiente basta
 
 Quando o ambiente virtual estiver ativado, você verá (venv) antes do prompt de comando, indicando que o ambiente virtual está em uso.
 
-### 💾 Execução
-
-Para executar o projeto em **ambiente local**, você pode rodar entrar na pasta onde se encontra o arquivo manage.py e rodar os seguintes comandos:
+### 📁 Dependências do projeto
 
 ```bash
+# Faça a instalação das dependências do projeto:
+make install
+
+# Instale as dependências do projeto:
+make config
+
+```
+> **Observação:** O primeiro comando irá criar um arquivo chamado .env na raiz do projeto, que contém as variáveis de ambiente necessárias para rodar o projeto. O segundo comando irá instalar as dependências do projeto.
+
+### 💾 Execução
+
+Para executar o projeto em **ambiente local**, você pode entrar na pasta onde se encontra o arquivo manage.py e rodar os seguintes comandos:
+
+```bash
+# Entrar na pasta forunb/
+cd forunb/
+
 # Crie as migrações
 python3 manage.py makemigrations
 
 # Aplique as migrações
 python3 manage.py migrate
+```
 
+#### 🧹 Scraping SIGAA
+
+Para carregar os dados do SIGAA, você pode rodar o seguinte comando:
+
+```bash
+# Rode o comando para carregar os dados do SIGAA
+python3 manage.py scraping_sigaa
+```
+
+Para visualizar o projeto, basta utilizar este comando:
+
+```bash
 # Rode o servidor local
 python3 manage.py runserver
 ```
