@@ -37,4 +37,6 @@ nav:
       - GitFlow: estudos/gitflow.md
       - Bibliografia: estudos/bibliografia.md
 
+  - Scraping:
+      - Documentação: scraping/documentacao.md
       
