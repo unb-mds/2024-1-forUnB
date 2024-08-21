@@ -128,6 +128,19 @@
         font-family: 'Arial', sans-serif;
         /* Substitua 'Arial' pela fonte desejada */
     }
+
+    
+
+.tox .tox-toolbar__primary .tox-tbtn,
+.tox .tox-toolbar__primary .tox-tbtn__select-label,
+.tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
+    color: #000000;  /* Cor dos ícones e textos */
+}
+
+.tox .tox-toolbar__primary .tox-tbtn:hover {
+    background-color:#C7D2DD; /* Cor de fundo ao passar o mouse */
+}
+
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -219,11 +232,11 @@
                 });
             },
             plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
-            toolbar: 'bold italic underline forecolor mathjax code'
-            ,
+            toolbar: 'bold italic underline forecolor mathjax code',
             menubar: false,  // Remove a barra de menu superior 
             statusbar: false,  // Remove a barra de status inferior 
-            height: 400
+            height: 150,
+             
         });
         function renderMath() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
