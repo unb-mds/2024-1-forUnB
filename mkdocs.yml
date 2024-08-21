@@ -28,6 +28,7 @@ nav:
       - Sprint 7: sprints/sprint7.md
       - Sprint 8: sprints/sprint8.md
       - Sprint 9: sprints/sprint9.md
+      - Sprint 10: sprints/sprint10.md
 
   - Estudos:
       - Lean Inception: lean_inception/lean_inception.md
@@ -36,4 +37,6 @@ nav:
       - GitFlow: estudos/gitflow.md
       - Bibliografia: estudos/bibliografia.md
 
+  - Scraping:
+      - Documentação: scraping/documentacao.md
       
