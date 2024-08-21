@@ -2,9 +2,9 @@
 <html lang="en">
 
 <style>
-    .faleconosco{
-    font-size: 0.7rem;
-}
+    .faleconosco {
+        font-size: 0.7rem;
+    }
 </style>
 
 <head>
@@ -20,6 +20,8 @@
     <link rel="icon" type="image/png" href="{% static 'forunb/img/logo_favicon.png' %}" />
     <script src="https://cdn.tiny.cloud/1/your-tiny-api-key/tinymce/6/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 </head>
 
 <body>
@@ -108,27 +110,27 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-    const searchBar = document.getElementById('search-bar');
+            const searchBar = document.getElementById('search-bar');
 
-    function setPlaceholder() {
-        if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
-            // Se estivermos em uma página de fórum específico
-            const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
-            searchBar.placeholder = `Pesquisar em ${forumTitle}`;
-        } else {
-            // Para todas as outras páginas
-            searchBar.placeholder = "Digite o nome da matéria";
-        }
-    }
+            function setPlaceholder() {
+                if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+                    // Se estivermos em uma página de fórum específico
+                    const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
+                    searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+                } else {
+                    // Para todas as outras páginas
+                    searchBar.placeholder = "Digite o nome da matéria";
+                }
+            }
 
-    searchBar.placeholder = "Pesquisar";
+            searchBar.placeholder = "Pesquisar";
 
-    searchBar.addEventListener('focus', setPlaceholder);
+            searchBar.addEventListener('focus', setPlaceholder);
 
-    searchBar.addEventListener('blur', function () {
-        searchBar.placeholder = "Pesquisar";
-    });
-});
+            searchBar.addEventListener('blur', function () {
+                searchBar.placeholder = "Pesquisar";
+            });
+        });
 
 
     </script>
