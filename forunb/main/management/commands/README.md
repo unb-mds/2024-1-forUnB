@@ -4,12 +4,12 @@ Este projeto realiza a raspagem das disciplinas disponíveis no site Sigaa da Un
 
 ## Arquivos Principais
 
-- **main/management/commands/scraping_sigga.py**
+- **main/management/commands/scraping_sigaa.py**
 - **main/scraping.py**
 
 ## Descrição dos Arquivos
 
-### scraping_sigga.py
+### scraping_sigaa.py
 
 Este é um comando personalizado do Django que executa a raspagem das disciplinas do Sigaa da UnB e cria fóruns correspondentes no banco de dados.
 
@@ -30,5 +30,5 @@ Este arquivo contém a lógica de raspagem propriamente dita. Ele define a class
 
 Execute o comando de raspagem:
 ```bash
-python manage.py scraping_sigga
+python manage.py scraping_sigaa
 ```
