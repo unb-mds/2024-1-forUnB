@@ -54,7 +54,8 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 400px; /* Largura do modal */
+        width: 400px;
+        /* Largura do modal */
         background-color: white;
         border: 1px solid #ccc;
         border-radius: 10px;
@@ -115,7 +116,7 @@
                 <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
             </div>
             <h5 class="question-title">{{ question.title }}</h5>
-            <p class="question-description preformatted-text">{{ question.description }}</p>
+            <p class="question-description preformatted-text">{{ question.description|safe }}</p>
             {% if question.image %}
             <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
             {% endif %}
@@ -129,7 +130,8 @@
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
             </div>
-            <button class="btn btn-warning mt-3" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+            <button class="btn btn-warning mt-3"
+                onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
 
             <div id="reportModal" class="modal" style="display: none;">
                 <div class="modal-content">
@@ -153,13 +155,14 @@
                                 <label for="id_reason_outros">Outros</label>
                             </div>
                         </div>
-            
+
                         <!-- Campo de Detalhes -->
                         <div class="form-group">
                             <label for="id_details">Detalhes adicionais</label>
-                            <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            <textarea id="id_details" name="details" rows="3"
+                                placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
-            
+
                         <button type="button" class="btn btn-secondary" onclick="closeReportForm()">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Enviar Denúncia</button>
                     </form>
@@ -231,7 +234,8 @@
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
-                    <button class="btn btn-warning mt-3" onclick="showReportForm('{{ answer.id }}', 'answer')">Denunciar</button>
+                    <button class="btn btn-warning mt-3"
+                        onclick="showReportForm('{{ answer.id }}', 'answer')">Denunciar</button>
                 </div>
             </div>
             <hr class="answer-separator">
@@ -452,44 +456,44 @@
                 });
         }
 
-function showReportForm(itemId, itemType) {
-        const form = document.getElementById('reportForm');
-        form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
-        document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
-        document.getElementById("reportModal").style.display = "block";
-    }
+        function showReportForm(itemId, itemType) {
+            const form = document.getElementById('reportForm');
+            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
+            document.getElementById("reportModal").style.display = "block";
+        }
 
-    function closeReportForm() {
-        document.getElementById("reportModal").style.display = "none";
-    }
+        function closeReportForm() {
+            document.getElementById("reportModal").style.display = "none";
+        }
 
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Denúncia enviada com sucesso.');
-                closeReportForm();
-                location.reload();
-            } else {
-                alert('Erro ao enviar a denúncia.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar a denúncia.');
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denúncia enviada com sucesso.');
+                        closeReportForm();
+                        location.reload();
+                    } else {
+                        alert('Erro ao enviar a denúncia.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a denúncia.');
+                });
         });
-    });
 
-</script>
+    </script>
 
     {% endblock %}
