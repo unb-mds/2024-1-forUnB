@@ -84,7 +84,7 @@ make config
 
 ### 💾 Execução
 
-Para executar o projeto em **ambiente local**, você pode rodar entrar na pasta onde se encontra o arquivo manage.py e rodar os seguintes comandos:
+Para executar o projeto em **ambiente local**, você pode entrar na pasta onde se encontra o arquivo manage.py e rodar os seguintes comandos:
 
 ```bash
 # Crie as migrações
