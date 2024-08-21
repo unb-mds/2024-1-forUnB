@@ -1,4 +1,15 @@
 /* BASE.HTML */
+body {
+    background-color: #f5f5f5;
+}
+
+footer {
+    background-color: inherit;
+} 
+
+.container-fluid {
+    background-color: #f5f5f5 !important;
+}
 
 /* Ajustes gerais */
 .bg-green {
@@ -12,6 +23,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: inherit;
 }
 
 /* Barra lateral */
@@ -247,7 +259,7 @@ body, html {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #f5f5f5 !important;
 }
 
 .forum-title {
@@ -309,7 +321,7 @@ body, html {
     flex-direction: column;
     word-wrap: break-word; /* Quebra palavras longas */
     overflow-wrap: break-word; /* Garante que o texto não transborde */
-    background-color: #ffffff;
+    background-color: #f5f5f5;
     transition: background-color 0.3s ease;
     border-radius: 5px;
 }
@@ -728,7 +740,7 @@ html, body {
     word-wrap: break-word;
     word-break: break-word;
     overflow: auto;
-    background-color: #ffffff;
+    background-color: #f5f5f5 !important;
 }
 
 .home-head {
