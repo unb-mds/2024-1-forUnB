@@ -39,6 +39,8 @@ jobs:
         run: |
           sudo service postgresql start
       - name: Configure PostgreSQL
+        env:
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: |
           sudo -u postgres psql -c "CREATE DATABASE forunb_db;"
           sudo -u postgres psql -c "CREATE USER forunb WITH PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
