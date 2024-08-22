@@ -213,6 +213,17 @@ textarea.form-control:focus {
         color: #003366;
         font-weight: bold;
     }
+
+    .response-area .form-check-label {
+    display: inline-block;
+    width: auto;
+    }
+
+.response-area .form-check-input {
+    display: inline-block;
+    width: auto;
+    margin-right: 5px;
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -306,11 +317,10 @@ textarea.form-control:focus {
                                     </div>
                                     <div class="img-preview mt-3"></div>
                                 </div>
-                        <div class="form-check-label mt-3">
-                            <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
-                            <input type="checkbox"  class="form-check-input" id="isAnonymous">
-                            
-                        </div>
+                                <div class="form-check mt-2">
+                                    <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
+                                    <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous"  style="display: inline-block; width: auto;">
+                                </div>
                         <div class="mt-3">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
                             <button type="submit" class="btn btn-send">Enviar</button>
