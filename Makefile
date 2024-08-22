@@ -7,7 +7,7 @@ config:
 # Install Django dependencies
 install:
 	python3 -m pip install --upgrade pip 
-	python3 -m pip install -r forunb/requirements.txt
+	python3 -m pip install -r requirements.txt
 
 # Migratons
 makemigration:
