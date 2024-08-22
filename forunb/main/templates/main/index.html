@@ -25,7 +25,9 @@
         <div class="question-item">
             <div class="home-meta">
                 {% load static %}
-                <img class="profile-picture" src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}"
+                    alt="{% if question.is_anonymous %}Imagem de perfil padrão{% else %}Foto de perfil do autor{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -44,7 +46,8 @@
                 <p class="question-description">{{ question.description }}</p>
             </a>
             {% if question.image %}
-            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-question mt-3">
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
             {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"

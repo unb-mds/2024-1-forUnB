@@ -15,7 +15,8 @@
             </div>
             <div class="question-meta">
                 {% load static %}
-                <img class="profile-picture" src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -28,7 +29,8 @@
             <h5 class="question-title">{{ question.title }}</h5>
             <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
-            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-question mt-3">
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
             {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
@@ -43,7 +45,7 @@
                     <i class="bi bi-exclamation-triangle-fill"></i>
                 </button>
             </div>
-            
+
 
             <div id="reportModal" class="modal" style="display: none;">
                 <div class="modal-content fw-bold">
@@ -67,15 +69,17 @@
                                 <label for="id_reason_outros">Outros</label>
                             </div>
                         </div>
-            
+
                         <!-- Campo de Detalhes -->
                         <div class="form-group">
                             <label for="id_details"></label>
-                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3"
+                                placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
                         <div class="d-flex justify-content-center mt-3">
-                        <button type="button" class="btn-cancel btn-secondary me-2" onclick="closeReportForm()">Cancelar</button>
-                        <button type="submit" class="btn_denuncia">Denunciar</button>
+                            <button type="button" class="btn-cancel btn-secondary me-2"
+                                onclick="closeReportForm()">Cancelar</button>
+                            <button type="submit" class="btn_denuncia">Denunciar</button>
                         </div>
                     </form>
                 </div>
@@ -92,7 +96,8 @@
                             placeholder="Escreva sua resposta..."></textarea>
                         <div class="form-group mt-3">
                             <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
+                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
+                                onchange="showCropper(event)">
                             <div class="img-container mt-3">
                                 <img id="cropper-image" style="max-width: 100%;">
                             </div>
@@ -115,14 +120,15 @@
         </div>
     </div>
     <hr class="answer-separator">
-    
+
     <div class="answer-list">
         {% if answers %}
         {% for answer in answers %}
         <div class="answer-item">
             <div class="answer-info">
                 <div class="answer-meta">
-                    <img class="profile-picture" src="{% if answer.is_anonymous or not answer.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ answer.author.photo.url }}{% endif %}">
+                    <img class="profile-picture"
+                        src="{% if answer.is_anonymous or not answer.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ answer.author.photo.url }}{% endif %}">
                     <span class="answer-author">
                         {% if answer.is_anonymous %}
                         Anônimo
@@ -135,7 +141,8 @@
                 </div>
                 <p class="answer-text preformatted-text">{{ answer.text }}</p>
                 {% if answer.image %}
-                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-question mt-3">
+                <img src="{{ answer.image.url }}" alt="Descrição da imagem relacionada à resposta"
+                    class="img-question mt-3">
                 {% endif %}
                 <div class="action-buttons-answer">
                     <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer"
@@ -147,11 +154,12 @@
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
-                    <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                    <button type="button" class="btn btn-alert"
+                        onclick="showReportForm('{{ question.id }}', 'question')">
                         <i class="bi bi-exclamation-triangle-fill"></i>
                     </button>
                 </div>
-               
+
             </div>
             <hr class="answer-separator">
             {% empty %}
@@ -371,44 +379,44 @@
                 });
         }
 
-function showReportForm(itemId, itemType) {
-        const form = document.getElementById('reportForm');
-        form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
-        document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
-        document.getElementById("reportModal").style.display = "block";
-    }
+        function showReportForm(itemId, itemType) {
+            const form = document.getElementById('reportForm');
+            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
+            document.getElementById("reportModal").style.display = "block";
+        }
 
-    function closeReportForm() {
-        document.getElementById("reportModal").style.display = "none";
-    }
+        function closeReportForm() {
+            document.getElementById("reportModal").style.display = "none";
+        }
 
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Denúncia enviada com sucesso.');
-                closeReportForm();
-                location.reload();
-            } else {
-                alert('Erro ao enviar a denúncia.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar a denúncia.');
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denúncia enviada com sucesso.');
+                        closeReportForm();
+                        location.reload();
+                    } else {
+                        alert('Erro ao enviar a denúncia.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a denúncia.');
+                });
         });
-    });
 
-</script>
+    </script>
 
     {% endblock %}
