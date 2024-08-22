@@ -1059,10 +1059,15 @@ body, html {
 
 
 
-/* QUESTION.HTML */
+/* QUESTIONS.HTML */
 .full-height {
     height: 100vh; /* Altura total da viewport */
     display: flex;
+    flex-direction: column;
+}
+
+.row {
+    flex-grow: 1;
 }
 
 .questions-list, .answers-list {
@@ -1081,8 +1086,8 @@ body, html {
 
 .scroll-container {
     flex-grow: 1;
-    height: 400px;
-    overflow-y: scroll;
+    min-height: 0;
+    overflow-y: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer and Edge */
 }
@@ -1096,6 +1101,7 @@ body, html {
     top: 0;
     z-index: 100;
     color: #003366;
+    background-color: #f5f5f5;
     font-weight: bold;
     font-size: 2rem;
 }
@@ -1103,10 +1109,8 @@ body, html {
 @media (max-width: 768px) {
     .scroll-container {
         flex-grow: 1;
-        height: 170px;
-        overflow-y: scroll;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+        min-height: 0;
+        overflow-y: auto;
     }
     
     .questions-list, .answers-list {
@@ -1114,11 +1118,7 @@ body, html {
     }
 
     .list-header {
-        position: sticky;
-        top: 0;
-        z-index: 100; /* Mantém o cabeçalho sobre os conteúdos em scroll */
-        color: #003366;
-        font-weight: bold;
+        z-index: 100;
         font-size: 1.5rem;
     }
 }
