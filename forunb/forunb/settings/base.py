@@ -117,7 +117,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
+# Diretório para coletar arquivos estáticos em produção
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Diretórios onde procurar arquivos estáticos adicionais
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
