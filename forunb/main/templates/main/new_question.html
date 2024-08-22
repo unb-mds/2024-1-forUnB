@@ -89,6 +89,7 @@
         /* Ajuste conforme necessário */
         overflow: hidden;
         margin: 0 auto;
+        border-radius: 10px;
         /* Centraliza o contêiner da imagem */
     }
 
@@ -108,7 +109,7 @@
         height: 200px;
         overflow: hidden;
         margin: 10px;
-        border: 1px solid #ccc;
+        border: 10px solid #ccc;
     }
 
     .img-container, .img-preview {
@@ -122,6 +123,18 @@
             height: 100vh;
             width: 100%;
         }
+
+        .img-container {
+        width: 80%;
+        max-width: 400px;
+        /* Ajuste conforme necessário */
+        max-height: 400px;
+        /* Ajuste conforme necessário */
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 10px;
+        /* Centraliza o contêiner da imagem */
+    }
     }
 
     .MathJax {
@@ -165,10 +178,7 @@
         color: #003366;
     }
 
-    #cropper-image {
-        width: 100%;
-        height: auto;
-    }
+    
 </style>
 
 <h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
@@ -198,7 +208,7 @@
                     </div>
                     <div class="img-preview mt-3"></div>
                 </div>
-            <div class="mt-1">
+            <div class="mt-4">
                 <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
                 <button type="submit" class="btn btn-enviar">Enviar</button>
             </div>
