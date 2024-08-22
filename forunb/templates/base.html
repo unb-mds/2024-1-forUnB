@@ -70,9 +70,7 @@
                             <img class="profile-photo" src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}" alt="profile-picture">
                             <span class="username">{{ user.username }}</span>
                         </button>
-                        <button class="btn btn-login d-flex d-sm-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="profile-photo" src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}" alt="profile-picture">
-                        </button>
+                        <img class="profile-photo d-sm-none dropdown-toggle" src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}" onclick="toggleDropdown()">
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{% url 'users:profile' %}"><i
                                         class="bi bi-person-circle"></i>Perfil</a></li>
@@ -107,27 +105,29 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-    const searchBar = document.getElementById('search-bar');
+            const searchBar = document.getElementById('search-bar');
 
-    function setPlaceholder() {
-        if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
-            // Se estivermos em uma página de fórum específico
-            const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
-            searchBar.placeholder = `Pesquisar em ${forumTitle}`;
-        } else {
-            // Para todas as outras páginas
-            searchBar.placeholder = "Digite o nome da matéria";
+            function setPlaceholder() {
+                if (searchBar.closest('form').querySelector('input[name="forum_id"]')) {
+                    // Se estivermos em uma página de fórum específico
+                    const forumTitle = searchBar.closest('form').querySelector('input[name="forum_id"]').dataset.forumTitle;
+                    searchBar.placeholder = `Pesquisar em ${forumTitle}`;
+                } else {
+                    // Para todas as outras páginas
+                    searchBar.placeholder = "Digite o nome da matéria";
+                }
+            }
+
+            searchBar.placeholder = "Pesquisar";
+            searchBar.addEventListener('focus', setPlaceholder);
+            searchBar.addEventListener('blur', function () {
+                searchBar.placeholder = "Pesquisar";
+            });
+        });
+
+        function toggleDropdown() {
+            document.querySelector('.dropdown-menu').classList.toggle('show');
         }
-    }
-
-    searchBar.placeholder = "Pesquisar";
-
-    searchBar.addEventListener('focus', setPlaceholder);
-
-    searchBar.addEventListener('blur', function () {
-        searchBar.placeholder = "Pesquisar";
-    });
-});
 
 
     </script>
