@@ -60,11 +60,18 @@
                     <!-- Botão de login -->
                     <div class="d-flex align-items-center">
                         {% if user.is_authenticated %}
-                        <button class="btn btn-login d-none d-sm-flex align-items-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="profile-photo" src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}" alt="profile-picture">
+                        <button class="btn btn-login d-none d-sm-flex align-items-center dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="profile-photo"
+                                src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}"
+                                alt="profile-picture">
                             <span class="username">{{ user.username }}</span>
                         </button>
-                        <img class="profile-photo d-sm-none dropdown-toggle" src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}" onclick="toggleDropdown()">
+                        <img class="profile-photo d-sm-none dropdown-toggle"
+                            src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'forunb/img/default.jpg' %}{% endif %}"
+                            onclick="toggleDropdown()"
+                            onkeydown="if(event.key === 'Enter' || event.key === ' ') { toggleDropdown(); }"
+                            tabindex="0" alt="Foto de perfil">
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{% url 'users:profile' %}"><i
                                         class="bi bi-person-circle"></i>Perfil</a></li>
@@ -74,7 +81,7 @@
                                         class="bi bi-bell"></i>Notificações</a></li>
                         </ul>
                         {% else %}
-                            <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
+                        <a class="btn btn-login" href="{% url 'users:login' %}">Entrar</a>
                         {% endif %}
                     </div>
                 </div>
