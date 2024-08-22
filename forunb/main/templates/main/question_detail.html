@@ -6,161 +6,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
-<style>
-    .answer-list {
-        min-height: 50vh;
-        /* Define a altura mínima como 50% da altura da tela */
-        max-height: 70vh;
-        /* Define a altura máxima como 70% da altura da tela */
-        overflow-y: auto;
-        /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
-        padding: 1rem;
-        /* Adiciona um espaçamento interno */
-        background-color: #f9f9f9;
-        /* Adiciona uma cor de fundo para melhor visualização */
-        border-radius: 8px;
-        /* Adiciona bordas arredondadas */
-    }
-
-    /* Estilos adicionais para o Cropper.js */
-    .img-container {
-        max-width: 100%;
-    }
-
-    .img-preview {
-        overflow: hidden;
-        margin: 10px;
-        border: 1px solid #ccc;
-    }
-
-    .preformatted-text {
-        white-space: pre-wrap;
-        /* Preserva a formatação original e as quebras de linha */
-        word-wrap: break-word;
-        /* Quebra palavras longas */
-    }
-
-    /* Estilos para o spinner */
-    #loading-spinner {
-        display: none;
-        text-align: center;
-        padding: 10px;
-    }
-
-    #reportModal {
-        display: none;
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 80vw; /* Usando 80% da largura da viewport */
-        max-width: 400px; /* Definindo um máximo de largura */
-        height: 60vh; /* Usando 60% da altura da viewport */
-        max-height: 400px; /* Definindo um máximo de altura */
-        border-radius: 20px;
-    }
-
-    #reportModal .modal-content {
-        position: relative;
-        padding: 20px;
-    }
-
-    #reportModal .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #aaa;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    #reportModal .close:hover,
-    #reportModal .close:focus {
-        color: rgb(255, 255, 255);
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .modal-header {
-        margin-bottom: 15px;
-    }
-
-    .modal-body {
-        margin-bottom: 15px;
-    }
-
-    .modal-footer {
-        text-align: right;
-    }
-
-    .btn_denuncia{
-        background-color:#ff0000;
-        color: #ffffff;
-        font-weight: bold;
-        border: none;
-        padding: 3px 8px;
-        border-radius: 20px;
-    }
-
-    .btn_denuncia:hover{
-        background-color: #9a0303;
-        color: #ffffff;
-    }
-
-    .modal-content{
-        background-color: #003366;
-        color: #ffffff;
-        border-radius: 20px;
-    }
-    
-    .btn-cancel {
-    background-color: #C7D2DD;
-    color: #003366;
-    font-weight: bold;
-    border: none;
-    padding: 1px 5px;
-    border-radius: 20px;
-    }
-
-    .btn-cancel:hover {
-    background-color: #a0b0c0;
-    }
-
-    .btn-alert {
-    background-color: #a0b0c0;
-    border: none;
-    color: #003366;
-    padding: 6px 12px;
-    border-radius: 20px;
-    }
-
-    .btn-alert:hover {
-        background-color: #C7D2DD;
-        color: #003366;
-    }
-
-textarea.form-control {
-    border-radius: 20px; /* Bordas mais arredondadas */
-    border-color: #ced4da; /* Cor da borda */
-    padding: 10px; /* Ajuste de espaçamento interno */
-    font-size: 14px; /* Tamanho da fonte */
-    background-color: #a0b0c0 ; /* Cor de fundo clara */
-    }
-
-textarea.form-control:focus {
-    border-color: #80bdff; /* Cor da borda ao focar no campo */
-    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Efeito de sombra ao focar */
-    }
-
-@media (max-width: 767px) {
-        .form-check{
-            font-size: small;
-        } 
-    }
-    
-</style>
-
 <div class="custom-container mt-5 ms-0">
     <div class="questions-item">
         <div class="question-info">
@@ -169,6 +14,9 @@ textarea.form-control:focus {
                         class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
+                {% load static %}
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -181,7 +29,8 @@ textarea.form-control:focus {
             <h5 class="question-title">{{ question.title }}</h5>
             <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
-            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
             {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
@@ -196,7 +45,7 @@ textarea.form-control:focus {
                     <i class="bi bi-exclamation-triangle-fill"></i>
                 </button>
             </div>
-            
+
 
             <div id="reportModal" class="modal" style="display: none;">
                 <div class="modal-content fw-bold">
@@ -220,15 +69,17 @@ textarea.form-control:focus {
                                 <label for="id_reason_outros">Outros</label>
                             </div>
                         </div>
-            
+
                         <!-- Campo de Detalhes -->
                         <div class="form-group">
                             <label for="id_details"></label>
-                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3"
+                                placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
                         <div class="d-flex justify-content-center mt-3">
-                        <button type="button" class="btn-cancel btn-secondary me-2" onclick="closeReportForm()">Cancelar</button>
-                        <button type="submit" class="btn_denuncia">Denunciar</button>
+                            <button type="button" class="btn-cancel btn-secondary me-2"
+                                onclick="closeReportForm()">Cancelar</button>
+                            <button type="submit" class="btn_denuncia">Denunciar</button>
                         </div>
                     </form>
                 </div>
@@ -269,13 +120,15 @@ textarea.form-control:focus {
         </div>
     </div>
     <hr class="answer-separator">
-    
+
     <div class="answer-list">
         {% if answers %}
         {% for answer in answers %}
         <div class="answer-item">
             <div class="answer-info">
                 <div class="answer-meta">
+                    <img class="profile-picture"
+                        src="{% if answer.is_anonymous or not answer.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ answer.author.photo.url }}{% endif %}">
                     <span class="answer-author">
                         {% if answer.is_anonymous %}
                         Anônimo
@@ -288,7 +141,8 @@ textarea.form-control:focus {
                 </div>
                 <p class="answer-text preformatted-text">{{ answer.text }}</p>
                 {% if answer.image %}
-                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+                <img src="{{ answer.image.url }}" alt="Descrição da imagem relacionada à resposta"
+                    class="img-question mt-3">
                 {% endif %}
                 <div class="action-buttons-answer">
                     <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer"
@@ -300,11 +154,12 @@ textarea.form-control:focus {
                     <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
                     </a>
-                    <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                    <button type="button" class="btn btn-alert"
+                        onclick="showReportForm('{{ question.id }}', 'question')">
                         <i class="bi bi-exclamation-triangle-fill"></i>
                     </button>
                 </div>
-               
+
             </div>
             <hr class="answer-separator">
             {% empty %}
@@ -524,44 +379,44 @@ textarea.form-control:focus {
                 });
         }
 
-function showReportForm(itemId, itemType) {
-        const form = document.getElementById('reportForm');
-        form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
-        document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
-        document.getElementById("reportModal").style.display = "block";
-    }
+        function showReportForm(itemId, itemType) {
+            const form = document.getElementById('reportForm');
+            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
+            document.getElementById("reportModal").style.display = "block";
+        }
 
-    function closeReportForm() {
-        document.getElementById("reportModal").style.display = "none";
-    }
+        function closeReportForm() {
+            document.getElementById("reportModal").style.display = "none";
+        }
 
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Denúncia enviada com sucesso.');
-                closeReportForm();
-                location.reload();
-            } else {
-                alert('Erro ao enviar a denúncia.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar a denúncia.');
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denúncia enviada com sucesso.');
+                        closeReportForm();
+                        location.reload();
+                    } else {
+                        alert('Erro ao enviar a denúncia.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a denúncia.');
+                });
         });
-    });
 
-</script>
+    </script>
 
     {% endblock %}

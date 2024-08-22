@@ -85,7 +85,7 @@
         color: #003366;
     }
     .btn-cancel {
-        color: #c7d2dd;
+        color: white;
         background-color: #810101;
         font-weight: bolder;
         border: none;
@@ -94,18 +94,19 @@
         margin-bottom: 10px;
         font-size: large;
         transition: background-image 0.3s ease, transform 0.3s ease;
-        margin-left: 5px;
+        margin-right: 5px;
     }
     .btn-cancel:hover {
         background-image: linear-gradient(45deg, #810101, #970101) !important;
         transform: scale(1.05) !important;
-        color: #C7D2DD;
+        color: white;
     }
     .btn-home {
         width: auto; 
         padding: 10px 20px;
         font-size: large;
-        margin-right: 5px;
+        margin-left: 5px;
+        color: white;
     }
     #file-name {
         margin-left: 10px; 
@@ -122,7 +123,6 @@
         color: #003366;
     }
 </style>
-
 <div class="container mt-5 profile-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -156,8 +156,8 @@
                     <input type="text" class="email" value="{{ user.email }}" readonly>
                 </div>
                 <div class="d-flex justify-content-center" id="action-buttons" style="display: none;">
-                    <button type="submit" class="btn btn-home">Salvar</button>
                     <button type="button" class="btn btn-cancel" onclick="cancelSelection()">Cancelar</button>
+                    <button type="submit" class="btn btn-home">Salvar</button>
                 </div>                
                 <div id="loading-spinner">
                     <p>Carregando...</p>
@@ -274,7 +274,11 @@
         if (usernameInput.value === originalUsername && fileInput.files.length === 0) {
             actionButtons.style.display = 'none';
         }
+
+        // Redireciona para a página "index"
+        window.location.href = "{% url 'main:index' %}";
     }
+
     function submitForm(event) {
         event.preventDefault();
         const form = event.target;

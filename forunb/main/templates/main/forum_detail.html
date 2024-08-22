@@ -2,33 +2,6 @@
 
 {% block content %}
 
-<style>
-    .dropdown-principal{
-    background-color: #003366;
-    color: #ffffff;
-    font-weight: bolder;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    border: none !important;  
-    box-shadow: none !important;  
-    }
-
-    .dropdown-principal:hover {/* Quando o botão está com o mouse em cima */
-    background-color: #a0b0c0;
-    color: #003366;
-    }
-
-    .btn-question:hover {
-        background-color: #a0b0c0;
-        color: #003366;
-    }
-
-    .dropdown-toggle:focus,/* Quando o botão estiver ativo */
-    .dropdown-toggle.show {
-        background-color: #a0b0c0;
-        color: #003366;
-    }
-</style>
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
         <h1 class="forum-title flex-grow-1">
@@ -43,28 +16,34 @@
             </button>
             {% endif %}
         </h1>
-        <div class="d-flex align-items-center">
-            <div class="dropdown me-3">
-                <button class="btn btn-secondary dropdown-toggle dropdown-principal" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Filtrar
-                </button>
-                <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
-                            Recentes</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
-                            Recentes</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
-                            Votadas</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
-                            Votadas</a></li>
-                </ul>
-            </div>
-            <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
+    </div>
+    <div class="d-flex forum-buttons">
+        <div class="dropdown me-3">
+            <button class="btn btn-question dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar
+            </button>
+            <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
+                        Recentes</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
+                        Recentes</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
+                        Votadas</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
+                        Votadas</a></li>
+            </ul>
         </div>
+        <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
     </div>
 
     {% load custom_filters %}
@@ -74,6 +53,10 @@
         {% for question in questions %}
         <div class="question-item">
             <div class="question-meta">
+                {% load static %}
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}"
+                    alt="{% if question.is_anonymous %}Imagem de perfil anônima{% else %}Foto de perfil do autor{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -87,6 +70,10 @@
                 <h5 class="question-title">{{ question.title }}</h5>
                 <p class="question-description">{{ question.description }}</p>
             </a>
+            {% if question.image %}
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
+            {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
                     onclick="toggleUpvote(this);">

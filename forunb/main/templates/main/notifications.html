@@ -8,14 +8,19 @@
     }
 
     .list-group-item-notificacao{
-        background-color: #ffffff;
+        background-color: #f5f5f5;
         color: #003366;
     }
 
     .list-group-item{
-        background-color:  #ffffff;
+        background-color:  #f5f5f5;
         color: #003366;
         border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+        align-items: flex-start;
     }
 
     .list-group-item:hover{
@@ -25,34 +30,63 @@
     .resposta{
         color: #003366;
         font-size:x-large;
+        text-decoration: none;
     }
 
     .resposta:hover{
         color: #003366;
     }
 
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .notification-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notification-author {
+        font-weight: bold;
+    }
+
+    .notification-time {
+        font-size: small;
+        color: #6c757d;
+    }
+
     @media (max-width: 575.98px) {
-        .list-group-item{
-        width: 85vw;
-    } 
+        .list-group-item {
+            width: 85vw;
+        } 
     }
 </style>
 
-<h2 class="notificacao p-4 fw-bold">Notificações</h2>
+<h2 class="notificacao p-4 fw-bold mt-3">Notificações</h2>
 <div class="scroll-container p-4 rounded">
-    <ul class="list-group list-group-flush mt-4">
+    <ul class="list-group list-group-flush">
         {% for notification in notifications %}
         <li class="list-group-item">
-            <strong>{% if notification.answer.is_anonymous %}
-                Anônimo
-            {% else %}
-                {{ notification.answer.author.username }} 
-            {% endif %}
-            </strong> respondeu à sua pergunta
-            <a class="resposta mt-1 mb-1 fw-bold" href="{% url 'main:question_detail' notification.question.id %}"><strong>{{ notification.question.title }}</strong></a>
-            <small class="text-muted">{{ notification.created_at }}</small>
+            <div class="notification-header">
+                <span class="notification-author">
+                    {% if notification.answer.is_anonymous %}
+                        Anônimo
+                    {% else %}
+                        {{ notification.answer.author.username }} 
+                    {% endif %}
+                </span> • 
+                <small class="notification-time">{{ notification.created_at }}</small>
+            </div>
+            <div class="notification-content">
+                <span>respondeu à sua pergunta:</span>
+                <a class="resposta mt-1 mb-1 fw-bold" href="{% url 'main:question_detail' notification.question.id %}">
+                    <strong>{{ notification.question.title }}</strong>
+                </a>
+            </div>
         </li>
-        <hr>   
+        <hr>
         {% empty %}
         <h4 class="text-center notificacao fw-bold mt-4">Você não tem notificações</h4>
         {% endfor %}

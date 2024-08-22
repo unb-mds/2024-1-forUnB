@@ -6,10 +6,8 @@
     <div class="forum-header">
         <h2 class="home-head">Últimas Perguntas</h2>
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar por
-            </button>
+            <button class="btn btn-question dropdown-toggle mb-2" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">Filtrar</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'main:index' %}?filter_by=latest">Últimas Perguntas Gerais</a>
                 </li>
@@ -26,6 +24,10 @@
         {% for question in latest_questions %}
         <div class="question-item">
             <div class="home-meta">
+                {% load static %}
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}"
+                    alt="{% if question.is_anonymous %}Imagem de perfil padrão{% else %}Foto de perfil do autor{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -43,6 +45,10 @@
                 <h5 class="question-title">{{ question.title }}</h5>
                 <p class="question-description">{{ question.description }}</p>
             </a>
+            {% if question.image %}
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
+            {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
                     onclick="toggleUpvote(this);">
