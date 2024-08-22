@@ -365,151 +365,179 @@
             }
         }
 
-            function submitForm(event) {
-                event.preventDefault();
-                const form = event.target;
-                document.getElementById('loading-spinner').style.display = 'block';
+        function submitForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            document.getElementById('loading-spinner').style.display = 'block';
 
-                const formData = new FormData(form);
+            const formData = new FormData(form);
 
-                if (cropper && document.getElementById('image').files.length > 0) {
-                    cropper.getCroppedCanvas().toBlob((blob) => {
-                        const fileName = 'cropped_image.png';
-                        const croppedImage = new File([blob], fileName, { type: 'image/png' });
-                        formData.append('image', croppedImage);
-                        sendFormData(form.action, formData);
-                    }, 'image/png');
-                } else {
+            if (cropper && document.getElementById('image').files.length > 0) {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    const fileName = 'cropped_image.png';
+                    const croppedImage = new File([blob], fileName, { type: 'image/png' });
+                    formData.append('image', croppedImage);
                     sendFormData(form.action, formData);
-                }
+                }, 'image/png');
+            } else {
+                sendFormData(form.action, formData);
             }
+        }
 
-            function sendFormData(url, formData) {
-                fetch(url, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert('Erro ao enviar a resposta.');
-                            console.error('Erro:', data.errors);
-                        }
-                    })
-                    .catch(error => {
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        console.error('Erro:', error);
+        function sendFormData(url, formData) {
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    if (data.success) {
+                        location.reload();
+                    } else {
                         alert('Erro ao enviar a resposta.');
-                    });
-            }
-
-
-            function showResponseForm() {
-                var responseInput = document.querySelector('.response-area input');
-                var responseForm = document.querySelector('.response-form');
-                var textarea = responseForm.querySelector('textarea');
-
-                if (responseInput && responseForm && textarea) {
-                    responseInput.classList.add('d-none');
-                    responseForm.classList.remove('d-none');
-                    textarea.focus(); // Coloca o foco no campo de texto
-                } else {
-                    console.error('Elementos não encontrados.');
-                }
-            }
-
-            function cancelResponse() {
-                var responseInput = document.querySelector('.response-area input');
-                var responseForm = document.querySelector('.response-form');
-
-                if (responseInput && responseForm) {
-                    responseInput.classList.remove('d-none');
-                    responseForm.classList.add('d-none');
-                } else {
-                    console.error('Elementos não encontrados.');
-                }
-            }
-
-            function toggleLike(element) {
-                var icon = element.querySelector('i');
-                if (icon.classList.contains('bi-heart')) {
-                    icon.classList.remove('bi-heart');
-                    icon.classList.add('bi-heart-fill');
-                } else {
-                    icon.classList.remove('bi-heart-fill');
-                    icon.classList.add('bi-heart');
-                }
-            }
-
-            function toggleUpvote(element) {
-                const questionId = element.getAttribute('data-id');
-                const type = element.getAttribute('data-type');
-                const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
-
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'Content-Type': 'application/json',
-                    },
+                        console.error('Erro:', data.errors);
+                    }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        const icon = element.querySelector('i');
-                        if (icon.classList.contains('bi-heart')) {
-                            icon.classList.remove('bi-heart');
-                            icon.classList.add('bi-heart-fill');
-                        } else {
-                            icon.classList.remove('bi-heart-fill');
-                            icon.classList.add('bi-heart');
-                        }
-                        element.querySelector('span').innerText = data.upvotes;
-                    });
+                .catch(error => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a resposta.');
+                });
+        }
+
+
+        function showResponseForm() {
+            var responseInput = document.querySelector('.response-area input');
+            var responseForm = document.querySelector('.response-form');
+            var textarea = responseForm.querySelector('textarea');
+
+            if (responseInput && responseForm && textarea) {
+                responseInput.classList.add('d-none');
+                responseForm.classList.remove('d-none');
+                textarea.focus(); // Coloca o foco no campo de texto
+            } else {
+                console.error('Elementos não encontrados.');
+            }
+        }
+
+        function cancelResponse() {
+            // Parte 1: Cancelar a resposta
+            var responseInput = document.querySelector('.response-area input');
+            var responseForm = document.querySelector('.response-form');
+
+            if (responseInput && responseForm) {
+                responseInput.classList.remove('d-none');
+                responseForm.classList.add('d-none');
+            } else {
+                console.error('Elementos não encontrados.');
+            }
+            // Parte 2: Resetar a imagem e ocultar as áreas de visualização
+            const fileInput = document.getElementById('image');
+            if (fileInput) {
+                fileInput.value = '';  // Reseta o valor do input de arquivo
             }
 
-            function showReportForm(itemId, itemType) {
-                const form = document.getElementById('reportForm');
-                form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
-                document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
-                document.getElementById("reportModal").style.display = "block";
+            const imgContainer = document.querySelector('.img-container');
+            const imgPreview = document.querySelector('.img-preview');
+            const cropperImage = document.getElementById('cropper-image');
+
+            if (imgContainer && imgPreview && cropperImage) {
+                imgContainer.style.display = 'none';  // Oculta a área de visualização da imagem
+                imgPreview.style.display = 'none';    // Oculta a pré-visualização
+                cropperImage.src = '';  // Remove a imagem de pré-visualização
             }
 
-            function closeReportForm() {
-                document.getElementById("reportModal").style.display = "none";
+            // Destrói a instância de Cropper se ela existir
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
             }
 
-            document.getElementById('reportForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const form = event.target;
-                fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Denúncia enviada com sucesso.');
-                            closeReportForm();
-                            location.reload();
-                        } else {
-                            alert('Erro ao enviar a denúncia.');
-                            console.error('Erro:', data.errors);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
+            // Esconde os botões de ação se não houver alterações no formulário
+            const actionButtons = document.getElementById('action-buttons');
+            if (actionButtons) {
+                actionButtons.style.display = 'none';
+            }
+        }
+
+        function toggleLike(element) {
+            var icon = element.querySelector('i');
+            if (icon.classList.contains('bi-heart')) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+        }
+
+        function toggleUpvote(element) {
+            const questionId = element.getAttribute('data-id');
+            const type = element.getAttribute('data-type');
+            const url = type === 'question' ? `/toggle-upvote-question/${questionId}/` : `/toggle-upvote-answer/${questionId}/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const icon = element.querySelector('i');
+                    if (icon.classList.contains('bi-heart')) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                    } else {
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
+                    }
+                    element.querySelector('span').innerText = data.upvotes;
+                });
+        }
+
+        function showReportForm(itemId, itemType) {
+            const form = document.getElementById('reportForm');
+            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
+            document.getElementById("reportModal").style.display = "block";
+        }
+
+        function closeReportForm() {
+            document.getElementById("reportModal").style.display = "none";
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denúncia enviada com sucesso.');
+                        closeReportForm();
+                        location.reload();
+                    } else {
                         alert('Erro ao enviar a denúncia.');
-                    });
-            });
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a denúncia.');
+                });
+        });
 
     </script>
 
