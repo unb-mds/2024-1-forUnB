@@ -26,6 +26,8 @@
         {% for question in latest_questions %}
         <div class="question-item">
             <div class="home-meta">
+                {% load static %}
+                <img class="profile-picture" src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
