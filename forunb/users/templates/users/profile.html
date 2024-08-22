@@ -275,7 +275,11 @@
         if (usernameInput.value === originalUsername && fileInput.files.length === 0) {
             actionButtons.style.display = 'none';
         }
+
+        // Redireciona para a página "index"
+        window.location.href = "{% url 'main:index' %}";
     }
+
     function submitForm(event) {
         event.preventDefault();
         const form = event.target;
