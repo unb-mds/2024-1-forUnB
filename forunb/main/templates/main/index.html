@@ -6,10 +6,8 @@
     <div class="forum-header">
         <h2 class="home-head">Últimas Perguntas</h2>
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar por
-            </button>
+            <button class="btn btn-question dropdown-toggle mb-2" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">Filtrar</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'main:index' %}?filter_by=latest">Últimas Perguntas Gerais</a>
                 </li>
