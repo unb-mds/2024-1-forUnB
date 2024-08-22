@@ -49,14 +49,19 @@ class AnswerForm(forms.ModelForm):
         """ Meta class for AnswerForm. """
         model = Answer
         fields = ['text', 'is_anonymous', 'image']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'id': 'id_answer_text',
+                'class': 'texto descricao form-control mt-2',
+                'placeholder': 'Escreva sua resposta...',
+                'rows': 5,
+                'cols': 50,
+            }),
+        }
         labels = {
             'text': ''
         }
-        widgets = {
-            'text': forms.Textarea(attrs={'cols': 80}),
-            'id': 'id_answer_text',
-        }
-
+       
 
 User = get_user_model()
 
