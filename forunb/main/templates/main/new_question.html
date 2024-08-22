@@ -69,10 +69,6 @@
         /* Fonte em negrito */
     }
 
-    .descricao.texto {
-        height: 200px;
-        /* Ajuste a altura conforme necessário */
-    }
 
     .custom-label {
         color: #003366;
@@ -93,7 +89,12 @@
         /* Ajuste conforme necessário */
         overflow: hidden;
         margin: 0 auto;
+        border-radius: 10px;
         /* Centraliza o contêiner da imagem */
+    }
+
+    .imagem{
+        color: #003366;
     }
 
     #cropper-image {
@@ -108,8 +109,13 @@
         height: 200px;
         overflow: hidden;
         margin: 10px;
-        border: 1px solid #ccc;
+        border: 10px solid #ccc;
     }
+
+    .img-container, .img-preview {
+    display: none; /* Esconde a área de visualização por padrão */
+}
+
 
     @media (max-width: 767px) {
         .response-form {
@@ -117,16 +123,66 @@
             height: 100vh;
             width: 100%;
         }
+
+        .img-container {
+        width: 80%;
+        max-width: 400px;
+        /* Ajuste conforme necessário */
+        max-height: 400px;
+        /* Ajuste conforme necessário */
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 10px;
+        /* Centraliza o contêiner da imagem */
+    }
     }
 
     .MathJax {
         font-family: 'Arial', sans-serif;
         /* Substitua 'Arial' pela fonte desejada */
     }
+
+
+    #id_description_ifr {
+        background-color: #C7D2DD;
+        border-radius: 5px;
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn,
+    .tox .tox-toolbar__primary .tox-tbtn__select-label,
+    .tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
+        color: #000000;  /* Cor dos ícones e textos */
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn:hover {
+        background-color:#C7D2DD; /* Cor de fundo ao passar o mouse */
+    }
+
+    .tox .tox-toolbar__primary .tox-tbtn--enabled {
+        background-color:#C7D2DD; /* Cor de fundo quando o botão está ativado */
+        color: #fff; /* Cor do texto quando o botão está ativado */
+    }
+    .scroll-container::-webkit-scrollbar {
+    display: none; /* Oculta a barra de rolagem */
+}
+
+.btn-imagem {
+        color: #003366;
+        background-color: #C7D2DD;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+    .btn-imagem:hover, .form-control:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
+
+    
 </style>
 
-<div class="custom-container mt-5 ms-0">
-    <h2 class="nome fw-bold">Perguntar em {{ forum.title }}</h2>
+<h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
+<div class="scroll-container ps-3 ms-0 mb-4">
     <div class="response-form">
         <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data"
             onsubmit="return submitForm(event)">
@@ -143,17 +199,16 @@
                 <label class="custom-label">{{ form.is_anonymous.label_tag }}</label>
                 {{ form.is_anonymous }}
             </div>
-            <div class="form-group mt-3">
-                <label for="image">Imagem:</label>
-                <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                    onchange="showCropper(event)">
-                <div class="img-container mt-3">
-                    <img id="cropper-image" style="max-width: 100%;">
+            <div class="form-group fw-bold mt-3">
+                <label class ="imagem" for="image">Imagem :</label>
+                    <input type="file" name="image" id="image" accept="image/*" onchange="showCropper(event)" style="display: none;">
+                    <button type="button" class="btn btn-imagem" onclick="document.getElementById('image').click();">Escolher Arquivo</button>
+                    <div class="img-container mt-3">
+                        <img id="cropper-image">
+                    </div>
+                    <div class="img-preview mt-3"></div>
                 </div>
-                <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
-            </div>
-            <div class="mt
--1">
+            <div class="mt-4">
                 <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
                 <button type="submit" class="btn btn-enviar">Enviar</button>
             </div>
@@ -176,14 +231,13 @@
                         text: 'Math',
                         onAction: function () {
                             editor.windowManager.open({
-                                title: 'Insert Math',
+                                title: 'Inserir Fórmula',
                                 body: {
                                     type: 'panel',
                                     items: [
                                         {
                                             type: 'textarea',
                                             name: 'math',
-                                            label: 'Math Formula',
                                             placeholder: '\\( E = mc^2 \\)'
                                         }
                                     ]
@@ -191,11 +245,11 @@
                                 buttons: [
                                     {
                                         type: 'cancel',
-                                        text: 'Cancel'
+                                        text: 'Cancelar'
                                     },
                                     {
                                         type: 'submit',
-                                        text: 'Insert',
+                                        text: 'Enviar',
                                         primary: true
                                     }
                                 ],
@@ -214,11 +268,21 @@
                 });
             },
             plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
-            toolbar: 'bold italic underline forecolor mathjax code'
-            ,
+            toolbar: 'bold italic underline forecolor mathjax code',
             menubar: false,  // Remove a barra de menu superior 
             statusbar: false,  // Remove a barra de status inferior 
-            height: 400
+            height: 150,
+ 
+            content_style: `
+            body {
+            font-weight: bold;  
+        }
+
+            body:focus {
+            background-color: #ffff; /* Cor de fundo ao digitar */ 
+            color: #000000;
+            font-weight: normal;
+    `,
         });
         function renderMath() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
@@ -236,34 +300,43 @@
     });
 
     let cropper;
-    const image = document.getElementById('cropper-image');
+const image = document.getElementById('cropper-image');
 
-    function showCropper(event) {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validImageTypes.includes(file.type)) {
-                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
-                event.target.value = ''; // Limpa o input
-                return;
-            }
+function showCropper(event) {
+    const files = event.target.files;
+    const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
+    const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                image.src = e.target.result;
-                if (cropper) {
-                    cropper.destroy();
-                }
-                cropper = new Cropper(image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    preview: '.img-preview',
-                });
-            };
-            reader.readAsDataURL(file);
+    if (files && files.length > 0) {
+        const file = files[0];
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validImageTypes.includes(file.type)) {
+            alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+            event.target.value = ''; // Limpa o input
+            imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+            return;
         }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            image.src = e.target.result;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                preview: '.img-preview',
+            });
+            imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
+            imgPreview.style.display = 'block'; // Mostra a pré-visualização da imagem
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+        imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
     }
+}
 
     function submitForm(event) {
         event.preventDefault();
@@ -310,13 +383,28 @@
     }
 
     function cancelForm() {
-        window.history.back();
+    // Limpa o input de arquivo
+    const fileInput = document.getElementById('image');
+    fileInput.value = '';  // Reseta o valor do input de arquivo
+
+    // Oculta a área de visualização da imagem
+    document.querySelector('.img-container').style.display = 'none';
+    document.querySelector('.img-preview').style.display = 'none';
+
+    // Remove a imagem de pré-visualização
+    document.getElementById('cropper-image').src = '';
+
+    // Destrói a instância do Cropper se ela existir
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
     }
 
+    // Esconde os botões de ação se não houver alterações no formulário
+    const actionButtons = document.getElementById('action-buttons');
+    actionButtons.style.display = 'none';
+}
 
-    function cancelForm() {
-        window.history.back();
-    }
 </script>
 
 {% endblock %}
