@@ -154,9 +154,9 @@
                             class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         <span>{{ answer.upvote_count }}</span>
                     </button>
-                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                    <!-- <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
-                    </a>
+                    </a> -->
                     <button type="button" class="btn btn-alert"
                         onclick="showReportForm('{{ question.id }}', 'question')">
                         <i class="bi bi-exclamation-triangle-fill"></i>
