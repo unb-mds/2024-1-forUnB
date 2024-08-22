@@ -544,6 +544,7 @@ textarea.form-control:focus {
         }
 
         function cancelResponse() {
+            // Parte 1: Cancelar a resposta
             var responseInput = document.querySelector('.response-area input');
             var responseForm = document.querySelector('.response-form');
 
@@ -552,6 +553,34 @@ textarea.form-control:focus {
                 responseForm.classList.add('d-none');
             } else {
                 console.error('Elementos não encontrados.');
+            }
+
+            // Parte 2: Resetar a imagem e ocultar as áreas de visualização
+            const fileInput = document.getElementById('image');
+            if (fileInput) {
+                fileInput.value = '';  // Reseta o valor do input de arquivo
+            }
+
+            const imgContainer = document.querySelector('.img-container');
+            const imgPreview = document.querySelector('.img-preview');
+            const cropperImage = document.getElementById('cropper-image');
+
+            if (imgContainer && imgPreview && cropperImage) {
+                imgContainer.style.display = 'none';  // Oculta a área de visualização da imagem
+                imgPreview.style.display = 'none';    // Oculta a pré-visualização
+                cropperImage.src = '';  // Remove a imagem de pré-visualização
+            }
+
+            // Destrói a instância de Cropper se ela existir
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+
+            // Esconde os botões de ação se não houver alterações no formulário
+            const actionButtons = document.getElementById('action-buttons');
+            if (actionButtons) {
+                actionButtons.style.display = 'none';
             }
         }
 
