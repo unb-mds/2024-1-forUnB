@@ -1192,3 +1192,125 @@ body, html {
     background-color: #003366;
     border-radius: 20px;
 }
+
+
+
+
+/* PROFILE.HTML */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.profile-container {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.profile-header {
+    text-align: center;
+}
+.profile-container .form-label {
+    color: #003366;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+.form-control, .form-control[readonly], .email {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    padding-right: 10px;
+    border-radius: 20px;
+    flex-grow: 1;
+    position: relative;
+    margin-bottom: 15px;
+}
+.form-control:focus, .email:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: #C7D2DD;
+}
+.form-control::placeholder, .email::placeholder {
+    color: #003366; 
+    font-weight: bolder;
+    font-size: 1.1rem;
+    position: absolute;
+}
+.mb-3 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+.img-container {
+    max-width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#cropper-image {
+    width: 100%;
+    height: auto;
+}
+.img-preview {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    margin: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    display: none;
+}
+.btn-image {
+    color: #003366;
+    background-color: #C7D2DD;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+.btn-image:hover, .form-control:hover {
+    background-color: #a0b0c0;
+    color: #003366;
+}
+.btn-cancel {
+    color: white;
+    background-color: #810101;
+    font-weight: bolder;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: large;
+    transition: background-image 0.3s ease, transform 0.3s ease;
+    margin-right: 5px;
+}
+.btn-cancel:hover {
+    background-image: linear-gradient(45deg, #810101, #970101) !important;
+    transform: scale(1.05) !important;
+    color: white;
+}
+.btn-home {
+    width: auto; 
+    padding: 10px 20px;
+    font-size: large;
+    margin-left: 5px;
+    color: white;
+}
+#file-name {
+    margin-left: 10px; 
+    color: #003366; 
+    font-weight: bolder;
+}
+#loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+#loading-spinner p {
+    font-size: 1.2rem;
+    color: #003366;
+}
