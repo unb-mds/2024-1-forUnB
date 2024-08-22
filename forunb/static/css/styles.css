@@ -1043,3 +1043,140 @@ body, html {
     padding: 10px;
     padding-top: 0px !important;
 }
+
+
+
+
+/* QUESTION.HTML */
+.full-height {
+    height: 100vh; /* Altura total da viewport */
+    display: flex;
+}
+
+.questions-list, .answers-list {
+    font-weight: bolder;
+    border-radius: 8px;
+}
+
+.list-group-item {
+    margin-bottom: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.scroll-container {
+    flex-grow: 1;
+    height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer and Edge */
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.list-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    color: #003366;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .scroll-container {
+        flex-grow: 1;
+        height: 170px;
+        overflow-y: scroll;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    }
+    
+    .questions-list, .answers-list {
+        width: 100%;
+    }
+
+    .list-header {
+        position: sticky;
+        top: 0;
+        z-index: 100; /* Mantém o cabeçalho sobre os conteúdos em scroll */
+        color: #003366;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+}
+
+.custom-list-group-item {
+    background-color: #003366; 
+}
+
+.custom-list-group-item:hover {
+    background-color: #012141;
+}
+
+.custom-list-group-item a {
+    color: white; 
+}
+
+.btn-excluir{
+    background-color:#c61919;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.btn-excluir:hover{
+    background-color: #ff0101;
+}
+
+.btn-cancel {
+    background-color: #C7D2DD;
+    color: #003366;
+    font-weight: bold;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.btn-cancel:hover {
+    background-color: #a0b0c0;
+}
+
+.confirm-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.confirm-popup-content {
+    text-align: center;
+    color: #003366;
+}
+
+.hidden {
+    display: none;
+}
+
+.confirm-popup button {
+    margin: 5px;
+}
+
+.alerta{
+    color: white;
+    background-color: #003366;
+    border-radius: 20px;
+}
