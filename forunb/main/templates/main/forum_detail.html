@@ -2,33 +2,6 @@
 
 {% block content %}
 
-<style>
-    .dropdown-principal{
-    background-color: #003366;
-    color: #ffffff;
-    font-weight: bolder;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    border: none !important;  
-    box-shadow: none !important;  
-    }
-
-    .dropdown-principal:hover {/* Quando o botão está com o mouse em cima */
-    background-color: #a0b0c0;
-    color: #003366;
-    }
-
-    .btn-question:hover {
-        background-color: #a0b0c0;
-        color: #003366;
-    }
-
-    .dropdown-toggle:focus,/* Quando o botão estiver ativo */
-    .dropdown-toggle.show {
-        background-color: #a0b0c0;
-        color: #003366;
-    }
-</style>
 <div class="container-fluid mt-5 ms-0">
     <div class="d-flex justify-content-between align-items-center forum-header">
         <h1 class="forum-title flex-grow-1">
@@ -74,6 +47,8 @@
         {% for question in questions %}
         <div class="question-item">
             <div class="question-meta">
+                {% load static %}
+                <img class="profile-picture" src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo

@@ -338,7 +338,6 @@ body, html {
     color: white;
 }
 
-
 .questions-container {
     overflow-y: auto;
     padding-right: 10px;
@@ -366,6 +365,13 @@ body, html {
 
 .question-item a {
     text-decoration: none;
+}
+
+.profile-picture {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
 }
 
 .question-item .btn-info, .btn-like {
@@ -461,6 +467,32 @@ a {
     color: #999999;
     display: inline;
     margin-right: 10px !important;
+}
+
+.dropdown-principal{
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    border: none !important;  
+    box-shadow: none !important;  
+}
+
+.dropdown-principal:hover {
+    background-color: #a0b0c0;
+    color: #003366;
+}
+
+.btn-question:hover {
+    background-color: #a0b0c0;
+    color: #003366;
+}
+
+.dropdown-toggle:focus,/* Quando o botão estiver ativo */
+.dropdown-toggle.show {
+    background-color: #a0b0c0;
+    color: #003366;
 }
 
 /* Ajustes para telas menores que 992px */
