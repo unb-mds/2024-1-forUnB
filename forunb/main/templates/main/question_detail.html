@@ -24,14 +24,28 @@
 
     /* Estilos adicionais para o Cropper.js */
     .img-container {
-        max-width: 100%;
+        width: 80%;
+        max-width: 400px;
+        /* Ajuste conforme necessário */
+        max-height: 400px;
+        /* Ajuste conforme necessário */
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 10px;
+        /* Centraliza o contêiner da imagem */
     }
 
     .img-preview {
+        width: 200px;
+        height: 200px;
         overflow: hidden;
         margin: 10px;
-        border: 1px solid #ccc;
+        border: 10px solid #ccc;
     }
+
+    .img-container, .img-preview {
+    display: none; /* Esconde a área de visualização por padrão */
+}
 
     .preformatted-text {
         white-space: pre-wrap;
@@ -179,6 +193,21 @@ textarea.form-control:focus {
         color: #fff; /* Cor do texto quando o botão está ativado */
     }
     
+    .imagem{
+        color: #003366;
+    }
+
+    .btn-imagem {
+        color: #003366;
+        background-color: #C7D2DD;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+    .btn-imagem:hover, .form-control:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
 </style>
 
 <div class="custom-container mt-5 ms-0">
@@ -263,15 +292,15 @@ textarea.form-control:focus {
                         {% csrf_token %}
                         <textarea id="id_answer_text" name="text" class="form-control mt-2"
                             placeholder="Escreva sua resposta..."></textarea>
-                        <div class="form-group mt-3">
-                            <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                                onchange="showCropper(event)">
-                            <div class="img-container mt-3">
-                                <img id="cropper-image" style="max-width: 100%;">
-                            </div>
-                            <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
-                        </div>
+                            <div class="form-group fw-bold mt-3">
+                                <label class ="imagem" for="image">Imagem :</label>
+                                    <input type="file" name="image" id="image" accept="image/*" onchange="showCropper(event)" style="display: none;">
+                                    <button type="button" class="btn btn-imagem" onclick="document.getElementById('image').click();">Escolher Arquivo</button>
+                                    <div class="img-container mt-3">
+                                        <img id="cropper-image">
+                                    </div>
+                                    <div class="img-preview mt-3"></div>
+                                </div>
                         <div class="form-check mt-2">
                             <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
                             <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
@@ -422,6 +451,9 @@ textarea.form-control:focus {
 
         function showCropper(event) {
             const files = event.target.files;
+            const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
+            const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
+
             if (files && files.length > 0) {
                 const file = files[0];
                 const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -442,8 +474,13 @@ textarea.form-control:focus {
                         viewMode: 1,
                         preview: '.img-preview',
                     });
+                    imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
+                    imgPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
+            }else {
+        imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+        imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
             }
         }
 
