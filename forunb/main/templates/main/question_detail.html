@@ -365,12 +365,23 @@ textarea.form-control:focus {
                         editor.save();
                     });
                 },
-                plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
-                toolbar: 'bold italic underline forecolor mathjax code',
-                menubar: false,
-                statusbar: false,
-                height: 400
-            });
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
+            toolbar: 'bold italic underline forecolor mathjax code',
+            menubar: false,  // Remove a barra de menu superior 
+            statusbar: false,  // Remove a barra de status inferior 
+            height: 150,
+ 
+            content_style: `
+            body {
+            font-weight: bold;  
+        }
+
+            body:focus {
+            background-color: #ffff; /* Cor de fundo ao digitar */ 
+            color: #000000;
+            font-weight: normal;
+    `,
+        });
 
             function renderMath() {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
