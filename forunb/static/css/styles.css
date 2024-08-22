@@ -635,6 +635,18 @@ html, body {
     padding: 0px;
 }
 
+.img-question {
+    min-height: 400px;
+    max-width: 400px;
+}
+
+@media (max-width: 767px) {
+    .img-question{
+        min-height: 300px;
+        max-width: 300px;
+    } 
+}
+
 .response-area {
     margin-top: 5px;
     margin-bottom: 30px;

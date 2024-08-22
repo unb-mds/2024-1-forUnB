@@ -28,7 +28,7 @@
             <h5 class="question-title">{{ question.title }}</h5>
             <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
-            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
+            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-question mt-3">
             {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
@@ -92,8 +92,7 @@
                             placeholder="Escreva sua resposta..."></textarea>
                         <div class="form-group mt-3">
                             <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                                onchange="showCropper(event)">
+                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*" onchange="showCropper(event)">
                             <div class="img-container mt-3">
                                 <img id="cropper-image" style="max-width: 100%;">
                             </div>
@@ -136,7 +135,7 @@
                 </div>
                 <p class="answer-text preformatted-text">{{ answer.text }}</p>
                 {% if answer.image %}
-                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-question mt-3">
                 {% endif %}
                 <div class="action-buttons-answer">
                     <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer"
