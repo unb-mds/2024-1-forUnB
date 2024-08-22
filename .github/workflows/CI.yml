@@ -35,6 +35,25 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Install PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+
+      - name: Start PostgreSQL
+        run: |
+          sudo service postgresql start
+
+      - name: Configure PostgreSQL
+        run: |
+          sudo -u postgres psql -c "CREATE DATABASE forunb_db;"
+          sudo -u postgres psql -c "CREATE USER forunb WITH PASSWORD 'balao123';"
+          sudo -u postgres psql -c "ALTER ROLE forunb SET client_encoding TO 'utf8';"
+          sudo -u postgres psql -c "ALTER ROLE forunb SET default_transaction_isolation TO 'read committed';"
+          sudo -u postgres psql -c "ALTER ROLE forunb SET timezone TO 'UTC';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE forunb_db TO forunb;"
+
+
       - name: Configure enviroment
         run: make config
 
