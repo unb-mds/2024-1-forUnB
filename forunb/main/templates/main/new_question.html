@@ -111,6 +111,11 @@
         border: 1px solid #ccc;
     }
 
+    .img-container, .img-preview {
+    display: none; /* Esconde a área de visualização por padrão */
+}
+
+
     @media (max-width: 767px) {
         .response-form {
             max-width: 100vw;
@@ -285,35 +290,43 @@
     });
 
     let cropper;
-    const image = document.getElementById('cropper-image');
+const image = document.getElementById('cropper-image');
 
-    function showCropper(event) {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validImageTypes.includes(file.type)) {
-                alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
-                event.target.value = ''; // Limpa o input
-                return;
-            }
+function showCropper(event) {
+    const files = event.target.files;
+    const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
+    const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                image.src = e.target.result;
-                if (cropper) {
-                    cropper.destroy();
-                }
-                cropper = new Cropper(image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    preview: '.img-preview',
-                });
-                
-            };
-            reader.readAsDataURL(file);
+    if (files && files.length > 0) {
+        const file = files[0];
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validImageTypes.includes(file.type)) {
+            alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
+            event.target.value = ''; // Limpa o input
+            imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+            return;
         }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            image.src = e.target.result;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                preview: '.img-preview',
+            });
+            imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
+            imgPreview.style.display = 'block'; // Mostra a pré-visualização da imagem
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+        imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
     }
+}
 
     function submitForm(event) {
         event.preventDefault();
@@ -360,13 +373,28 @@
     }
 
     function cancelForm() {
-        window.history.back();
+    // Limpa o input de arquivo
+    const fileInput = document.getElementById('image');
+    fileInput.value = '';  // Reseta o valor do input de arquivo
+
+    // Oculta a área de visualização da imagem
+    document.querySelector('.img-container').style.display = 'none';
+    document.querySelector('.img-preview').style.display = 'none';
+
+    // Remove a imagem de pré-visualização
+    document.getElementById('cropper-image').src = '';
+
+    // Destrói a instância do Cropper se ela existir
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
     }
 
+    // Esconde os botões de ação se não houver alterações no formulário
+    const actionButtons = document.getElementById('action-buttons');
+    actionButtons.style.display = 'none';
+}
 
-    function cancelForm() {
-        window.history.back();
-    }
 </script>
 
 {% endblock %}
