@@ -35,6 +35,7 @@ Pygments==2.18.0
 pylint==3.2.6
 pymdown-extensions==10.8.1
 python-dateutil==2.9.0.post0
+python-decouple==3.8
 pytz==2024.1
 PyYAML==6.0.1
 pyyaml_env_tag==0.1
