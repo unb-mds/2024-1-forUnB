@@ -169,6 +169,8 @@ textarea.form-control:focus {
                         class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
+                {% load static %}
+                <img class="profile-picture" src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -276,6 +278,7 @@ textarea.form-control:focus {
         <div class="answer-item">
             <div class="answer-info">
                 <div class="answer-meta">
+                    <img class="profile-picture" src="{% if answer.is_anonymous or not answer.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ answer.author.photo.url }}{% endif %}">
                     <span class="answer-author">
                         {% if answer.is_anonymous %}
                         Anônimo
