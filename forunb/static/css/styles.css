@@ -303,10 +303,7 @@ body, html {
 .forum-header {
     position: sticky;
     top: 0;
-    padding-bottom: 40px;
-    padding-top: 10px;
-    padding-left: 20px;
-    padding-right: 3px;
+    padding: 0px !important;
     margin-bottom: 0px;
     width: 100%; /* Certifica-se de que a linha ocupe toda a largura disponível */
     display: flex;
@@ -340,21 +337,6 @@ body, html {
 
 .follow-toggle:focus {
     outline: none;
-}
-
-.btn-question {
-    background-color: #003366;
-    color: #ffffff;
-    font-weight: bolder;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    margin-left: 0;
-}
-
-.btn-question:hover {
-    background-color: #012141;
-    color: white;
 }
 
 .questions-container {
@@ -488,19 +470,24 @@ a {
     margin-right: 10px !important;
 }
 
-.dropdown-principal{
+.forum-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background-color: #f5f5f5 !important;
+    margin-top: 5px;
+    margin-bottom: 20px;
+} 
+
+.btn-question {
     background-color: #003366;
     color: #ffffff;
     font-weight: bolder;
+    font-size: 1rem !important;
+    border: none;
+    padding: 10px 20px;
     border-radius: 20px;
-    font-size: 1.1rem;
-    border: none !important;  
-    box-shadow: none !important;  
-}
-
-.dropdown-principal:hover {
-    background-color: #a0b0c0;
-    color: #003366;
+    margin-left: 0;
 }
 
 .btn-question:hover {
@@ -534,8 +521,6 @@ a {
     }
 
     .btn-question {
-        width: auto;
-        align-self: flex-start;
         padding: 8px 16px; /* Reduz o padding do botão */
         font-size: 0.9rem; /* Reduz o tamanho da fonte do botão */
     }
@@ -573,11 +558,6 @@ a {
 
     .forum-title i {
         font-size: 1.5rem;
-    }
-
-    .btn-question {
-        width: auto;
-        align-self: flex-start;
     }
 
     .question-title {
@@ -1045,7 +1025,7 @@ body, html {
 }
 
 .forum-header {
-    background-color: #fff;
+    background-color: #f5f5f5;
     padding: 10px;
     padding-bottom: 20px;
     position: sticky;

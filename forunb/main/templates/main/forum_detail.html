@@ -16,28 +16,23 @@
             </button>
             {% endif %}
         </h1>
-        <div class="d-flex align-items-center">
-            <div class="dropdown me-3">
-                <button class="btn btn-secondary dropdown-toggle dropdown-principal" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Filtrar
-                </button>
-                <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais
-                            Recentes</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos
-                            Recentes</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais
-                            Votadas</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos
-                            Votadas</a></li>
-                </ul>
-            </div>
-            <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
+    </div>
+    <div class="d-flex forum-buttons">
+        <div class="dropdown me-3">
+            <button class="btn btn-question dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar
+            </button>
+            <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=date">Mais Recentes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=oldest">Menos Recentes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=most_upvoted">Mais Votadas</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'main:forum_detail' forum.id %}?order_by=least_upvoted">Menos Votadas</a></li>
+            </ul>
         </div>
+        <a class="btn btn-question" href="{% url 'main:new_question' forum.id %}">Perguntar</a>
     </div>
 
     {% load custom_filters %}
