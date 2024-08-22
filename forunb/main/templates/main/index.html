@@ -43,6 +43,9 @@
                 <h5 class="question-title">{{ question.title }}</h5>
                 <p class="question-description">{{ question.description }}</p>
             </a>
+            {% if question.image %}
+            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-question mt-3">
+            {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
                     onclick="toggleUpvote(this);">
