@@ -106,8 +106,9 @@
                             <div class="img-preview mt-3"></div>
                         </div>
                         <div class="form-check mt-2">
-                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
                             <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
+                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous"
+                                style="display: inline-block; width: auto;">
                         </div>
                         <div class="mt-1">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
@@ -244,7 +245,16 @@
                 color: #003366;
             }
 
+            .response-area .form-check-label {
+                display: inline-block;
+                width: auto;
+            }
 
+            .response-area .form-check-input {
+                display: inline-block;
+                width: auto;
+                margin-right: 5px;
+            }
         }
     </style>
 
