@@ -3,9 +3,21 @@ body {
     background-color: #f5f5f5;
 }
 
-footer {
-    background-color: inherit;
-} 
+header {
+    flex-shrink: 0; /* Garante que o header não encolha */
+}
+
+nav {
+    flex: 1; /* Ocupa o espaço restante disponível */
+    overflow: hidden; /* Evita rolagem dentro do nav */
+}
+
+.footnote {
+    font-size: medium;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
 
 .container-fluid {
     background-color: #f5f5f5 !important;
@@ -183,7 +195,7 @@ footer {
 /* Ajustes para telas menores que 1200px */
 @media (max-width: 1199px) {
     .search-bar {
-        margin-left: 0; /* Remove a margem à esquerda */
+        margin-left: 0;
     }
 
     #accordionSidebar {
@@ -194,11 +206,12 @@ footer {
         top: 0;
         left: 0;
         z-index: 1000;
-        background-color: #006633; /* Garante que a cor de fundo seja a mesma */
-        overflow-y: auto; /* Adiciona rolagem se necessário */
+        background-color: #006633;
+        overflow-y: auto;
     }
+
     #accordionSidebar.show {
-        display: block;
+        display: flex;
     }
 
     #sidebarToggle {
@@ -211,6 +224,12 @@ footer {
         top: 10px;
         right: 10px;
         z-index: 1100; /* Garante que o botão de fechar esteja acima do conteúdo da barra lateral */
+    }
+
+    footer {
+        margin-top: auto; /* Empurra o rodapé para a parte inferior da barra lateral */
+        padding: 10px;
+        color: #ffffff;
     }
 }
 
