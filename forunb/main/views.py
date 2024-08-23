@@ -117,6 +117,7 @@ def follow_forum(request, forum_id, action):
 def new_question(request, forum_id):
     """Create a new question."""
     forum = get_object_or_404(Forum, id=forum_id)
+    
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
@@ -126,9 +127,11 @@ def new_question(request, forum_id):
             question.description = clean_html(question.description)
             question.save()
             request.user.created_questions.add(question)
-            return JsonResponse({'success': True, 'question_id': question.id})
-        return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+            return redirect('main:question_detail', question_id=question.id)
+    else:
+        form = QuestionForm()
+    
+    return render(request, 'new_question.html', {'form': form, 'forum': forum})
 
 
 @login_required(login_url='/users/login')
