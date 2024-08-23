@@ -24,4 +24,4 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_URL = 'https://res.cloudinary.com/%7Bcloud_name%7D/image/upload/'
+MEDIA_URL = 'https://res.cloudinary.com/dmezdx5mc/image/upload/'
