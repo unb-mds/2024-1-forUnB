@@ -672,6 +672,10 @@ html, body {
     outline: none;
     box-shadow: none;
 }
+.form-check-label{
+    color: #003366;
+    font-weight: bold;
+}
 
 .response-form {
     margin-top: 10px;
