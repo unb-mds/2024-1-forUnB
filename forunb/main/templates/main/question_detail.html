@@ -94,18 +94,21 @@
                         {% csrf_token %}
                         <textarea id="id_answer_text" name="text" class="form-control mt-2"
                             placeholder="Escreva sua resposta..."></textarea>
-                        <div class="form-group mt-3">
-                            <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                                onchange="showCropper(event)">
+                        <div class="form-group fw-bold mt-3">
+                            <label class="imagem" for="image">Imagem :</label>
+                            <input type="file" name="image" id="image" accept="image/*" onchange="showCropper(event)"
+                                style="display: none;">
+                            <button type="button" class="btn btn-imagem"
+                                onclick="document.getElementById('image').click();">Escolher Arquivo</button>
                             <div class="img-container mt-3">
-                                <img id="cropper-image" style="max-width: 100%;">
+                                <img id="cropper-image">
                             </div>
-                            <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
+                            <div class="img-preview mt-3"></div>
                         </div>
                         <div class="form-check mt-2">
-                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
-                            <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
+                            <label class="form-check-label ms-2" for="isAnonymous"> Responder anonimamente</label>
+                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous"
+                                style="display: inline-block; width: auto;">
                         </div>
                         <div class="mt-1">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
@@ -151,9 +154,9 @@
                             class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         <span>{{ answer.upvote_count }}</span>
                     </button>
-                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                    <!-- <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
-                    </a>
+                    </a> -->
                     <button type="button" class="btn btn-alert"
                         onclick="showReportForm('{{ question.id }}', 'question')">
                         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -170,6 +173,90 @@
             {% endif %}
         </div>
     </div>
+
+    <style>
+        /* Estilos adicionais para o Cropper.js */
+
+        .img-container {
+            width: 80%;
+            max-width: 400px;
+            /* Ajuste conforme necessário */
+            max-height: 400px;
+            /* Ajuste conforme necessário */
+            overflow: hidden;
+            margin: 0 auto;
+            border-radius: 10px;
+            /* Centraliza o contêiner da imagem */
+        }
+
+
+        .img-preview {
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            margin: 10px;
+            border: 10px solid #ccc;
+        }
+
+        .img-container,
+        .img-preview {
+            display: none;
+            /* Esconde a área de visualização por padrão */
+        }
+
+        #id_answer_text_ifr {
+            background-color: #C7D2DD;
+            border-radius: 5px;
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn,
+        .tox .tox-toolbar__primary .tox-tbtn__select-label,
+        .tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
+            color: #000000;
+            /* Cor dos ícones e textos */
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn:hover {
+            background-color: #C7D2DD;
+            /* Cor de fundo ao passar o mouse */
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn--enabled {
+            background-color: #C7D2DD;
+            /* Cor de fundo quando o botão está ativado */
+            color: #fff;
+            /* Cor do texto quando o botão está ativado */
+
+            .imagem {
+                color: #003366;
+            }
+
+            .btn-imagem {
+                color: #003366;
+                background-color: #C7D2DD;
+                font-weight: bold;
+                padding: 10px 20px;
+                border-radius: 20px;
+            }
+
+            .btn-imagem:hover,
+            .form-control:hover {
+                background-color: #a0b0c0;
+                color: #003366;
+            }
+
+            .response-area .form-check-label {
+                display: inline-block;
+                width: auto;
+            }
+
+            .response-area .form-check-input {
+                display: inline-block;
+                width: auto;
+                margin-right: 5px;
+            }
+        }
+    </style>
 
     <script src="https://cdn.tiny.cloud/1/xnvlz4kucskbnxpfwvjhg9dxecvbsq6lljrsssggdvf0wkc3/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -222,9 +309,19 @@
                 },
                 plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
                 toolbar: 'bold italic underline forecolor mathjax code',
-                menubar: false,
-                statusbar: false,
-                height: 400
+                menubar: false,  // Remove a barra de menu superior 
+                statusbar: false,  // Remove a barra de status inferior 
+                height: 150,
+
+                content_style: `
+            body {
+            font-weight: bold;  
+        }
+            body:focus {
+            background-color: #ffff; /* Cor de fundo ao digitar */ 
+            color: #000000;
+            font-weight: normal;
+    `,
             });
 
             function renderMath() {
@@ -246,6 +343,8 @@
 
         function showCropper(event) {
             const files = event.target.files;
+            const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
+            const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
             if (files && files.length > 0) {
                 const file = files[0];
                 const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -266,8 +365,13 @@
                         viewMode: 1,
                         preview: '.img-preview',
                     });
+                    imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
+                    imgPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
+            } else {
+                imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+                imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
             }
         }
 
@@ -331,6 +435,7 @@
         }
 
         function cancelResponse() {
+            // Parte 1: Cancelar a resposta
             var responseInput = document.querySelector('.response-area input');
             var responseForm = document.querySelector('.response-form');
 
@@ -339,6 +444,33 @@
                 responseForm.classList.add('d-none');
             } else {
                 console.error('Elementos não encontrados.');
+            }
+            // Parte 2: Resetar a imagem e ocultar as áreas de visualização
+            const fileInput = document.getElementById('image');
+            if (fileInput) {
+                fileInput.value = '';  // Reseta o valor do input de arquivo
+            }
+
+            const imgContainer = document.querySelector('.img-container');
+            const imgPreview = document.querySelector('.img-preview');
+            const cropperImage = document.getElementById('cropper-image');
+
+            if (imgContainer && imgPreview && cropperImage) {
+                imgContainer.style.display = 'none';  // Oculta a área de visualização da imagem
+                imgPreview.style.display = 'none';    // Oculta a pré-visualização
+                cropperImage.src = '';  // Remove a imagem de pré-visualização
+            }
+
+            // Destrói a instância de Cropper se ela existir
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+
+            // Esconde os botões de ação se não houver alterações no formulário
+            const actionButtons = document.getElementById('action-buttons');
+            if (actionButtons) {
+                actionButtons.style.display = 'none';
             }
         }
 
