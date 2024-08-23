@@ -74,7 +74,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'forunb_db',
         'USER': 'forunb',
-        'PASSWORD': 'forunb',
+        'PASSWORD': 'balao123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
