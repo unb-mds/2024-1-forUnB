@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from cloudinary.models import CloudinaryField
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,7 +30,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    photo = models.ImageField(upload_to='media/profile_pics/', blank=True, null=True)
+    photo = CloudinaryField('image')
     followed_forums = models.ManyToManyField('main.Forum', blank=True, related_name='followers')
     liked_answers = models.ManyToManyField('main.Answer', blank=True, related_name='liked_by')
     liked_questions = models.ManyToManyField('main.Question', blank=True, related_name='liked_by')
