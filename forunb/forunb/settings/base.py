@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'main',
     'users',
     'search',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
