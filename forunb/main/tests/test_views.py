@@ -7,6 +7,7 @@ from main.models import Forum, Question, Answer, Notification
 User = get_user_model()
 
 class IndexViewTestCase(TestCase):
+    """ Test suite for the index view. """
     def setUp(self):
         """
         Set up the test environment with a user, forums, and questions.

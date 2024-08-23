@@ -1,7 +1,7 @@
 """URL configurations for the search application."""
 
 from django.urls import path
-from . import views
+from search import views
 
 app_name = "search"  # pylint: disable=C0103
 
