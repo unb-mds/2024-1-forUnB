@@ -8,26 +8,31 @@ Os workflows são arquivos de configuração que definem um conjunto de ações 
 
 ## CI
 
-Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para o branch `main` e pull requests. Ele consiste em um único job chamado `u-tests` que é executado na versão mais recente do Ubuntu.
+Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para o branch `main` e em pull requests. Ele executa testes unitários em uma matriz de versões do Python.
 
 ### Job: u-tests
 
-O job `u-tests` usa uma matriz de estratégia para especificar a versão do Python a ser usada. Neste caso, está definido como `3.10`.
+O job `u-tests` é responsável por configurar o ambiente necessário e executar os testes unitários do projeto.
 
 ### Steps
 
-1. **Checkout projeto**: Esta etapa faz o checkout do repositório usando a ação `actions/checkout`.
+1. **Checkout do projeto**: Esta etapa faz o checkout do repositório usando a ação `actions/checkout`.
 
-2. **Configurar Python**: Esta etapa configura a versão especificada do Python usando a ação `actions/setup-python`.
+2. **Configurar Python ${{ matrix.python-version }}**: Esta etapa configura a versão do Python definida na matriz, utilizando a ação `actions/setup-python`.
 
-3. **Cache pip**: Esta etapa armazena em cache as dependências do pip usando a ação `actions/cache`. A chave de cache é gerada com base no sistema operacional e no hash do arquivo `requirements.txt`.
+3. **Cache do pip**: Esta etapa armazena em cache os pacotes instalados pelo pip, para acelerar as execuções subsequentes. A chave do cache é gerada a partir do sistema operacional do runner e do hash do arquivo `requirements.txt`.
 
-4. **Instalar dependências**: Esta etapa instala as dependências do projeto executando o comando `pip install`.
+4. **Instalar dependências**: Nesta etapa, o pip é atualizado e as dependências do projeto são instaladas a partir do arquivo `requirements.txt`.
 
-5. **Configurar ambiente**: Esta etapa configura o ambiente executando o comando `make config`.
+5. **Instalar PostgreSQL**: Esta etapa instala o PostgreSQL no ambiente de execução.
 
-6. **Testes**: Esta etapa executa os testes usando o comando `python ./forunb/manage.py test forunb`.
+6. **Iniciar PostgreSQL**: Esta etapa inicia o serviço do PostgreSQL.
 
+7. **Configurar PostgreSQL**: Nesta etapa, o banco de dados e o usuário necessários para os testes são criados e configurados no PostgreSQL.
+
+8. **Configurar ambiente**: Esta etapa executa o comando `make config` para configurar o ambiente necessário para os testes.
+
+9. **Executar testes**: Finalmente, esta etapa executa os testes unitários do projeto usando o comando `python ./forunb/manage.py test forunb`.
 
 ## Docs Deploy
 
@@ -55,45 +60,53 @@ O job `deploy` é responsável por realizar o deploy da documentação utilizand
 
 ## Pylint
 
-Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para o branch `main` e pull requests. Ele consiste em um único job chamado `lint` que é executado na versão mais recente do Ubuntu.
+Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para o branch `main` e em pull requests. Ele executa a verificação de linting do código Python utilizando o Pylint.
 
 ### Job: lint
 
-O job `lint` usa uma matriz de estratégia para especificar a versão do Python a ser usada. Neste caso, está definido como `3.10`.
+O job `lint` é responsável por verificar a qualidade do código Python utilizando o Pylint.
 
 ### Steps
 
 1. **Checkout do repositório**: Esta etapa faz o checkout do repositório usando a ação `actions/checkout`.
 
-2. **Configurar Python**: Esta etapa configura a versão especificada do Python usando a ação `actions/setup-python`.
+2. **Configurar Python ${{ matrix.python-version }}**: Esta etapa configura a versão do Python definida na matriz, utilizando a ação `actions/setup-python`.
 
-3. **Cache pip**: Esta etapa armazena em cache as dependências do pip usando a ação `actions/cache`. A chave de cache é gerada com base no sistema operacional e no hash do arquivo `requirements.txt`.
+3. **Cache do pip**: Esta etapa armazena em cache os pacotes instalados pelo pip para acelerar as execuções subsequentes. A chave do cache é gerada a partir do sistema operacional do runner e do hash do arquivo `requirements.txt`.
 
-4. **Instalar dependências**: Esta etapa instala as dependências do projeto executando o comando `pip install`.
+4. **Instalar dependências**: Nesta etapa, o pip é atualizado e as dependências do projeto são instaladas a partir do arquivo `requirements.txt`.
 
-5. **Executar Pylint**: Esta etapa executa o Pylint em todos os arquivos `.py` dentro do diretório `forunb/main/`, excluindo os arquivos nas pastas `migrations/`, `management/` e `templatetags/`.
+5. **Executar Pylint**: Nesta etapa, o Pylint é executado em todos os arquivos Python dentro do diretório `forunb`, exceto nos diretórios `migrations` e `management`, além dos diretórios `templatetags`. O resultado da execução é salvo em um arquivo `pylint_output.txt`.
 
+    - **Analisar resultado do Pylint**: O score final do Pylint é extraído do relatório e exibido. Se o score for maior que 8, o job é considerado bem-sucedido. Caso contrário, o job falha, e uma mensagem informando o score é exibida.
 
 ## SonarCloud
 
-Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para os branches `main` e `Development`, bem como em pull requests. Ele consiste em um único job chamado `sonarcloud` que é executado na versão mais recente do Ubuntu.
+Este fluxo de trabalho do GitHub Actions é acionado em eventos de push para os branches `main` e `Development`, bem como em pull requests. Ele executa uma análise de código utilizando o SonarCloud, além de configurar o ambiente de teste e executar os testes com cobertura de código.
 
 ### Job: sonarcloud
 
-O job `sonarcloud` realiza a análise de código e cobertura de testes utilizando o SonarCloud.
+O job `sonarcloud` é responsável por configurar o ambiente, executar os testes com cobertura e realizar a análise de código com o SonarCloud.
 
 ### Steps
 
 1. **Checkout do projeto**: Esta etapa faz o checkout do repositório usando a ação `actions/checkout`.
 
-2. **Configurar Python**: Esta etapa configura a versão especificada do Python usando a ação `actions/setup-python`. A versão do Python é definida pelo uso de uma matriz.
+2. **Configurar Python ${{ matrix.python-version }}**: Esta etapa configura a versão do Python utilizando a ação `actions/setup-python`.
 
-3. **Cache pip**: Esta etapa armazena em cache as dependências do pip usando a ação `actions/cache`. A chave de cache é gerada com base no sistema operacional e no hash do arquivo `requirements.txt`.
+3. **Cache do pip**: Esta etapa armazena em cache os pacotes instalados pelo pip para acelerar as execuções subsequentes. A chave do cache é gerada a partir do sistema operacional do runner e do hash do arquivo `requirements.txt`.
 
-4. **Instalar dependências**: Esta etapa instala as dependências do projeto executando o comando `pip install`.
+4. **Instalar dependências**: Nesta etapa, o pip é atualizado e as dependências do projeto são instaladas a partir do arquivo `requirements.txt`.
 
-5. **Configurar ambiente**: Esta etapa configura o ambiente de desenvolvimento executando o comando `make config`.
+5. **Instalar PostgreSQL**: Esta etapa instala o PostgreSQL no ambiente de execução.
 
-6. **Executar testes com cobertura**: Esta etapa executa os testes do Django utilizando a ferramenta `coverage` para medir a cobertura de código. Em seguida, gera um relatório em formato XML.
+6. **Iniciar PostgreSQL**: Esta etapa inicia o serviço do PostgreSQL.
 
-7. **Scan do SonarCloud**: Esta etapa executa o scan do SonarCloud, utilizando o token de autenticação armazenado nos segredos do GitHub (`SONAR_TOKEN`) e configurando o caminho para o relatório de cobertura gerado pela etapa anterior.
+7. **Configurar PostgreSQL**: Nesta etapa, o banco de dados e o usuário necessários para os testes são criados e configurados no PostgreSQL.
+
+8. **Configurar ambiente**: Esta etapa executa o comando `make config` para configurar o ambiente necessário para os testes.
+
+9. **Executar testes com cobertura**: Nesta etapa, os testes do projeto são executados utilizando o `coverage`, e um relatório XML da cobertura de código é gerado.
+
+10. **SonarCloud Scan**: Finalmente, o SonarCloud é utilizado para realizar a análise de código. As variáveis de ambiente `GITHUB_TOKEN` e `SONAR_TOKEN` são usadas para autenticação e configuração. O relatório de cobertura de código gerado na etapa anterior é passado para o SonarCloud através do argumento `-Dsonar.python.coverage.reportPaths=coverage.xml`.
+
