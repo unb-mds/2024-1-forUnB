@@ -128,7 +128,9 @@ def new_question(request, forum_id):
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
         return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+    
+    form = QuestionForm()
+    return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
 
 @login_required(login_url='/users/login')
