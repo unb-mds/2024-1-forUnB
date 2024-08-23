@@ -31,7 +31,7 @@
                     <div class="img-container mt-3">
                         <img id="cropper-image">
                     </div>
-                    <div class="img-preview mt-3"></div>
+                    <!-- <div class="img-preview mt-3"></div> -->
                 </div>
             <div class="mt-4">
                 <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
@@ -129,8 +129,7 @@ const image = document.getElementById('cropper-image');
 
 function showCropper(event) {
     const files = event.target.files;
-    const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
-    const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
+    const imgContainer = document.querySelector('.img-container');
 
     if (files && files.length > 0) {
         const file = files[0];
@@ -149,19 +148,17 @@ function showCropper(event) {
                 cropper.destroy();
             }
             cropper = new Cropper(image, {
-                aspectRatio: 1,
+                aspectRatio: NaN, // Liberdade para escolher a proporção
                 viewMode: 1,
-                preview: '.img-preview',
             });
             imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
-            imgPreview.style.display = 'block'; // Mostra a pré-visualização da imagem
         };
         reader.readAsDataURL(file);
     } else {
         imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
-        imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
     }
 }
+
 
     function submitForm(event) {
         event.preventDefault();
@@ -215,7 +212,7 @@ function showCropper(event) {
 
     // Oculta a área de visualização da imagem
     document.querySelector('.img-container').style.display = 'none';
-    document.querySelector('.img-preview').style.display = 'none';
+    //document.querySelector('.img-preview').style.display = 'none';
 
     // Remove a imagem de pré-visualização
     document.getElementById('cropper-image').src = '';
