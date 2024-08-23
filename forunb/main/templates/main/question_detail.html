@@ -513,10 +513,12 @@
 
         function showReportForm(itemId, itemType) {
             const form = document.getElementById('reportForm');
-            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            const actionUrl = `/report/${itemId}/${itemType}/`;
+            form.action = actionUrl;
             document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
             document.getElementById("reportModal").style.display = "block";
         }
+
 
         function closeReportForm() {
             document.getElementById("reportModal").style.display = "none";

@@ -232,6 +232,7 @@ def report(request, item_id, item_type):
                 report_instance.user = request.user
                 report_instance.save()
                 return JsonResponse({'success': True})
+            print(form.errors)  # Isso irá mostrar quais campos estão falhando
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
         return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
     except Exception as e:  # pylint: disable=broad-except
