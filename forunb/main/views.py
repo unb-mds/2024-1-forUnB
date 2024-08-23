@@ -192,7 +192,7 @@ def notifications(request):
     return render(request, 'main/notifications.html', {'notifications': user_notifications})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_question(request, question_id):
     """Toggle the upvote of a question for a user."""
@@ -201,7 +201,7 @@ def toggle_upvote_question(request, question_id):
     return JsonResponse({'upvotes': question.upvote_count})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_answer(request, answer_id):
     """Toggle the upvote of an answer for a user."""
