@@ -5,15 +5,28 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Count
+from django.urls import reverse
 from bs4 import BeautifulSoup
 from main.models import Forum, Answer, Question, Notification  # pylint: disable=E1101
 from main.forms import QuestionForm, AnswerForm, ReportForm
 
 
 def index(request):
-    """Render the index page with the latest questions that have no associated reports."""
-    latest_questions = Question.objects.filter( # pylint: disable=E1101
-        reports__isnull=True).order_by('-created_at')
+    """Render the index page with the latest questions."""
+    filter_by = request.GET.get('filter_by', 'latest')
+
+    if filter_by == 'followed':
+        if request.user.is_authenticated:
+            latest_questions = Question.objects.filter(  # pylint: disable=E1101
+                forum__in=request.user.followed_forums.all(), reports__isnull=True
+            ).order_by('-created_at')
+        else:
+            return redirect(f"{reverse('users:login')}?next={request.path}")
+    else:
+        latest_questions = Question.objects.filter(  # pylint: disable=E1101
+            reports__isnull=True
+        ).order_by('-created_at')
+
     return render(request, 'main/index.html', {'latest_questions': latest_questions})
 
 
@@ -21,7 +34,7 @@ def forum_detail(request, forum_id):
     """Render the forum detail page with the questions associated with the forum."""
     forum = get_object_or_404(Forum, id=forum_id)
     order_by = request.GET.get('order_by', 'date')
-    questions = Question.objects.filter( # pylint: disable=E1101, W0621
+    questions = Question.objects.filter(  # pylint: disable=E1101, W0621
         forum=forum).annotate(total_upvotes=Count('upvoters'))
     if order_by == 'least_upvoted':
         questions = questions.order_by('total_upvotes')
@@ -66,7 +79,7 @@ def questions(request):
 def user_posts(request):
     """Render the user posts page with the questions and answers created by the user."""
     user = request.user
-    user_questions = Question.objects.filter(author=user)  # pylint: disable=E1101
+    user_questions = Question.objects.filter(author=user) # pylint: disable=E1101
     user_answers = Answer.objects.filter(author=user)  # pylint: disable=E1101
     context = {
         'questions': user_questions,
@@ -137,7 +150,7 @@ def new_answer(request, question_id):
 
             # Create notification for the question's author
             if question.author != request.user:
-                Notification.objects.create( # pylint: disable=E1101
+                Notification.objects.create(  # pylint: disable=E1101
                     user=question.author,
                     question=question,
                     answer=answer
@@ -174,7 +187,7 @@ def delete_answer(request, pk):
 @login_required(login_url='/users/login')
 def notifications(request):
     """Render the notifications page with the user's notifications."""
-    user_notifications = Notification.objects.filter( # pylint: disable=E1101
+    user_notifications = Notification.objects.filter(  # pylint: disable=E1101
         user=request.user).order_by('-created_at')
     return render(request, 'main/notifications.html', {'notifications': user_notifications})
 

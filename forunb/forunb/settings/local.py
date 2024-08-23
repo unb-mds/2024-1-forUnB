@@ -1,8 +1,14 @@
 """ Settings for local development. """
-from forunb.env import env
-from .base import *
+from forunb.settings.base import * #pylint: disable=W0401, W0614
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DJANGO_DEBUG', default=True)
+DEBUG = True
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['localhost', '0.0.0.0', '127.0.0.1'])
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}

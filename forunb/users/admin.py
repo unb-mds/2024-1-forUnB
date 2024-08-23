@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 'fields': (
                     'username', 'followed_forums', 'created_questions',
-                    'created_answers', 'liked_questions', 'liked_answers'
+                    'created_answers', 'display_liked_questions', 'display_liked_answers'
                 )
             }
         ),
@@ -47,8 +47,22 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+    readonly_fields = ('display_liked_questions', 'display_liked_answers')
     search_fields = ('email', 'username')
     ordering = ('email',)
+
+
+    def display_liked_questions(self, obj):
+        """ Return a string with the titles of the questions liked by the. """
+        return ", ".join([q.title for q in obj.upvoted_questions.all()])
+    display_liked_questions.short_description = 'Liked Questions'
+
+    def display_liked_answers(self, obj):
+        """ 
+        Return a string with the first 
+        50 characters of the text of the answers liked by the user. """
+        return ", ".join([a.text[:50] for a in obj.upvoted_answers.all()])
+    display_liked_answers.short_description = 'Liked Answers'
 
     def get_form(self, request, obj=None, **kwargs):
         """Customize form to include the 'followed_forums' field with appropriate queryset."""
@@ -61,7 +75,8 @@ class CustomUserAdmin(UserAdmin):
         if obj:  # Se o objeto existe, estamos na página de edição
             return (
                 'email', 'username', 'date_joined', 'created_questions',
-                'created_answers', 'is_active', 'is_staff'
+                'created_answers', 'is_active', 'is_staff',
+                'display_liked_questions', 'display_liked_answers'
             )
         return super().get_readonly_fields(request, obj)
 

@@ -1,8 +1,27 @@
 """ Settings for production development. """
-from forunb.env import env
+import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from .base import *
+import dj_database_url
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DJANGO_DEBUG', default=False)
+DEBUG = False
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[]) # ainda estmos sem site
+ALLOWED_HOSTS = ['.herokuapp.com', '.forunb.com']
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
+
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = 'https://res.cloudinary.com/dmezdx5mc/image/upload/'

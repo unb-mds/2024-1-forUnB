@@ -53,7 +53,7 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta: # pylint: disable=C0115, R0903
         model = CustomUser
         fields = (
-            'email', 'username', 'followed_forums', 'liked_questions',
+            'email', 'username', 'followed_forums', 'liked_questions', 'liked_answers',
             'created_questions', 'created_answers', 'is_active', 'is_staff'
         )
         field_classes = {

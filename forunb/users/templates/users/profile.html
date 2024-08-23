@@ -5,6 +5,52 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <style>
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .profile-container {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    .profile-header {
+        text-align: center;
+    }
+    .profile-container .form-label {
+        color: #003366;
+        font-weight: bold;
+        margin-bottom: 0px;
+        margin-top: 5px;
+    }
+    .form-control, .form-control[readonly], .email {
+        background-color: #C7D2DD;
+        color: #003366;
+        font-weight: bolder;
+        border: none;
+        padding: 10px 20px;
+        padding-right: 10px;
+        border-radius: 20px;
+        flex-grow: 1;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .form-control:focus, .email:focus {
+        outline: none;
+        box-shadow: none;
+        background-color: #C7D2DD;
+    }
+    .form-control::placeholder, .email::placeholder {
+        color: #003366; 
+        font-weight: bolder;
+        font-size: 1.1rem;
+        position: absolute;
+    }
+    .mb-3 {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
     .img-container {
         max-width: 100%;
         max-height: 400px;
@@ -14,12 +60,10 @@
         justify-content: center;
         align-items: center;
     }
-
     #cropper-image {
         width: 100%;
         height: auto;
     }
-
     .img-preview {
         width: 150px;
         height: 150px;
@@ -27,68 +71,108 @@
         margin: 10px;
         border: 1px solid #ccc;
         display: inline-block;
+        display: none;
     }
-
+    .btn-image {
+        color: #003366;
+        background-color: #C7D2DD;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+    .btn-image:hover, .form-control:hover {
+        background-color: #a0b0c0;
+        color: #003366;
+    }
+    .btn-cancel {
+        color: white;
+        background-color: #810101;
+        font-weight: bolder;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        font-size: large;
+        transition: background-image 0.3s ease, transform 0.3s ease;
+        margin-right: 5px;
+    }
+    .btn-cancel:hover {
+        background-image: linear-gradient(45deg, #810101, #970101) !important;
+        transform: scale(1.05) !important;
+        color: white;
+    }
+    .btn-home {
+        width: auto; 
+        padding: 10px 20px;
+        font-size: large;
+        margin-left: 5px;
+        color: white;
+    }
+    #file-name {
+        margin-left: 10px; 
+        color: #003366; 
+        font-weight: bolder;
+    }
     #loading-spinner {
         display: none;
         text-align: center;
         padding: 10px;
     }
-
-    .profile-container {
-        max-height: 80vh; /* Altura máxima da área do perfil */
-        overflow-y: auto; /* Rolagem vertical */
+    #loading-spinner p {
+        font-size: 1.2rem;
+        color: #003366;
     }
 </style>
-
 <div class="container mt-5 profile-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Perfil</div>
-                <div class="card-body">
-                    <div class="text-center mb-3">
-                        {% if user.photo %}
-                            <img src="{{ user.photo.url }}" class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;">
-                        {% else %}
-                            <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
-                        {% endif %}
-                    </div>
-                    <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Nome de usuário</label>
-                            <input type="text" name="username" class="form-control" value="{{ user.username }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Foto de Perfil</label>
-                            <input type="file" name="photo" class="form-control-file" id="photo" accept="image/*" onchange="showCropper(event)">
-                            <div class="img-container mt-3">
-                                <img id="cropper-image">
-                            </div>
-                            <div class="img-preview mt-3"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="text" class="form-control" value="{{ user.email }}" readonly>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <div id="loading-spinner">
-                            <p>Carregando...</p>
-                        </div>
-                    </form>
-                    {% if messages %}
-                        <div class="alert alert-dismissible fade show" role="alert">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endif %}
-                </div>
+            <div class="profile-header text-center mb-4">
+                {% if user.photo %}
+                    <img src="{{ user.photo.url }}" class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;">
+                {% else %}
+                    <div class="rounded-circle" style="width: 150px; height: 150px; background-color: #ccc;"></div>
+                {% endif %}
             </div>
+            <form method="post" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" onsubmit="return submitForm(event)">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Nome de usuário</label>
+                    <input type="text" name="username" class="form-control" value="{{ user.username }}" data-original-username="{{ user.username }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Foto de Perfil</label>
+                    <div class="custom-file-container">
+                        <input type="file" name="photo" id="photo" accept="image/*" onchange="showCropper(event)" style="display: none;">
+                        <button type="button" class="btn btn-image" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
+                        <span id="file-name"></span>
+                    </div>
+                    <div class="img-container mt-3">
+                        <img id="cropper-image">
+                    </div>
+                    <div class="img-preview mt-3"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="email" value="{{ user.email }}" readonly>
+                </div>
+                <div class="d-flex justify-content-center" id="action-buttons" style="display: none;">
+                    <button type="button" class="btn btn-cancel" onclick="cancelSelection()">Cancelar</button>
+                    <button type="submit" class="btn btn-home">Salvar</button>
+                </div>                
+                <div id="loading-spinner">
+                    <p>Carregando...</p>
+                </div>
+            </form>
+            {% if messages %}
+                <div class="alert alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -98,13 +182,20 @@
     const image = document.getElementById('cropper-image');
 
     function showCropper(event) {
-        const files = event.target.files;
+    const files = event.target.files;
+    const fileNameElement = document.getElementById('file-name');
+    const cancelButton = document.getElementById('cancel-button');
+
         if (files && files.length > 0) {
             const file = files[0];
+            fileNameElement.textContent = file.name; // Mostra o nome do arquivo
+
             const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
             if (!validImageTypes.includes(file.type)) {
                 alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
                 event.target.value = ''; // Limpa o input
+                fileNameElement.textContent = ''; // Limpa o nome do arquivo
+                cancelButton.style.display = 'none'; // Oculta o botão de cancela
                 return;
             }
 
@@ -119,9 +210,73 @@
                     viewMode: 1,
                     preview: '.img-preview',
                 });
+                // Torna visível a área de visualização e a pré-visualização da imagem
+                document.querySelector('.img-container').style.display = 'flex';
+                document.querySelector('.img-preview').style.display = 'block';
+                cancelButton.style.display = 'inline-block';
             };
             reader.readAsDataURL(file);
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const usernameInput = document.querySelector('input[name="username"]');
+        const photoInput = document.getElementById('photo');
+        const actionButtons = document.getElementById('action-buttons');
+        let originalUsername = usernameInput.value; // Mover para o escopo correto
+
+        // Monitora mudanças no campo de nome de usuário
+        usernameInput.addEventListener('input', function() {
+            if (usernameInput.value !== originalUsername || photoInput.files.length > 0) {
+                actionButtons.style.display = 'flex';
+            } else {
+                actionButtons.style.display = 'none';
+            }
+        });
+
+        // Monitora mudanças no campo de seleção de arquivos
+        photoInput.addEventListener('change', function(event) {
+            if (event.target.files.length > 0) {
+                showCropper(event);
+                actionButtons.style.display = 'flex';
+            } else if (usernameInput.value === originalUsername) {
+                actionButtons.style.display = 'none';
+            }
+        });
+    });
+
+    function cancelSelection() {
+        // Limpa o input de arquivo
+        const fileInput = document.getElementById('photo');
+        fileInput.value = '';  // Reseta o valor do input de arquivo
+
+        // Oculta a área de visualização da imagem e o botão de cancelar
+        document.querySelector('.img-container').style.display = 'none';
+        document.querySelector('.img-preview').style.display = 'none';
+        document.getElementById('file-name').textContent = '';  // Limpa o nome do arquivo exibido
+
+        // Remove a imagem de pré-visualização
+        document.getElementById('cropper-image').src = '';
+
+        // Destrói a instância do Cropper se ela existir
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+
+        // Reseta o nome de usuário para o valor original
+        const usernameInput = document.querySelector('input[name="username"]');
+        const originalUsername = usernameInput.getAttribute('data-original-username');
+        usernameInput.value = originalUsername;
+
+        // Verifica se o nome de usuário foi alterado ou se a imagem foi selecionada
+        const actionButtons = document.getElementById('action-buttons');
+        if (usernameInput.value === originalUsername && fileInput.files.length === 0) {
+            actionButtons.style.display = 'none';
+        }
+
+        // Redireciona para a página "index"
+        window.location.href = "{% url 'main:index' %}";
     }
 
     function submitForm(event) {
@@ -154,7 +309,7 @@
         .then(response => response.json())
         .then(data => {
             document.getElementById('loading-spinner').style.display = 'none';
-            location.href = '{% url "users:profile" %}';
+            location.href = '{% url "main:index" %}';
         })
         .catch(error => {
             document.getElementById('loading-spinner').style.display = 'none';

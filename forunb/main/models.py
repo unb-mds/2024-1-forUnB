@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from PIL import Image
 from users.models import CustomUser
+from cloudinary.models import CloudinaryField
 
 
 class Forum(models.Model):
@@ -52,11 +53,12 @@ class Question(Post):
         default=0, verbose_name='Favorited Count'
     )
     is_anonymous = models.BooleanField(default=False, verbose_name='')
-    image = models.ImageField(
-        upload_to='media/question_images/', blank=True, null=True
-    )
+    image = CloudinaryField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='questions'
     )
 
     def __str__(self):
@@ -98,9 +100,7 @@ class Answer(Post):
     is_anonymous = models.BooleanField(
         default=False, verbose_name='Modo anônimo'
     )
-    image = models.ImageField(
-        upload_to='media/answer_images/', blank=True, null=True
-    )
+    image = CloudinaryField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_answers', blank=True
     )

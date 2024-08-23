@@ -6,97 +6,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
-<style>
-    .answer-list {
-        min-height: 50vh;
-        /* Define a altura mínima como 50% da altura da tela */
-        max-height: 70vh;
-        /* Define a altura máxima como 70% da altura da tela */
-        overflow-y: auto;
-        /* Adiciona uma barra de rolagem vertical se o conteúdo ultrapassar a altura máxima */
-        padding: 1rem;
-        /* Adiciona um espaçamento interno */
-        background-color: #f9f9f9;
-        /* Adiciona uma cor de fundo para melhor visualização */
-        border-radius: 8px;
-        /* Adiciona bordas arredondadas */
-    }
-
-    /* Estilos adicionais para o Cropper.js */
-    .img-container {
-        max-width: 100%;
-    }
-
-    .img-preview {
-        overflow: hidden;
-        margin: 10px;
-        border: 1px solid #ccc;
-    }
-
-    .preformatted-text {
-        white-space: pre-wrap;
-        /* Preserva a formatação original e as quebras de linha */
-        word-wrap: break-word;
-        /* Quebra palavras longas */
-    }
-
-    /* Estilos para o spinner */
-    #loading-spinner {
-        display: none;
-        text-align: center;
-        padding: 10px;
-    }
-
-    #reportModal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 400px; /* Largura do modal */
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-    }
-
-    #reportModal .modal-content {
-        position: relative;
-        padding: 20px;
-    }
-
-    #reportModal .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #aaa;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    #reportModal .close:hover,
-    #reportModal .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .modal-header {
-        margin-bottom: 15px;
-    }
-
-    .modal-body {
-        margin-bottom: 15px;
-    }
-
-    .modal-footer {
-        text-align: right;
-    }
-</style>
-
 <div class="custom-container mt-5 ms-0">
     <div class="questions-item">
         <div class="question-info">
@@ -105,6 +14,9 @@
                         class="bi bi-arrow-return-left"></i></a>
             </div>
             <div class="question-meta">
+                {% load static %}
+                <img class="profile-picture"
+                    src="{% if question.is_anonymous or not question.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ question.author.photo.url }}{% endif %}">
                 <span class="question-author">
                     {% if question.is_anonymous %}
                     Anônimo
@@ -117,7 +29,8 @@
             <h5 class="question-title">{{ question.title }}</h5>
             <p class="question-description preformatted-text">{{ question.description }}</p>
             {% if question.image %}
-            <img src="{{ question.image.url }}" alt="Imagem da pergunta" class="img-fluid mt-3">
+            <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
+                class="img-question mt-3">
             {% endif %}
             <div class="action-buttons">
                 <button class="btn btn-like" data-id="{{ question.id }}" data-type="question"
@@ -128,11 +41,14 @@
                 <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                     <i class="bi bi-chat-left-text"></i> {{ question.answers.count }}
                 </a>
+                <button type="button" class="btn btn-alert" onclick="showReportForm('{{ question.id }}', 'question')">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </button>
             </div>
-            <button class="btn btn-warning mt-3" onclick="showReportForm('{{ question.id }}', 'question')">Denunciar</button>
+
 
             <div id="reportModal" class="modal" style="display: none;">
-                <div class="modal-content">
+                <div class="modal-content fw-bold">
                     <span class="close" onclick="closeReportForm()">&times;</span>
                     <h2>Denunciar <span id="reportType"></span></h2>
                     <form id="reportForm" method="post" action="">
@@ -140,33 +56,36 @@
                         <!-- Renderização Manual das Opções de Razões -->
                         <div class="form-group">
                             <label for="id_reason">Motivo da denúncia</label>
-                            <div class="form-check">
-                                <input type="radio" id="id_reason_ofensivo" name="reason" value="ofensivo">
+                            <div class="form-check mt-2">
+                                <input type="checkbox" id="id_reason_ofensivo" name="reason" value="ofensivo">
                                 <label for="id_reason_ofensivo">Conteúdo ofensivo</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" id="id_reason_irrelevante" name="reason" value="irrelevante">
+                                <input type="checkbox" id="id_reason_irrelevante" name="reason" value="irrelevante">
                                 <label for="id_reason_irrelevante">Irrelevante para o fórum</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" id="id_reason_outros" name="reason" value="outros">
+                                <input type="checkbox" id="id_reason_outros" name="reason" value="outros">
                                 <label for="id_reason_outros">Outros</label>
                             </div>
                         </div>
-            
+
                         <!-- Campo de Detalhes -->
                         <div class="form-group">
-                            <label for="id_details">Detalhes adicionais</label>
-                            <textarea id="id_details" name="details" rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            <label for="id_details"></label>
+                            <textarea class="form-control fw-bold" id="id_details" name="details" rows="3"
+                                placeholder="Detalhes adicionais (opcional)"></textarea>
                         </div>
-            
-                        <button type="button" class="btn btn-secondary" onclick="closeReportForm()">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Enviar Denúncia</button>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="button" class="btn-cancel btn-secondary me-2"
+                                onclick="closeReportForm()">Cancelar</button>
+                            <button type="submit" class="btn_denuncia">Denunciar</button>
+                        </div>
                     </form>
                 </div>
             </div>
 
-            <div class="response-area">
+            <div class="response-area mt-4">
                 <input type="text" class="form-control" placeholder="Adicionar uma resposta"
                     onclick="showResponseForm()" readonly>
                 <div class="response-form d-none">
@@ -175,18 +94,21 @@
                         {% csrf_token %}
                         <textarea id="id_answer_text" name="text" class="form-control mt-2"
                             placeholder="Escreva sua resposta..."></textarea>
-                        <div class="form-group mt-3">
-                            <label for="image">Imagem:</label>
-                            <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
-                                onchange="showCropper(event)">
+                        <div class="form-group fw-bold mt-3">
+                            <label class="imagem" for="image">Imagem :</label>
+                            <input type="file" name="image" id="image" accept="image/*" onchange="showCropper(event)"
+                                style="display: none;">
+                            <button type="button" class="btn btn-imagem"
+                                onclick="document.getElementById('image').click();">Escolher Arquivo</button>
                             <div class="img-container mt-3">
-                                <img id="cropper-image" style="max-width: 100%;">
+                                <img id="cropper-image">
                             </div>
-                            <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
+                            <div class="img-preview mt-3"></div>
                         </div>
                         <div class="form-check mt-2">
-                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous">
-                            <label class="form-check-label" for="isAnonymous">Responder anonimamente</label>
+                            <label class="form-check-label ms-2" for="isAnonymous"> Responder anonimamente</label>
+                            <input type="checkbox" name="is_anonymous" class="form-check-input" id="isAnonymous"
+                                style="display: inline-block; width: auto;">
                         </div>
                         <div class="mt-1">
                             <button type="button" class="btn btn-cancel" onclick="cancelResponse()">Cancelar</button>
@@ -200,6 +122,7 @@
             </div>
         </div>
     </div>
+    <hr class="answer-separator">
 
     <div class="answer-list">
         {% if answers %}
@@ -207,6 +130,8 @@
         <div class="answer-item">
             <div class="answer-info">
                 <div class="answer-meta">
+                    <img class="profile-picture"
+                        src="{% if answer.is_anonymous or not answer.author.photo %}{% static 'forunb/img/default.jpg' %}{% else %}{{ answer.author.photo.url }}{% endif %}">
                     <span class="answer-author">
                         {% if answer.is_anonymous %}
                         Anônimo
@@ -219,7 +144,8 @@
                 </div>
                 <p class="answer-text preformatted-text">{{ answer.text }}</p>
                 {% if answer.image %}
-                <img src="{{ answer.image.url }}" alt="Imagem da resposta" class="img-fluid mt-3">
+                <img src="{{ answer.image.url }}" alt="Descrição da imagem relacionada à resposta"
+                    class="img-question mt-3">
                 {% endif %}
                 <div class="action-buttons-answer">
                     <button class="btn btn-like" data-id="{{ answer.id }}" data-type="answer"
@@ -228,11 +154,15 @@
                             class="bi {% if user in answer.upvoters.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         <span>{{ answer.upvote_count }}</span>
                     </button>
-                    <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
+                    <!-- <a href="{% url 'main:question_detail' question.id %}" class="btn btn-info">
                         <i class="bi bi-chat-left-text"></i> {{ answer.answers.count }}
-                    </a>
-                    <button class="btn btn-warning mt-3" onclick="showReportForm('{{ answer.id }}', 'answer')">Denunciar</button>
+                    </a> -->
+                    <button type="button" class="btn btn-alert"
+                        onclick="showReportForm('{{ question.id }}', 'question')">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </button>
                 </div>
+
             </div>
             <hr class="answer-separator">
             {% empty %}
@@ -243,6 +173,90 @@
             {% endif %}
         </div>
     </div>
+
+    <style>
+        /* Estilos adicionais para o Cropper.js */
+
+        .img-container {
+            width: 80%;
+            max-width: 400px;
+            /* Ajuste conforme necessário */
+            max-height: 400px;
+            /* Ajuste conforme necessário */
+            overflow: hidden;
+            margin: 0 auto;
+            border-radius: 10px;
+            /* Centraliza o contêiner da imagem */
+        }
+
+
+        .img-preview {
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            margin: 10px;
+            border: 10px solid #ccc;
+        }
+
+        .img-container,
+        .img-preview {
+            display: none;
+            /* Esconde a área de visualização por padrão */
+        }
+
+        #id_answer_text_ifr {
+            background-color: #C7D2DD;
+            border-radius: 5px;
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn,
+        .tox .tox-toolbar__primary .tox-tbtn__select-label,
+        .tox .tox-toolbar__primary .tox-tbtn__icon-wrap svg {
+            color: #000000;
+            /* Cor dos ícones e textos */
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn:hover {
+            background-color: #C7D2DD;
+            /* Cor de fundo ao passar o mouse */
+        }
+
+        .tox .tox-toolbar__primary .tox-tbtn--enabled {
+            background-color: #C7D2DD;
+            /* Cor de fundo quando o botão está ativado */
+            color: #fff;
+            /* Cor do texto quando o botão está ativado */
+
+            .imagem {
+                color: #003366;
+            }
+
+            .btn-imagem {
+                color: #003366;
+                background-color: #C7D2DD;
+                font-weight: bold;
+                padding: 10px 20px;
+                border-radius: 20px;
+            }
+
+            .btn-imagem:hover,
+            .form-control:hover {
+                background-color: #a0b0c0;
+                color: #003366;
+            }
+
+            .response-area .form-check-label {
+                display: inline-block;
+                width: auto;
+            }
+
+            .response-area .form-check-input {
+                display: inline-block;
+                width: auto;
+                margin-right: 5px;
+            }
+        }
+    </style>
 
     <script src="https://cdn.tiny.cloud/1/xnvlz4kucskbnxpfwvjhg9dxecvbsq6lljrsssggdvf0wkc3/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -295,9 +309,19 @@
                 },
                 plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount mathjax',
                 toolbar: 'bold italic underline forecolor mathjax code',
-                menubar: false,
-                statusbar: false,
-                height: 400
+                menubar: false,  // Remove a barra de menu superior 
+                statusbar: false,  // Remove a barra de status inferior 
+                height: 150,
+
+                content_style: `
+            body {
+            font-weight: bold;  
+        }
+            body:focus {
+            background-color: #ffff; /* Cor de fundo ao digitar */ 
+            color: #000000;
+            font-weight: normal;
+    `,
             });
 
             function renderMath() {
@@ -319,6 +343,8 @@
 
         function showCropper(event) {
             const files = event.target.files;
+            const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
+            const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
             if (files && files.length > 0) {
                 const file = files[0];
                 const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -339,8 +365,13 @@
                         viewMode: 1,
                         preview: '.img-preview',
                     });
+                    imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
+                    imgPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
+            } else {
+                imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
+                imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
             }
         }
 
@@ -404,6 +435,7 @@
         }
 
         function cancelResponse() {
+            // Parte 1: Cancelar a resposta
             var responseInput = document.querySelector('.response-area input');
             var responseForm = document.querySelector('.response-form');
 
@@ -412,6 +444,33 @@
                 responseForm.classList.add('d-none');
             } else {
                 console.error('Elementos não encontrados.');
+            }
+            // Parte 2: Resetar a imagem e ocultar as áreas de visualização
+            const fileInput = document.getElementById('image');
+            if (fileInput) {
+                fileInput.value = '';  // Reseta o valor do input de arquivo
+            }
+
+            const imgContainer = document.querySelector('.img-container');
+            const imgPreview = document.querySelector('.img-preview');
+            const cropperImage = document.getElementById('cropper-image');
+
+            if (imgContainer && imgPreview && cropperImage) {
+                imgContainer.style.display = 'none';  // Oculta a área de visualização da imagem
+                imgPreview.style.display = 'none';    // Oculta a pré-visualização
+                cropperImage.src = '';  // Remove a imagem de pré-visualização
+            }
+
+            // Destrói a instância de Cropper se ela existir
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+
+            // Esconde os botões de ação se não houver alterações no formulário
+            const actionButtons = document.getElementById('action-buttons');
+            if (actionButtons) {
+                actionButtons.style.display = 'none';
             }
         }
 
@@ -452,44 +511,44 @@
                 });
         }
 
-function showReportForm(itemId, itemType) {
-        const form = document.getElementById('reportForm');
-        form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
-        document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
-        document.getElementById("reportModal").style.display = "block";
-    }
+        function showReportForm(itemId, itemType) {
+            const form = document.getElementById('reportForm');
+            form.action = "{% url 'main:report' 0 1 %}".replace('0', itemId).replace('1', itemType);
+            document.getElementById("reportType").textContent = itemType === 'question' ? 'Pergunta' : 'Resposta';
+            document.getElementById("reportModal").style.display = "block";
+        }
 
-    function closeReportForm() {
-        document.getElementById("reportModal").style.display = "none";
-    }
+        function closeReportForm() {
+            document.getElementById("reportModal").style.display = "none";
+        }
 
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Denúncia enviada com sucesso.');
-                closeReportForm();
-                location.reload();
-            } else {
-                alert('Erro ao enviar a denúncia.');
-                console.error('Erro:', data.errors);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar a denúncia.');
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denúncia enviada com sucesso.');
+                        closeReportForm();
+                        location.reload();
+                    } else {
+                        alert('Erro ao enviar a denúncia.');
+                        console.error('Erro:', data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar a denúncia.');
+                });
         });
-    });
 
-</script>
+    </script>
 
     {% endblock %}

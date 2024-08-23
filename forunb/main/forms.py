@@ -9,7 +9,7 @@ from .models import Forum, Question, Answer, Report
 
 class ForumForm(forms.ModelForm):
     """ Form to create a forum. """
-    class Meta: # pylint: disable=R0903
+    class Meta:  # pylint: disable=R0903
         """ Meta class for ForumForm. """
         model = Forum
         fields = ['title', 'description']
@@ -21,7 +21,7 @@ class ForumForm(forms.ModelForm):
 
 class QuestionForm(forms.ModelForm):
     """ Form to create a question. """
-    class Meta: # pylint: disable=R0903
+    class Meta:  # pylint: disable=R0903
         """ Meta class for QuestionForm. """
         model = Question
         fields = ['title', 'description', 'is_anonymous', 'image']
@@ -45,16 +45,21 @@ class QuestionForm(forms.ModelForm):
 
 class AnswerForm(forms.ModelForm):
     """ Form to create an answer. """
-    class Meta: # pylint: disable=R0903
+    class Meta:  # pylint: disable=R0903
         """ Meta class for AnswerForm. """
         model = Answer
         fields = ['text', 'is_anonymous', 'image']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'id': 'id_answer_text',
+                'class': 'texto descricao form-control mt-2',
+                'placeholder': 'Escreva sua resposta...',
+                'rows': 5,
+                'cols': 50,
+            }),
+        }
         labels = {
             'text': ''
-        }
-        widgets = {
-            'text': forms.Textarea(attrs={'cols': 80}),
-            'id': 'id_answer_text',
         }
 
 
@@ -63,7 +68,7 @@ User = get_user_model()
 
 class ReportForm(forms.ModelForm):
     """ Form to report a question or answer. """
-    class Meta: # pylint: disable=R0903
+    class Meta:  # pylint: disable=R0903
         """ Meta class for ReportForm. """
         model = Report
         fields = ['reason', 'details']

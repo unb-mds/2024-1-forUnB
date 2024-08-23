@@ -6,17 +6,65 @@ from main.models import Forum, Question, Answer, Notification
 
 User = get_user_model()
 
-
-class IndexViewTest(TestCase):
-    """
-    Test suite for the index view in the main app.
-    """
-
+class IndexViewTestCase(TestCase):
+    """ Test suite for the index view. """
     def setUp(self):
         """
-        Set up the test client for use in the tests.
+        Set up the test environment with a user, forums, and questions.
         """
         self.client = Client()
+        self.user = User.objects.create_user( # pylint: disable=E1101
+            email='test@aluno.unb.br', password='senha1010'
+        )
+        self.forum1 = Forum.objects.create( # pylint: disable=E1101
+            title="Python Programming", description="Discuss all things Python."
+        )
+        self.forum2 = Forum.objects.create( # pylint: disable=E1101
+            title="Django Tips", description="Tips and tricks for Django."
+        )
+        self.question1 = Question.objects.create( # pylint: disable=E1101
+            title="Python Question 1",
+            description="Description for Python Question 1",
+            forum=self.forum1,
+            author=self.user  # Associando o usuário como autor
+        )
+        self.question2 = Question.objects.create( # pylint: disable=E1101
+            title="Django Question 1",
+            description="Description for Django Question 1",
+            forum=self.forum2,
+            author=self.user  # Associando o usuário como autor
+        )
+
+    def test_index_view_latest_questions(self):
+        """
+        Test that the index view returns the correct latest questions.
+        """
+        response = self.client.get(reverse('main:index') + '?filter_by=latest')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/index.html')
+        self.assertContains(response, self.question1.title)
+        self.assertContains(response, self.question2.title)
+
+    def test_index_view_followed_forums(self):
+        """
+        Test that authenticated users see questions from followed forums.
+        """
+        self.user.followed_forums.add(self.forum1)
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        response = self.client.get(reverse('main:index') + '?filter_by=followed')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/index.html')
+        self.assertContains(response, self.question1.title)
+        self.assertNotContains(response, self.question2.title)
+
+    def test_index_view_followed_forums_redirect(self):
+        """
+        Test that unauthenticated users are redirected when trying to access followed forums.
+        """
+        response = self.client.get(reverse('main:index') + '?filter_by=followed')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"{reverse('users:login')}?next={reverse('main:index')}")
 
     def test_index_view_status_code(self):
         """
