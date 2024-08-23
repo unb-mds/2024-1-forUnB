@@ -103,7 +103,7 @@
                             <div class="img-container mt-3">
                                 <img id="cropper-image">
                             </div>
-                            <div class="img-preview mt-3"></div>
+                            <!-- <div class="img-preview mt-3"></div> -->
                         </div>
                         <div class="form-check mt-2">
                             <label class="form-check-label ms-2" for="isAnonymous"> Responder anonimamente</label>
@@ -343,14 +343,15 @@
 
         function showCropper(event) {
             const files = event.target.files;
-            const imgContainer = document.querySelector('.img-container'); // Seleciona a área de visualização da imagem
-            const imgPreview = document.querySelector('.img-preview'); // Seleciona a pré-visualização da imagem
+            const imgContainer = document.querySelector('.img-container');
+
             if (files && files.length > 0) {
                 const file = files[0];
                 const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
                 if (!validImageTypes.includes(file.type)) {
                     alert('Por favor, selecione uma imagem válida (JPEG, PNG, GIF).');
                     event.target.value = ''; // Limpa o input
+                    imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
                     return;
                 }
 
@@ -361,20 +362,17 @@
                         cropper.destroy();
                     }
                     cropper = new Cropper(image, {
-                        aspectRatio: 1,
+                        aspectRatio: NaN, // Liberdade para escolher a proporção
                         viewMode: 1,
-                        preview: '.img-preview',
                     });
                     imgContainer.style.display = 'block'; // Mostra a área de visualização da imagem
-                    imgPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             } else {
                 imgContainer.style.display = 'none'; // Esconde a área de visualização da imagem
-                imgPreview.style.display = 'none'; // Esconde a pré-visualização da imagem
             }
         }
-
+        
         function submitForm(event) {
             event.preventDefault();
             const form = event.target;
@@ -452,7 +450,7 @@
             }
 
             const imgContainer = document.querySelector('.img-container');
-            const imgPreview = document.querySelector('.img-preview');
+            //const imgPreview = document.querySelector('.img-preview');
             const cropperImage = document.getElementById('cropper-image');
 
             if (imgContainer && imgPreview && cropperImage) {
