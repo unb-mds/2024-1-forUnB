@@ -182,7 +182,7 @@ function showCropper(event) {
         }
     }
 
-    function sendFormData(url, formData) {
+     function sendFormData(url, formData) {
         fetch(url, {
             method: 'POST',
             body: formData,
@@ -206,6 +206,7 @@ function showCropper(event) {
                 alert('Erro ao enviar a pergunta.');
             });
     }
+
 
     function cancelForm() {
     // Limpa o input de arquivo
