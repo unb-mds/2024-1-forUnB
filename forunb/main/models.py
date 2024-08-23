@@ -58,6 +58,9 @@ class Question(Post):
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True
     )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='questions'
+    )
 
     def __str__(self):
         """String representation of a question."""

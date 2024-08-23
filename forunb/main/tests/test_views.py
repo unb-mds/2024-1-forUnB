@@ -6,12 +6,7 @@ from main.models import Forum, Question, Answer, Notification
 
 User = get_user_model()
 
-
-class IndexViewTest(TestCase):
-    """
-    Test suite for the index view in the main app.
-    """
-
+class IndexViewTestCase(TestCase):
     def setUp(self):
         """
         Set up the test environment with a user, forums, and questions.
@@ -29,12 +24,14 @@ class IndexViewTest(TestCase):
         self.question1 = Question.objects.create( # pylint: disable=E1101
             title="Python Question 1",
             description="Description for Python Question 1",
-            forum=self.forum1
+            forum=self.forum1,
+            author=self.user  # Associando o usuário como autor
         )
         self.question2 = Question.objects.create( # pylint: disable=E1101
             title="Django Question 1",
             description="Description for Django Question 1",
-            forum=self.forum2
+            forum=self.forum2,
+            author=self.user  # Associando o usuário como autor
         )
 
     def test_index_view_latest_questions(self):
