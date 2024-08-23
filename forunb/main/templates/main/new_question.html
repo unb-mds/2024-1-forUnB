@@ -346,7 +346,7 @@ function showCropper(event) {
             .then(data => {
                 document.getElementById('loading-spinner').style.display = 'none';
                 if (data.success) {
-                    window.location.href = {% url 'main:question_detail' 0 %}.replace('0', data.question_id);
+                    window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
                 } else {
                     alert('Erro ao enviar a pergunta.');
                     console.error('Erro:', data.errors);
