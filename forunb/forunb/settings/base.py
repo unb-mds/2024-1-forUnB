@@ -69,14 +69,12 @@ WSGI_APPLICATION = 'forunb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASE_PASSWORD = config('DATABASE_PASSWORD')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'forunb_db',
         'USER': 'forunb',
-        'PASSWORD': config('DATABASE_PASSWORD'),
+        'PASSWORD': 'forunb',
         'HOST': 'localhost',
         'PORT': '5432',
     }
