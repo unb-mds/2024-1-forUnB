@@ -342,22 +342,36 @@ function showCropper(event) {
                 'X-Requested-With': 'XMLHttpRequest',
             },
         })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('loading-spinner').style.display = 'none';
-                if (data.success) {
-                    window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
-                } else {
-                    alert('Erro ao enviar a pergunta.');
-                    console.error('Erro:', data.errors);
-                }
-            })
-            .catch(error => {
-                document.getElementById('loading-spinner').style.display = 'none';
-                console.error('Erro:', error);
+        .then(response => {
+            console.log('Response:', response); // Adicione este log
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            if (data.success) {
+                window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
+            } else {
                 alert('Erro ao enviar a pergunta.');
-            });
+                console.error('Erro:', data.errors);
+            }
+        })
+        .catch(error => {
+            document.getElementById('loading-spinner').style.display = 'none';
+            console.error('Erro:', error);
+            alert('Erro ao enviar a pergunta.');
+        });
     }
+
+    .then(response => {
+        if (response.headers.get('Content-Type')?.includes('application/json')) {
+            return response.json();
+        } else {
+            return response.text().then(text => {
+                throw new Error('Resposta não é JSON: ' + text);
+            });
+        }
+    })
+
 
     function cancelForm() {
     // Limpa o input de arquivo
