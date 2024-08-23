@@ -6,6 +6,11 @@ from PIL import Image
 from users.models import CustomUser
 from cloudinary.models import CloudinaryField
 
+if settings.DEBUG:
+    ImageField = models.ImageField
+else:
+    from cloudinary.models import CloudinaryField
+    ImageField = CloudinaryField
 
 class Forum(models.Model):
     """Model for a forum."""
@@ -53,7 +58,7 @@ class Question(Post):
         default=0, verbose_name='Favorited Count'
     )
     is_anonymous = models.BooleanField(default=False, verbose_name='')
-    image = CloudinaryField('image', blank=True, null=True)
+    image = ImageField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True
     )
@@ -100,7 +105,7 @@ class Answer(Post):
     is_anonymous = models.BooleanField(
         default=False, verbose_name='Modo anônimo'
     )
-    image = CloudinaryField('image', blank=True, null=True)
+    image = ImageField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_answers', blank=True
     )
