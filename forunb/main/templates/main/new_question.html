@@ -8,7 +8,7 @@
 
 <h2 class="nome fw-bold ps-3 mt-5">Perguntar em {{ forum.title }}</h2>
 <div class="scroll-container ps-3 ms-0 mb-4">
-    <div class="response-form response-form-pergunta">
+    <div class="response-form">
         <form method="post" action="{% url 'main:new_question' forum.id %}" enctype="multipart/form-data"
             onsubmit="return submitForm(event)">
             {% csrf_token %}
@@ -33,12 +33,9 @@
                     </div>
                     <div class="img-preview mt-3"></div>
                 </div>
-                <div class="img-preview mt-3" style="width: 200px; height: 200px;"></div>
-            </div>
-            <div class="mt
--1">
-                <button type="button" class="btn btn-cancel" onclick="cancelForm()">Cancelar</button>
-                <button type="submit" class="btn btn-send">Enviar</button>
+            <div class="mt-4">
+                <button type="button" class="btn btn-cancelar" onclick="cancelForm()">Cancelar</button>
+                <button type="submit" class="btn btn-enviar">Enviar</button>
             </div>
             <div id="loading-spinner">
                 <p>Carregando...</p>
