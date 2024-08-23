@@ -636,8 +636,12 @@ html, body {
 }
 
 .img-question {
-    min-height: 400px;
-    max-width: 400px;
+    max-width: 700px; /* A largura máxima da imagem será 700px */
+    min-height: 300px;
+    max-height: 400px; /* A altura máxima da imagem será 400px */
+    width: auto; /* A largura se ajusta automaticamente para manter a proporção */
+    height: auto; /* A altura se ajusta automaticamente para manter a proporção */
+    display: block; /* Garante que a imagem seja um bloco e respeite o dimensionamento */
 }
 
 @media (max-width: 767px) {
