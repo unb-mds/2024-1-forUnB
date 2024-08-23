@@ -31,6 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=100, unique=True, blank=True, null=True)
     photo = CloudinaryField('image')
+    # photo = models.ImageField(upload_to='media/profile_pics/', blank=True, null=True) Usar Localmente!!!!
     followed_forums = models.ManyToManyField('main.Forum', blank=True, related_name='followers')
     liked_answers = models.ManyToManyField('main.Answer', blank=True, related_name='liked_by')
     liked_questions = models.ManyToManyField('main.Question', blank=True, related_name='liked_by')
