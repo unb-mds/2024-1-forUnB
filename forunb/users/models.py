@@ -5,11 +5,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from cloudinary.models import CloudinaryField
 from django.conf import settings
 
-if settings.DEBUG:
-    ImageField = models.ImageField
-else:
-    from cloudinary.models import CloudinaryField
-    ImageField = CloudinaryField
+def get_image_field():
+    if settings.DEBUG:
+        return models.ImageField
+    else:
+        return CloudinaryField
 
 
 class CustomUserManager(BaseUserManager):
@@ -37,7 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    photo = ImageField('image', blank=True, null=True)
+    photo = get_image_field()('image', blank=True, null=True)
     # photo = models.ImageField(upload_to='media/profile_pics/', blank=True, null=True) Usar Localmente!!!!
     followed_forums = models.ManyToManyField('main.Forum', blank=True, related_name='followers')
     liked_answers = models.ManyToManyField('main.Answer', blank=True, related_name='liked_by')
