@@ -7,7 +7,7 @@ from users.models import CustomUser
 from cloudinary.models import CloudinaryField
 
 if settings.DEBUG:
-    ImageField = CloudinaryField
+    ImageField = models.ImageField
 else:
     from cloudinary.models import CloudinaryField
     ImageField = CloudinaryField

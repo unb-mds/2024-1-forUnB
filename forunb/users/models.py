@@ -6,7 +6,7 @@ from cloudinary.models import CloudinaryField
 from django.conf import settings
 
 if settings.DEBUG:
-    ImageField = CloudinaryField
+    ImageField = models.ImageField
 else:
     from cloudinary.models import CloudinaryField
     ImageField = CloudinaryField
