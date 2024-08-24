@@ -642,12 +642,14 @@ html, body {
     width: auto; /* A largura se ajusta automaticamente para manter a proporção */
     height: auto; /* A altura se ajusta automaticamente para manter a proporção */
     display: block; /* Garante que a imagem seja um bloco e respeite o dimensionamento */
+    object-fit: contain;
 }
 
 @media (max-width: 767px) {
     .img-question{
         min-height: 300px;
-        max-width: 300px;
+        max-width: 400px;
+        object-fit: contain;
     } 
 }
 
