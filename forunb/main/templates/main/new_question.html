@@ -189,6 +189,7 @@ function showCropper(event) {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 document.getElementById('loading-spinner').style.display = 'none';
                 if (data.success) {
                     window.location.href = `{% url 'main:question_detail' 0 %}`.replace('0', data.question_id);
