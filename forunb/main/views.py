@@ -120,25 +120,19 @@ def follow_forum(request, forum_id, action):
 
 @login_required(login_url='/users/login')
 def new_question(request, forum_id):
-    print("Entrou na view new_question")  # Depuração
+    """Create a new question"""
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
-        print("Método POST detectado")  # Depuração
         form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
-            print("Formulário válido")  # Depuração
             question = form.save(commit=False)
             question.forum = forum
             question.author = request.user
             question.description = clean_html(question.description)
             question.save()
-            print("Pergunta salva com sucesso")  # Depuração
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
-        else:
-            print("Formulário inválido", form.errors)  # Depuração
         return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-    print("Método GET ou outro não permitido")  # Depuração
     form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 

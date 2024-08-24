@@ -122,12 +122,12 @@ class Answer(Post):
         """Save method for an answer."""
         super().save(*args, **kwargs)
 
-        if self.image:
+        """if self.image:
             img = Image.open(self.image.path)  # pylint: disable=E1101
             if img.height > 800 or img.width > 800:
                 output_size = (800, 800)
                 img.thumbnail(output_size)
-                img.save(self.image.path)  # pylint: disable=E1101
+                img.save(self.image.path)  # pylint: disable=E1101"""
 
     def toggle_upvote(self, user):
         """Toggles the upvote of an answer for a user."""
