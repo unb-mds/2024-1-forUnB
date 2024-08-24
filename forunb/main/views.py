@@ -97,8 +97,12 @@ def question_detail(request, question_id):
 
 def clean_html(text):
     """Remove HTML tags from a text."""
+    print("Texto recebido pelo clean_html:", text)  # Depuração
     soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text()
+    cleaned_text = soup.get_text()
+    print("Texto após limpeza:", cleaned_text)  # Depuração
+    return cleaned_text
+
 
 
 @login_required(login_url='/users/login')
@@ -128,8 +132,8 @@ def new_question(request, forum_id):
             question.author = request.user
             question.description = clean_html(question.description)
             question.save()
-            request.user.created_questions.add(question)
             print("Pergunta salva com sucesso")  # Depuração
+            request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
         else:
             print("Formulário inválido", form.errors)  # Depuração
