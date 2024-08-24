@@ -643,6 +643,7 @@ html, body {
     height: auto; /* A altura se ajusta automaticamente para manter a proporção */
     display: block; /* Garante que a imagem seja um bloco e respeite o dimensionamento */
     object-fit: contain;
+    object-position: left center;
 }
 
 @media (max-width: 767px) {
@@ -650,6 +651,7 @@ html, body {
         min-height: 300px;
         max-width: 400px;
         object-fit: contain;
+        object-position: left center;
     } 
 }
 
