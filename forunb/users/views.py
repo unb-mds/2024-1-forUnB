@@ -9,6 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 from .models import CustomUser
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.crypto import get_random_string
+from django.conf import settings
+from django.contrib import messages
 
 
 def register(request):
@@ -16,14 +21,23 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # The form's save method handles user creation
-            authenticated_user = authenticate(
-                username=user.email, password=request.POST['password1']
+            # Gerar o código de verificação
+            verification_code = get_random_string(4, allowed_chars='0123456789')
+            
+            # Armazenar o código e os dados do usuário na sessão
+            request.session['verification_code'] = verification_code
+            request.session['registration_data'] = request.POST
+
+            # Enviar o código de verificação por e-mail
+            email = form.cleaned_data.get('email')
+            send_mail(
+                'Código de Verificação - forUnB',
+                f'Seu código de verificação é {verification_code}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
             )
-            if authenticated_user is not None:
-                login(request, authenticated_user)
-                return redirect('main:index')
-            print("Falha na autenticação")
+
+            return render(request, 'users/verify_email.html', {'email': email})
         else:
             print("Formulário inválido")
             print(form.errors)
@@ -88,3 +102,29 @@ def edit_profile(request):
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
     return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
+
+def verify_email(request):
+    """Handle the verification of the email with the code."""
+    if request.method == 'POST':
+        code_entered = request.POST.get('verification_code')
+        code_sent = request.session.get('verification_code')
+        registration_data = request.session.get('registration_data')
+
+        if not code_sent:
+            # Se a chave 'verification_code' não existe na sessão, redireciona o usuário para a página de registro ou mostra uma mensagem de erro
+            messages.error(request, 'Ocorreu um erro na verificação. Por favor, tente novamente.')
+            return redirect('users:register')
+
+        if code_entered == code_sent:
+            form = CustomUserCreationForm(registration_data)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                # Limpar dados da sessão
+                del request.session['verification_code']
+                del request.session['registration_data']
+                return redirect('main:index')
+        else:
+            messages.error(request, 'Código de verificação incorreto.')
+
+    return render(request, 'users/verify_email.html')
