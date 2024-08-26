@@ -97,8 +97,12 @@ def question_detail(request, question_id):
 
 def clean_html(text):
     """Remove HTML tags from a text."""
+    print("Texto recebido pelo clean_html:", text)  # Depuração
     soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text()
+    cleaned_text = soup.get_text()
+    print("Texto após limpeza:", cleaned_text)  # Depuração
+    return cleaned_text
+
 
 
 @login_required(login_url='/users/login')
@@ -116,7 +120,7 @@ def follow_forum(request, forum_id, action):
 
 @login_required(login_url='/users/login')
 def new_question(request, forum_id):
-    """Create a new question."""
+    """Create a new question"""
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
@@ -129,7 +133,6 @@ def new_question(request, forum_id):
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
         return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-
     form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
@@ -192,7 +195,7 @@ def notifications(request):
     return render(request, 'main/notifications.html', {'notifications': user_notifications})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_question(request, question_id):
     """Toggle the upvote of a question for a user."""
@@ -201,7 +204,7 @@ def toggle_upvote_question(request, question_id):
     return JsonResponse({'upvotes': question.upvote_count})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_answer(request, answer_id):
     """Toggle the upvote of an answer for a user."""
@@ -232,6 +235,7 @@ def report(request, item_id, item_type):
                 report_instance.user = request.user
                 report_instance.save()
                 return JsonResponse({'success': True})
+            print(form.errors)  # Isso irá mostrar quais campos estão falhando
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
         return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
     except Exception as e:  # pylint: disable=broad-except
