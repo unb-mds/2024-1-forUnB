@@ -14,14 +14,24 @@
                 <div class="card">
                     <div class="card-header text-center">Verifique seu Email</div>
                     <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
                         <form action="{% url 'users:verify_email' %}" method="post">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="verification_code" class="form-label">Código de Verificação</label>
                                 <input type="text" name="verification_code" id="verification_code" class="form-control" required>
                             </div>
-                            <input type="hidden" name="email" value="{{ email }}">
                             <button type="submit" class="btn btn-primary">Verificar</button>
+                        </form>
+                        <hr>
+                        <form action="{% url 'users:verify_email' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="resend_code" class="btn btn-secondary">Reenviar Código</button>
+                            <button type="submit" name="cancel" class="btn btn-danger">Cancelar Verificação</button>
                         </form>
                     </div>
                 </div>
