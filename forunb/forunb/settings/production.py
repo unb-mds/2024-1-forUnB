@@ -35,4 +35,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'  # Isso é literal, use 'apikey' como o usuário
 EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')  # A chave de API gerada no Heroku
-DEFAULT_FROM_EMAIL = 'noreply@forunb.com'
+DEFAULT_FROM_EMAIL = 'forunb24@gmail.com'
