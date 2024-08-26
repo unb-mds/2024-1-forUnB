@@ -103,9 +103,34 @@ def edit_profile(request):
         return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
     return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
+# users/views.py
+
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.utils.crypto import get_random_string
+
 def verify_email(request):
     """Handle the verification of the email with the code."""
     if request.method == 'POST':
+        if 'resend_code' in request.POST:
+            # Reenviar um novo código
+            verification_code = get_random_string(4, allowed_chars='0123456789')
+            request.session['verification_code'] = verification_code
+            email = request.session.get('registration_data')['email']
+
+            send_mail(
+                'Código de Verificação - forUnB',
+                f'Seu novo código de verificação é {verification_code}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+            )
+            messages.success(request, 'Um novo código foi enviado para seu e-mail.')
+            return redirect('users:verify_email')
+
+        elif 'cancel' in request.POST:
+            # Cancelar a verificação e voltar ao registro
+            return redirect('users:register')
+
         code_entered = request.POST.get('verification_code')
         code_sent = request.session.get('verification_code')
         registration_data = request.session.get('registration_data')
