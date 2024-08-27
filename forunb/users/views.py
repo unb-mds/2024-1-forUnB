@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.crypto import get_random_string
 from django.conf import settings
 from django.contrib import messages
+from django.template.loader import render_to_string
 
 
 def register(request):
@@ -28,16 +29,11 @@ def register(request):
             request.session['verification_code'] = verification_code
             request.session['registration_data'] = request.POST
 
-            # Enviar o código de verificação por e-mail
-            email = form.cleaned_data.get('email')
-            send_mail(
-                'Código de Verificação - forUnB',
-                f'Seu código de verificação é {verification_code}',
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-            )
+            # Enviar o código de verificação por e-mail usando a nova função
+            user = form.save(commit=False)  # Não salvar ainda para enviar o e-mail primeiro
+            send_verification_email(user, verification_code)
 
-            return render(request, 'users/verify_email.html', {'email': email})
+            return render(request, 'users/verify_email.html', {'email': user.email})
         else:
             print("Formulário inválido")
             print(form.errors)
@@ -103,53 +99,74 @@ def edit_profile(request):
         return JsonResponse({'success': False, 'errors': 'Nome de usuário não pode estar vazio.'})
     return JsonResponse({'success': False, 'error': 'Método de requisição inválido.'})
 
-# users/views.py
-
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.utils.crypto import get_random_string
 
 def verify_email(request):
-    """Handle the verification of the email with the code."""
     if request.method == 'POST':
         if 'resend_code' in request.POST:
-            # Reenviar um novo código
-            verification_code = get_random_string(4, allowed_chars='0123456789')
-            request.session['verification_code'] = verification_code
-            email = request.session.get('registration_data')['email']
+            # Obtenha o e-mail da sessão
+            registration_data = request.session.get('registration_data')
+            email = registration_data.get('email') if registration_data else None
 
-            send_mail(
-                'Código de Verificação - forUnB',
-                f'Seu novo código de verificação é {verification_code}',
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-            )
-            messages.success(request, 'Um novo código foi enviado para seu e-mail.')
-            return redirect('users:verify_email')
+            user = None
+            if email:
+                try:
+                    user = CustomUser.objects.get(email=email)
+                except CustomUser.DoesNotExist:
+                    # Define user como None se o usuário não for encontrado
+                    user = None
+
+                # Gerar um novo código de verificação
+                verification_code = get_random_string(4, allowed_chars='0123456789')
+                request.session['verification_code'] = verification_code
+
+                # Enviar o novo código de verificação
+                send_verification_email(user, verification_code)
+
+                messages.success(request, 'Um novo código foi enviado para seu e-mail.')
+            else:
+                messages.error(request, 'Ocorreu um erro na verificação. Por favor, tente novamente.')
 
         elif 'cancel' in request.POST:
-            # Cancelar a verificação e voltar ao registro
             return redirect('users:register')
 
-        code_entered = request.POST.get('verification_code')
-        code_sent = request.session.get('verification_code')
-        registration_data = request.session.get('registration_data')
-
-        if not code_sent:
-            # Se a chave 'verification_code' não existe na sessão, redireciona o usuário para a página de registro ou mostra uma mensagem de erro
-            messages.error(request, 'Ocorreu um erro na verificação. Por favor, tente novamente.')
-            return redirect('users:register')
-
-        if code_entered == code_sent:
-            form = CustomUserCreationForm(registration_data)
-            if form.is_valid():
-                user = form.save()
-                login(request, user)
-                # Limpar dados da sessão
-                del request.session['verification_code']
-                del request.session['registration_data']
-                return redirect('main:index')
         else:
-            messages.error(request, 'Código de verificação incorreto.')
+            code_entered = request.POST.get('verification_code')
+            code_sent = request.session.get('verification_code')
+
+            if not code_sent:
+                messages.error(request, 'Ocorreu um erro na verificação. Por favor, tente novamente.')
+                return render(request, 'users/verify_email.html')
+
+            if code_entered == code_sent:
+                form = CustomUserCreationForm(request.session.get('registration_data'))
+                if form.is_valid():
+                    user = form.save()
+                    login(request, user)
+                    del request.session['verification_code']
+                    del request.session['registration_data']
+                    return redirect('main:index')
+            else:
+                messages.error(request, 'Código de verificação incorreto.')
 
     return render(request, 'users/verify_email.html')
+
+
+def send_verification_email(user, verification_code):
+    subject = 'Confirme seu E-mail para Acessar o forUnB'
+
+    # Se o usuário for None, o nome de usuário será uma string vazia
+    username = user.username if user else ''
+
+    message = render_to_string('emails/email_verification_template.txt', {
+        'username': username,
+        'verification_code': verification_code,
+    })
+
+    recipient_email = user.email if user else 'email_provided_some_other_way@example.com'
+    
+    send_mail(
+        subject,
+        message,
+        'forunb.noreply@gmail.com',  # O e-mail verificado
+        [recipient_email],  # Envia para o e-mail do usuário ou outro definido
+    )

@@ -1,0 +1,18 @@
+Olá {{ username }}{% if username %},{% endif %}
+
+Bem-vindo(a) ao forUnB, o fórum oficial da comunidade estudantil da UnB!
+
+Para completar o seu cadastro e começar a participar das discussões e tirar suas dúvidas, precisamos confirmar que este endereço de e-mail pertence a você.
+
+Aqui está seu código de verificação:
+
+{{ verification_code }}
+
+Por favor, insira este código no formulário de cadastro para ativar sua conta.
+
+Se você não se inscreveu no forUnB, ignore este e-mail.
+
+Estamos ansiosos para ver você participando ativamente na comunidade!
+
+Abraços,
+Equipe forUnB
