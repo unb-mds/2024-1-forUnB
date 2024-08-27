@@ -11,7 +11,7 @@ O forUnB tem como objetivo melhorar a comunicação com o estudante e monitor a 
     
 ## **Tecnologias**: 
     
-- A nossa aplicação utiliza HTML, CSS e Bootstrap para o front-end, Python com o framework Django no back-end e o banco de dados SQLite3 para o armazenamento de dados, que já vem embutido em nosso framework.
+- A nossa aplicação utiliza HTML, CSS e Bootstrap para o front-end, Python com o framework Django no back-end. Usamos dois bancos de dados, o SQLite3 para o armazenamento de dados locais, que já vem embutido em nosso framework, além do PostgreSQL focada na parte da hospedagem.
 
 
     | **Tecnologia**    | **Versão**  |
