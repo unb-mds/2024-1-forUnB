@@ -96,11 +96,14 @@ def question_detail(request, question_id):
 
 
 def clean_html(text):
-    """Remove HTML tags from a text."""
-    print("Texto recebido pelo clean_html:", text)  # Depuração
+    """Remove HTML tags but preserve line breaks and basic formatting."""
     soup = BeautifulSoup(text, 'html.parser')
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
+    for p in soup.find_all("p"):
+        p.insert(0, "\n")
+        p.insert(len(p.contents), "\n")
     cleaned_text = soup.get_text()
-    print("Texto após limpeza:", cleaned_text)  # Depuração
     return cleaned_text
 
 
