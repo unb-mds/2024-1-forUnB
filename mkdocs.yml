@@ -18,6 +18,7 @@ nav:
   - Protótipos: prototipo/prototipo.md
 
   - Sprints:
+      - Roteiro de Reuniões: sprints/roteiro_reunioes.md
       - Sprint 0: sprints/sprint0.md
       - Sprint 1: sprints/sprint1.md
       - Sprint 2: sprints/sprint2.md
@@ -29,6 +30,7 @@ nav:
       - Sprint 8: sprints/sprint8.md
       - Sprint 9: sprints/sprint9.md
       - Sprint 10: sprints/sprint10.md
+      - Sprint 11: sprints/sprint11.md
 
   - Estudos:
       - Lean Inception: lean_inception/lean_inception.md

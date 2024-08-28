@@ -16,8 +16,9 @@ Para essa sprint, foi estruturado objetivos com o princípio na melhoria da apli
 - Estudar e buscar por meios de automatizar o Deploy e os testes com o GitHub Actions
 
 ## Reuniões
-
+A reunião 1 seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - *Data:* 15/07/2024
 - *Local:* Discord
 - *Ata:*
@@ -26,6 +27,8 @@ Nessa reunião também abordado de forma ampla o que foi feito durante toda a se
 Por último foi organizado em grupo o merge do que havia sido produzido até o momento da branch 'Development' com a 'Main'.
 
 ### Reunião 2 
+- Todos presentes
+
 - **Data**: 19/07/2024 
 
 - **Local**: Discord 

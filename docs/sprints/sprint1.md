@@ -13,6 +13,7 @@ Para essa segunda sprint, foi planejado capacitações diversas, com vários "co
 
 ## Reuniões
 ### Reunião 1
+- Todos presentes
 - **Data:** 27/03/2024
 - **Local:** FGA
 - **Ata:**
@@ -29,12 +30,14 @@ Para essa segunda sprint, foi planejado capacitações diversas, com vários "co
     - Alexandre Jr.
 
 ### Reunião 2
+- Todos presentes
 - **Data:** 29/03/2024
 - **Local:** Google Meets
 - **Ata:**
-  Ao descobrirmos o tema, fizemos essa reunião onde os três encarregados da capacitação das **metologias ágeis** apresnetaram suas pesquisas. Além disso, foram decididos o Scrum Master e o Product Owner, os quais são o Davi Levy e o Bruno Bragança. Ao final, um dos integrantes nos apresentou o método Lean Inception, o qual decidimos aderir para a idealização do projeto.
+  Ao descobrirmos o tema, fizemos essa reunião onde os três encarregados da capacitação das **metologias ágeis** apresnetaram suas pesquisas. Além disso, foram decididos o Scrum Master e o Product Owner, os quais são o Bruno Bragança e o Davi Levy. Ao final, um dos integrantes nos apresentou o método Lean Inception, o qual decidimos aderir para a idealização do projeto.
 
 ### Reunião 3
+- Todos presentes
 - **Data:** 31/03/2024
 - **Local:** Google Meets
 - **Ata:**

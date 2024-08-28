@@ -20,8 +20,9 @@ Para essa sprint continuamos implementando novas features, enquanto o frontend p
 
 
 ## Reuniões
-
+A reunião 1 seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - Data: 05/08/2024
 - Local: Discord
 - Ata:
@@ -30,6 +31,7 @@ Nessa reunião também foi abordado de forma ampla o que foi feito durante toda 
 Por último foi organizado em grupo o merge do que havia sido produzido até o momento da branch 'Development' e 'Estudo' com a 'Main'.
 
 ### Reunião 2
+- Equipes de Back End e DevOps presentes
 - Data: 07/08/2024
 - Local: Discord
 - Ata:

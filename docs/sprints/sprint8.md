@@ -17,8 +17,9 @@ Para essa sprint, focamos na criação de novas features, na melhoria da usabili
 
 
 ## Reuniões
-
+A reunião seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - *Data:* 29/07/2024
 - *Local:* Discord
 - *Ata:*

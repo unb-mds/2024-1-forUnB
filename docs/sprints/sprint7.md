@@ -16,8 +16,9 @@ Para essa sprint, focamos na criação de novas features, definição da estrutu
 - Automatização do Deploy e os testes usando GitHub Actions.
 
 ## Reuniões
-
+A reunião seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - *Data:* 22/07/2024
 - *Local:* Discord
 - *Ata:*

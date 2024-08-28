@@ -14,8 +14,9 @@ Para essa sprint, foi estruturado reuniões com intuito de desenvolver as featur
 - Finalizar o código para a primeira release
 
 ## Reuniões
-
+A reunião 1 seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - **Data:** 01/07/2024
 - **Local:** Discord
 - **Ata:**
@@ -27,6 +28,7 @@ Documentação e finalização de código: Todos
 Também foi definido a mudança da linguagem do React para o Bootstrap para montar a página.
 
 ### Reunião 2
+- Todos presentes
 - **Data:** 04/07/2024
 - **Local:** Discord
 - **Ata:**

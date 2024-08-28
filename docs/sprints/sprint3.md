@@ -16,6 +16,7 @@ Para essa sprint, foi estruturado reuniões com intuito de desenvolver as featur
 
 ## Reuniões
 ### Reunião 1
+- Todos presentes
 - **Data:** 17/04/2024
 - **Local:** Discord
 - **Ata:**
@@ -25,6 +26,7 @@ Para essa sprint, foi estruturado reuniões com intuito de desenvolver as featur
     - Documentação e participação secundária no código: Davi Klein e Bruno Bragança
  
 ### Reunião 2
+- Todos presentes
 - **Data:** 21/04/2024
 - **Local:** Discord
 - **Ata:**
