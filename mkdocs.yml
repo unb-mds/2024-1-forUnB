@@ -18,6 +18,7 @@ nav:
   - Protótipos: prototipo/prototipo.md
 
   - Sprints:
+      - Roteiro das Reuniões: sprints/roteiro_reunioes.md
       - Sprint 0: sprints/sprint0.md
       - Sprint 1: sprints/sprint1.md
       - Sprint 2: sprints/sprint2.md
