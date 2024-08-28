@@ -11,34 +11,46 @@ A ideia é de fazer um fórum, parecido com a ideia do [stack overflow](https://
         <div style="text-align: center;">
             Alexandre Junior
             <br/>
-            <img src="https://github.com/AlexandreLJr.png" alt="Foto Arthur" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/AlexandreLJr" target="_blank">
+                <img src="https://github.com/AlexandreLJr.png" alt="Foto Alexandre" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
         <div style="text-align: center;">
             Bruno Bragança
             <br/>
-            <img src="https://github.com/BrunoBReis.png" alt="Foto Caio Habibe" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/BrunoBReis" target="_blank">
+                <img src="https://github.com/BrunoBReis.png" alt="Foto Bruno" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
         <div style="text-align: center;">
             Davi Klein
             <br/>
-            <img src="https://github.com/davi-Klevy.png" alt="Foto Caio Felipe" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/davi-Klevy" target="_blank">
+                <img src="https://github.com/davi-Klevy.png" alt="Foto Davi" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
     </div>
     <div style="display: flex; align-items: end; justify-content: center; gap: 50px;">
         <div style="text-align: center;">
             Manoela Garcia
             <br/>
-            <img src="https://github.com/manu-sgc.png" alt="Foto Gabriel" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/manu-sgc" target="_blank">
+                <img src="https://github.com/manu-sgc.png" alt="Foto Manoela" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
         <div style="text-align: center;">
             Pedro Lopes
             <br/>
-            <img src="https://github.com/pLopess.png" alt="Foto Henrique" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/pLopess" target="_blank">
+                <img src="https://github.com/pLopess.png" alt="Foto Pedro" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
         <div style="text-align: center;">
             Victor Hugo Bernardes
             <br/>
-            <img src="https://github.com/VHbernardes.png" alt="Foto Mateus" width="130px" height="50%" style="border-radius:50%"/>
+            <a href="https://github.com/VHbernardes" target="_blank">
+                <img src="https://github.com/VHbernardes.png" alt="Foto Victor" width="130px" height="50%" style="border-radius:50%"/>
+            </a>
         </div>
     </div>
 </div>
