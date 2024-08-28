@@ -489,6 +489,24 @@ class ViewsTestCase(TestCase):
         response_json = response.json()
         self.assertTrue(response_json['success'])
 
+    def test_report_invalid_form(self):
+        """
+        Test that the report view returns errors when the form is invalid.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Envia uma requisição POST com dados inválidos
+        response = self.client.post(reverse('main:report', args=[self.question.id, 'question']), {
+            'invalid_field': 'invalid_value',  # Campo inválido
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
+
+    
+    
 
 class SearchForumTestCase(TestCase):
     """
