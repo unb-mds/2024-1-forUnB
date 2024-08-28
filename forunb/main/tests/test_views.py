@@ -296,6 +296,19 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(self.user.followed_forums.filter(
             id=self.forum.id).exists())
+        
+    def test_follow_forum_view_invalid_method(self):
+        """
+        Test that follow_forum returns a 400 response when the request method is not POST.
+        """
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        # Enviar uma requisição GET ao invés de POST
+        response = self.client.get(reverse('main:follow_forum', args=[self.forum.id, 'follow']))
+
+        # Verifica se o status é 400 e se a resposta é a esperada
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {'success': False})
 
     def test_user_posts_view(self):
         """
