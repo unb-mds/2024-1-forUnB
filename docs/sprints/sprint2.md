@@ -13,6 +13,7 @@ Para essa segunda sprint, foi organizado reuniões para estruturação e planeja
 
 ## Reuniões
 ### Reunião 1
+- Todos presentes
 - **Data:** 03/04/2024
 - **Local:** FGA
 - **Ata:**
@@ -25,24 +26,28 @@ Para essa segunda sprint, foi organizado reuniões para estruturação e planeja
   - **DevOps(com foco em operações):**  Davi Klein e Bruno Bragança
 
 ### Reunião 2
+- Todos presentes
 - **Data:** 07/04/2024
 - **Local:** Google Meets
 - **Ata:**
   Nessa reunião foi iniciada o processo de Lean Inception, onde conseguimos definir a "visão de produto" e o "É/Não É/Faz/Não Faz" do projeto.
 
 ### Reunião 3
+- Todos presentes
 - **Data:** 10/04/2024
 - **Local:** Google Meets
 - **Ata:**
   Nessa reunião seguimos com o processo de Lean Inception, onde conseguimos definir o "objetivo do produto", as "personas" e as "jornadas do usuário" do projeto.
 
 ### Reunião 4
+- Todos presentes
 - **Data:** 12/04/2024
 - **Local:** Google Meets
 - **Ata:**
   Nessa reunião seguimos com o processo de Lean Inception, onde conseguimos definir o "brainstorm de funcionalidades" e a primeira parte da "Revisão técnica, de negócios e UX" do projeto.
 
 ### Reunião 5
+- Todos presentes
 - **Data:** 14/04/2024
 - **Local:** Google Meets
 - **Ata:**

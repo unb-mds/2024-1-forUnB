@@ -12,12 +12,14 @@ Nesta primeira Sprint, foi decidido quando realizaremos as reuniões e que estud
 
 ## Reuniões
 ### Reunião 1
+- Todos presentes
 - **Data:** 22/03/2024
 - **Local:** FGA
 - **Ata:**
   Nessa reunião, o time conversou um pouco sobre temas para o projeto e combinou de refinar e trazer novas ideias até domingo e que iríamos estudar Git, GitHub e GitFlow.
 
 ### Reunião 2
+- Todos presentes
 - **Data:** 24/03/2024
 - **Local:** Google Meets
 - **Ata:**

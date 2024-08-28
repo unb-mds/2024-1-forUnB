@@ -12,11 +12,10 @@ Para essa sprint, foi decidido corrigir os erros apresentados pela professora so
 - Entender e aplicar o novo método de Git Flow  
 
 ## Reuniões 
-
+A reunião 1 seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1 
-
+- Todos presentes
 - **Data:** 08/07/2024 
-
 - **Local**: Discord 
 - **Ata**: Nessa reunião, foram decididos os P.O. de cada frente (Backend: Victor hugo; Frontend: Manoela; Devops: Davi). Também ficou decidido que nesta semana o grupo todo aprofundaria o estudo de Django e que melhoraria os pontos trazidos no feedback da apresentação da release 1, menos pontos envolvendo código, os quais serão melhorados a partir da Sprint 6. Os tópicos do feedback foram: 
 
@@ -32,6 +31,8 @@ Para essa sprint, foi decidido corrigir os erros apresentados pela professora so
 
 
 ### Reunião 2 
+- Todos presentes
+
 - **Data**: 10/07/2024 
 
 - **Local**: Discord 

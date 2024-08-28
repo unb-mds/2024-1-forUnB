@@ -17,8 +17,10 @@ Para essa sprint continuamos implementando novas features, enquanto o frontend f
 - Correção de pequenos detalhes da parte visual.
 
 ## Reuniões
+A reunião seguiu nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 
 ### Reunião 1
+- Todos Presentes
 - Data: 12/08/2024
 - Local: Discord
 - Ata:

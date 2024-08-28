@@ -4,7 +4,7 @@ Período 19/08/2024 a 04/09/2024
 
 ## Descrição 
 
-Essa sprint terá uma duração maior visto que o intuito dela é finalizar pequenos detalhes no código focados na entrega do trabalho. O frontend focou na correção pequenos detalhes, o back end focou na migração do banco de dados.
+Essa sprint terá uma duração maior visto que o intuito dela é finalizar pequenos detalhes no código focados na entrega do trabalho. O frontend focou na correção de pequenos detalhes, o back end focou na migração do banco de dados.
 
 ## Objetivos
 - Migração do Banco de Dados;
@@ -14,8 +14,9 @@ Essa sprint terá uma duração maior visto que o intuito dela é finalizar pequ
 - Correção de pequenos detalhes da parte visual.
 
 ## Reuniões
-
+Ambas as reuniões seguiram o nosso [Roteiro de Reuniões](roteiro_reunioes.md)!
 ### Reunião 1
+- Todos presentes
 - Data: 19/08/2024
 - Local: Discord
 - Ata:
@@ -24,6 +25,7 @@ Nessa reunião também foi abordado de forma ampla o que foi feito durante toda 
 Por último foi organizado em grupo o merge do que havia sido produzido até o momento da branch 'Development' e 'Estudo' com a 'Main'.
 
 ### Reuniao 2
+- Todos presentes
 - Data: 26/08/2024
 - Local: Discord
 - Ata:
