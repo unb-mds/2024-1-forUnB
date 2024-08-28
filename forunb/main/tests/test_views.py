@@ -159,7 +159,21 @@ class ViewsTestCase(TestCase):
         questions = response.context['questions']
         self.assertEqual(questions[0], self.question)  # A primeira pergunta deve aparecer primeiro
 
-    
+    def test_forum_detail_view_oldest(self):
+        """Test that the forum detail view correctly orders questions by oldest first."""
+        question2 = Question.objects.create(
+            title="Another Test Question",
+            description="Another Description",
+            forum=self.forum,
+            author=self.user
+        )
+
+        response = self.client.get(
+            reverse('main:forum_detail', args=[self.forum.id]) + '?order_by=oldest')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forum_detail.html')
+        questions = response.context['questions']
+        self.assertEqual(questions[0], self.question)  # A primeira pergunta criada deve aparecer primeiro
 
     def test_forum_list_view(self):
         """
