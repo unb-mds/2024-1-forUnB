@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from main.models import Forum, Question, Answer, Notification
+from main.views import clean_html
 
 User = get_user_model()
 
@@ -203,6 +204,20 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/forums.html')
         self.assertContains(response, self.forum.title)
+
+    def test_clean_html_with_br_and_p_tags(self):
+        """Test that clean_html correctly replaces <br> tags and preserves <p> tag formatting."""
+        # Texto de entrada com tags <br> e <p>
+        html_input = "<p>This is a paragraph.</p><br>And this is after a break.<br><p>New paragraph.</p>"
+        
+        # Texto esperado após a limpeza
+        expected_output = "\nThis is a paragraph.\n\nAnd this is after a break.\n\nNew paragraph.\n"
+        
+        # Chama a função clean_html
+        cleaned_text = clean_html(html_input)
+        
+        # Verifica se o texto limpo corresponde ao esperado
+        self.assertEqual(cleaned_text, expected_output)
 
     def test_questions_view(self):
         """
