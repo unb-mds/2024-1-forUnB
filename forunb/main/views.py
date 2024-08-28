@@ -103,7 +103,9 @@ def clean_html(text):
     print("Texto após limpeza:", cleaned_text)  # Depuração
     return cleaned_text
 
-
+def sobre(request):
+    """Render the sobre page."""
+    return render(request, 'main/sobre.html')
 
 @login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
