@@ -155,26 +155,36 @@
 
 
     function cancelForm() {
-    // Limpa o input de arquivo
+    // Verifica se existe uma imagem
     const fileInput = document.getElementById('image');
-    fileInput.value = '';  // Reseta o valor do input de arquivo
+    if (fileInput.value === '') {
+        // Extrai o ID do fórum da URL atual
+        const urlParts = window.location.pathname.split('/');
+        const forumId = urlParts[urlParts.length - 2]; // Supondo que o ID esteja antes da última barra
 
-    // Oculta a área de visualização da imagem
-    document.querySelector('.img-container').style.display = 'none';
-    //document.querySelector('.img-preview').style.display = 'none';
+        // Redireciona para a página do fórum correspondente
+        window.location.href = `/forum/${forumId}`;
+    } else {
+        // Limpa o input de arquivo
+        fileInput.value = '';  // Reseta o valor do input de arquivo
 
-    // Remove a imagem de pré-visualização
-    document.getElementById('cropper-image').src = '';
+        // Oculta a área de visualização da imagem
+        document.querySelector('.img-container').style.display = 'none';
+        //document.querySelector('.img-preview').style.display = 'none';
 
-    // Destrói a instância do Cropper se ela existir
-    if (cropper) {
-        cropper.destroy();
-        cropper = null;
+        // Remove a imagem de pré-visualização
+        document.getElementById('cropper-image').src = '';
+
+        // Destrói a instância do Cropper se ela existir
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+
+        // Esconde os botões de ação se não houver alterações no formulário
+        const actionButtons = document.getElementById('action-buttons');
+        actionButtons.style.display = 'none';
     }
-
-    // Esconde os botões de ação se não houver alterações no formulário
-    const actionButtons = document.getElementById('action-buttons');
-    actionButtons.style.display = 'none';
 }
 
 </script>
