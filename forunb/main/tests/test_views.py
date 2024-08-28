@@ -91,6 +91,8 @@ class ViewsTestCase(TestCase):
         """
         Set up the test environment with a user, forum, question, and answer.
         """
+        self.user2 = User.objects.create_user(
+            email='test2@aluno.unb.br', password='senha1010')
         self.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
         self.forum = Forum.objects.create( # pylint: disable=E1101
@@ -296,6 +298,21 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
         self.assertTrue(response_json['success'])
+
+    def test_new_answer_creates_notification(self):
+        """
+        Test that a notification is created when user2 answers a question created by user1.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+
+        response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {
+            'text': 'Answer from user2',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Notification.objects.filter(
+            user=self.user, question=self.question, answer__text='Answer from user2').exists())
+
 
     def test_follow_forum_view(self):
         """
