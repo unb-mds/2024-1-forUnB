@@ -21,4 +21,5 @@ urlpatterns = [
     path('toggle-upvote-question/<int:question_id>/', views.toggle_upvote_question, name='toggle_upvote_question'), # pylint: disable=C0301
     path('toggle-upvote-answer/<int:answer_id>/', views.toggle_upvote_answer, name='toggle_upvote_answer'), # pylint: disable=C0301
     path('report/<int:item_id>/<str:item_type>/', views.report, name='report'),
+    path('sobre/', views.sobre, name='sobre'),
 ]
