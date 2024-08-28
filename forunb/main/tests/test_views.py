@@ -260,6 +260,24 @@ class ViewsTestCase(TestCase):
         self.assertTrue(response_json['success'])
         self.assertIn('question_id', response_json)
 
+    def test_new_question_invalid_form(self):
+        """
+        Test that the new_question view returns an error response when the form is invalid.
+        """
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        # Enviar um formulário POST inválido
+        response = self.client.post(reverse('main:new_question', args=[self.forum.id]), {
+            'title': '',  # Título vazio para invalidar o formulário
+            'description': '',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        # Verifica se o status é 200 e se a resposta é a esperada (sucesso = False)
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
+
     def test_new_answer_view(self):
         """
         Test that the new answer view is accessible to logged-in users and that
