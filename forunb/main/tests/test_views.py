@@ -175,6 +175,25 @@ class ViewsTestCase(TestCase):
         questions = response.context['questions']
         self.assertEqual(questions[0], self.question)  # A primeira pergunta criada deve aparecer primeiro
 
+    def test_followed_forums_view(self):
+        """Test that the followed forums view returns the correct followed forums for the user."""
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Cria um fórum adicional e faz o usuário seguir ambos
+        another_forum = Forum.objects.create(
+            title="Another Forum", description="Another Forum Description")
+        self.user.followed_forums.add(self.forum, another_forum)
+
+        response = self.client.get(reverse('main:followed_forums'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forums.html')
+        
+        # Verifica se ambos os fóruns seguidos estão na resposta
+        forums = response.context['forums']
+        self.assertIn(self.forum, forums)
+        self.assertIn(another_forum, forums)
+        self.assertEqual(len(forums), 2)  # Certifica-se de que são exatamente dois fóruns seguidos
+
     def test_forum_list_view(self):
         """
         Test that the forum list view returns the correct response, uses the correct template,
