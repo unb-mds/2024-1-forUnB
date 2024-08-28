@@ -312,7 +312,20 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Notification.objects.filter(
             user=self.user, question=self.question, answer__text='Answer from user2').exists())
+        
+    def test_new_answer_invalid_form(self):
+        """
+        Test that an invalid answer form submission returns the correct error JSON response.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
 
+        # Submitting an empty form to trigger validation errors
+        response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
 
     def test_follow_forum_view(self):
         """
