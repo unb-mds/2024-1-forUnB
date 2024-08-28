@@ -141,7 +141,23 @@ class ViewsTestCase(TestCase):
         questions = response.context['questions']
         self.assertEqual(questions[0], question2)  # A segunda pergunta deve aparecer primeiro
 
-    
+    def test_forum_detail_view_most_upvoted(self):
+        """Test that the forum detail view correctly orders questions by most upvoted."""
+        # Cria perguntas com diferentes contagens de upvotes
+        question2 = Question.objects.create(
+            title="Another Test Question",
+            description="Another Description",
+            forum=self.forum,
+            author=self.user
+        )
+        self.question.upvoters.add(self.user)  # Adiciona upvote à primeira pergunta
+
+        response = self.client.get(
+            reverse('main:forum_detail', args=[self.forum.id]) + '?order_by=most_upvoted')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forum_detail.html')
+        questions = response.context['questions']
+        self.assertEqual(questions[0], self.question)  # A primeira pergunta deve aparecer primeiro
 
     
 
