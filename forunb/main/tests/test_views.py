@@ -519,7 +519,23 @@ class ViewsTestCase(TestCase):
         self.assertFalse(response_json['success'])
         self.assertEqual(response_json['error'], 'Método não permitido.')
 
-    
+    def test_report_exception_handling(self):
+        """
+        Test that the report view returns an error when an invalid item type is provided.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Simula um tipo de item inválido
+        response = self.client.post(reverse('main:report', args=[self.question.id, 'invalid_type']), {
+            'reason': 'ofensivo',
+            'details': 'Conteúdo inadequado',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 400)  # Verifica se o status é 400
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('error', response_json)
+
 
 class SearchForumTestCase(TestCase):
     """
