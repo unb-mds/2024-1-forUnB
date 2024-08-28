@@ -505,7 +505,20 @@ class ViewsTestCase(TestCase):
         self.assertFalse(response_json['success'])
         self.assertIn('errors', response_json)
 
-    
+    def test_report_invalid_method(self):
+        """
+        Test that the report view returns a method not allowed error when the request method is not POST.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Envia uma requisição GET em vez de POST
+        response = self.client.get(reverse('main:report', args=[self.question.id, 'question']), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 405)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertEqual(response_json['error'], 'Método não permitido.')
+
     
 
 class SearchForumTestCase(TestCase):
