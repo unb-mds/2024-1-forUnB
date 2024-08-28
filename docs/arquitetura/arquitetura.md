@@ -1,5 +1,5 @@
 # **Introdução**
-O forUnB tem como objetivo melhorar a comunicação com o estudante e monitor a partir de um fórum. Os alunos poderão participar de comunidades, criar e responder perguntas. A arquitetura escolhida foi a MVT (Model, View, Template) e vai ser utilizada dentro do framework Django.
+O forUnB tem como objetivo melhorar a comunicação com o estudante e monitor a partir de um fórum. Os alunos poderão participar de comunidades, criar e responder perguntas. A arquitetura escolhida foi a MVT (Model, View, Template) e vai ser utilizada dentro do framework Django, contamos também com um [Scraping](../scraping/documentacao.md).
 
 ## **Camadas**
 
