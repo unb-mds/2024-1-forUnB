@@ -327,6 +327,20 @@ class ViewsTestCase(TestCase):
         self.assertFalse(response_json['success'])
         self.assertIn('errors', response_json)
 
+    def test_new_answer_invalid_method(self):
+        """
+        Test that a GET request to new_answer returns an error JSON response indicating invalid method.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+
+        # Attempting to access new_answer view with GET instead of POST
+        response = self.client.get(reverse('main:new_answer', args=[self.question.id]), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertEqual(response_json['error'], 'Invalid request method')
+
     def test_follow_forum_view(self):
         """
         Test that a user can follow and unfollow a forum.
