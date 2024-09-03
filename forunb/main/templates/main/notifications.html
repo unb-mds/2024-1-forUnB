@@ -79,9 +79,9 @@
                 </span> • 
                 <small class="notification-time">{{ notification.created_at }}</small>
             </div>
-            <div class="notification-content">
+            <div class="notification-content mt-1">
                 <span>respondeu à sua pergunta:</span>
-                <a class="resposta mt-1 mb-1 fw-bold" href="{% url 'main:question_detail' notification.question.id %}">
+                <a class="resposta mt-2 mb-1 fw-bold" href="{% url 'main:question_detail' notification.question.id %}">
                     <strong>{{ notification.question.title }}</strong>
                 </a>
             </div>

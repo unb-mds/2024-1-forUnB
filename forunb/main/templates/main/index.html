@@ -6,7 +6,7 @@
     <div class="forum-header">
         <h2 class="home-head">Últimas Perguntas</h2>
         <div class="dropdown">
-            <button class="btn btn-question dropdown-toggle mb-2" type="button" id="dropdownMenuButton"
+            <button class="btn btn-question dropdown-toggle mb-2 ms-3" type="button" id="dropdownMenuButton"
                 data-bs-toggle="dropdown" aria-expanded="false">Filtrar</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'main:index' %}?filter_by=latest">Últimas Perguntas Gerais</a>
@@ -20,7 +20,7 @@
 
     {% load custom_filters %}
 
-    <div class="home-container">
+    <div class="home-container mt-4">
         {% for question in latest_questions %}
         <div class="question-item">
             <div class="home-meta">
@@ -34,16 +34,16 @@
                     {% else %}
                     {{ question.author.username }}
                     {% endif %}
-                </span> •
-                <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
+                </span>  •
+                <span class="question-date ms-1">há {{ question.created_at|custom_timesince }}</span>
                 <a href="{% url 'main:forum_detail' question.forum.id %}" class="forum-label">
                     <span class="label-full">{{ question.forum.title }}</span>
                     <span class="label-short">{{ question.forum.title|first_word }}</span>
                 </a>
             </div>
             <a href="{% url 'main:question_detail' question.id %}">
-                <h5 class="question-title">{{ question.title }}</h5>
-                <p class="question-description">{{ question.description }}</p>
+                <h5 class="question-title mt-2">{{ question.title }}</h5>
+                <p class="question-description mt-2">{{ question.description }}</p>
             </a>
             {% if question.image %}
             <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
@@ -60,7 +60,7 @@
                 </a>
             </div>
         </div>
-        <hr class="question-separator">
+        <hr class="question-separator mt-2">
         {% endfor %}
     </div>
 
