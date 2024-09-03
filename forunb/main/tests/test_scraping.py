@@ -8,7 +8,7 @@ class TestScraping(unittest.TestCase):
     """ Test suite for the scraping module. """
 
     @patch('main.scraping.get_response')
-    def test_get_list_of_departments_success(self, mock_get_response):
+    def test_get_list_of_departments_success(self, mock_get_response): # Vê o que deu de errado
         """ Test the get_list_of_departments function to ensure it correctly extracts"""
         # Testa a função get_list_of_departments para garantir que ela extrai corretamente
         # os IDs dos departamentos a partir de uma resposta HTML simulada que contém
