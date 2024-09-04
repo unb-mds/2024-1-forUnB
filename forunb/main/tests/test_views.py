@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from main.models import Forum, Question, Answer, Notification
+from main.views import clean_html
 
 User = get_user_model()
 
@@ -90,6 +91,8 @@ class ViewsTestCase(TestCase):
         """
         Set up the test environment with a user, forum, question, and answer.
         """
+        self.user2 = User.objects.create_user(
+            email='test2@aluno.unb.br', password='senha1010')
         self.user = User.objects.create_user(
             email='test@aluno.unb.br', password='senha1010')
         self.forum = Forum.objects.create( # pylint: disable=E1101
@@ -123,6 +126,77 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'main/forum_detail.html')
         self.assertContains(response, self.forum.title)
 
+    def test_forum_detail_view_least_upvoted(self):
+        """Test that the forum detail view correctly orders questions by least upvoted."""
+        # Cria perguntas com diferentes contagens de upvotes
+        question2 = Question.objects.create(
+            title="Another Test Question",
+            description="Another Description",
+            forum=self.forum,
+            author=self.user
+        )
+        self.question.upvoters.add(self.user)  # Adiciona upvote à primeira pergunta
+
+        response = self.client.get(
+            reverse('main:forum_detail', args=[self.forum.id]) + '?order_by=least_upvoted')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forum_detail.html')
+        questions = response.context['questions']
+        self.assertEqual(questions[0], question2)  # A segunda pergunta deve aparecer primeiro
+
+    def test_forum_detail_view_most_upvoted(self):
+        """Test that the forum detail view correctly orders questions by most upvoted."""
+        # Cria perguntas com diferentes contagens de upvotes
+        question2 = Question.objects.create(
+            title="Another Test Question",
+            description="Another Description",
+            forum=self.forum,
+            author=self.user
+        )
+        self.question.upvoters.add(self.user)  # Adiciona upvote à primeira pergunta
+
+        response = self.client.get(
+            reverse('main:forum_detail', args=[self.forum.id]) + '?order_by=most_upvoted')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forum_detail.html')
+        questions = response.context['questions']
+        self.assertEqual(questions[0], self.question)  # A primeira pergunta deve aparecer primeiro
+
+    def test_forum_detail_view_oldest(self):
+        """Test that the forum detail view correctly orders questions by oldest first."""
+        question2 = Question.objects.create(
+            title="Another Test Question",
+            description="Another Description",
+            forum=self.forum,
+            author=self.user
+        )
+
+        response = self.client.get(
+            reverse('main:forum_detail', args=[self.forum.id]) + '?order_by=oldest')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forum_detail.html')
+        questions = response.context['questions']
+        self.assertEqual(questions[0], self.question)  # A primeira pergunta criada deve aparecer primeiro
+
+    def test_followed_forums_view(self):
+        """Test that the followed forums view returns the correct followed forums for the user."""
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+        
+        # Cria um fórum adicional e faz o usuário seguir ambos
+        another_forum = Forum.objects.create(
+            title="Another Forum", description="Another Forum Description")
+        self.user.followed_forums.add(self.forum, another_forum)
+
+        response = self.client.get(reverse('main:followed_forums'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/forums.html')
+        
+        # Verifica se ambos os fóruns seguidos estão na resposta
+        forums = response.context['forums']
+        self.assertIn(self.forum, forums)
+        self.assertIn(another_forum, forums)
+        self.assertEqual(len(forums), 2)  # Certifica-se de que são exatamente dois fóruns seguidos
+
     def test_forum_list_view(self):
         """
         Test that the forum list view returns the correct response, uses the correct template,
@@ -132,6 +206,20 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/forums.html')
         self.assertContains(response, self.forum.title)
+
+    def test_clean_html_with_br_and_p_tags(self):
+        """Test that clean_html correctly replaces <br> tags and preserves <p> tag formatting."""
+        # Texto de entrada com tags <br> e <p>
+        html_input = "<p>This is a paragraph.</p><br>And this is after a break.<br><p>New paragraph.</p>"
+        
+        # Texto esperado após a limpeza
+        expected_output = "\nThis is a paragraph.\n\nAnd this is after a break.\n\nNew paragraph.\n"
+        
+        # Chama a função clean_html
+        cleaned_text = clean_html(html_input)
+        
+        # Verifica se o texto limpo corresponde ao esperado
+        self.assertEqual(cleaned_text, expected_output)
 
     def test_questions_view(self):
         """
@@ -174,6 +262,24 @@ class ViewsTestCase(TestCase):
         self.assertTrue(response_json['success'])
         self.assertIn('question_id', response_json)
 
+    def test_new_question_invalid_form(self):
+        """
+        Test that the new_question view returns an error response when the form is invalid.
+        """
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        # Enviar um formulário POST inválido
+        response = self.client.post(reverse('main:new_question', args=[self.forum.id]), {
+            'title': '',  # Título vazio para invalidar o formulário
+            'description': '',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        # Verifica se o status é 200 e se a resposta é a esperada (sucesso = False)
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
+
     def test_new_answer_view(self):
         """
         Test that the new answer view is accessible to logged-in users and that
@@ -193,6 +299,48 @@ class ViewsTestCase(TestCase):
         response_json = response.json()
         self.assertTrue(response_json['success'])
 
+    def test_new_answer_creates_notification(self):
+        """
+        Test that a notification is created when user2 answers a question created by user1.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+
+        response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {
+            'text': 'Answer from user2',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Notification.objects.filter(
+            user=self.user, question=self.question, answer__text='Answer from user2').exists())
+        
+    def test_new_answer_invalid_form(self):
+        """
+        Test that an invalid answer form submission returns the correct error JSON response.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+
+        # Submitting an empty form to trigger validation errors
+        response = self.client.post(reverse('main:new_answer', args=[self.question.id]), {}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
+
+    def test_new_answer_invalid_method(self):
+        """
+        Test that a GET request to new_answer returns an error JSON response indicating invalid method.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+
+        # Attempting to access new_answer view with GET instead of POST
+        response = self.client.get(reverse('main:new_answer', args=[self.question.id]), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertEqual(response_json['error'], 'Invalid request method')
+
     def test_follow_forum_view(self):
         """
         Test that a user can follow and unfollow a forum.
@@ -210,6 +358,19 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(self.user.followed_forums.filter(
             id=self.forum.id).exists())
+        
+    def test_follow_forum_view_invalid_method(self):
+        """
+        Test that follow_forum returns a 400 response when the request method is not POST.
+        """
+        self.client.login(email='test@aluno.unb.br', password='senha1010')
+
+        # Enviar uma requisição GET ao invés de POST
+        response = self.client.get(reverse('main:follow_forum', args=[self.forum.id, 'follow']))
+
+        # Verifica se o status é 400 e se a resposta é a esperada
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {'success': False})
 
     def test_user_posts_view(self):
         """
@@ -327,6 +488,53 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
         self.assertTrue(response_json['success'])
+
+    def test_report_invalid_form(self):
+        """
+        Test that the report view returns errors when the form is invalid.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Envia uma requisição POST com dados inválidos
+        response = self.client.post(reverse('main:report', args=[self.question.id, 'question']), {
+            'invalid_field': 'invalid_value',  # Campo inválido
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('errors', response_json)
+
+    def test_report_invalid_method(self):
+        """
+        Test that the report view returns a method not allowed error when the request method is not POST.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Envia uma requisição GET em vez de POST
+        response = self.client.get(reverse('main:report', args=[self.question.id, 'question']), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 405)
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertEqual(response_json['error'], 'Método não permitido.')
+
+    def test_report_exception_handling(self):
+        """
+        Test that the report view returns an error when an invalid item type is provided.
+        """
+        self.client.login(email='test2@aluno.unb.br', password='senha1010')
+        
+        # Simula um tipo de item inválido
+        response = self.client.post(reverse('main:report', args=[self.question.id, 'invalid_type']), {
+            'reason': 'ofensivo',
+            'details': 'Conteúdo inadequado',
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        
+        self.assertEqual(response.status_code, 400)  # Verifica se o status é 400
+        response_json = response.json()
+        self.assertFalse(response_json['success'])
+        self.assertIn('error', response_json)
 
 
 class SearchForumTestCase(TestCase):

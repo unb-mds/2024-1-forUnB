@@ -68,7 +68,7 @@
             </div>
             <a href="{% url 'main:question_detail' question.id %}">
                 <h5 class="question-title mt-2">{{ question.title }}</h5>
-                <p class="question-description mt-2">{{ question.description }}</p>
+                <p class="question-description mt-2 preformatted-text">{{ question.description }}</p>
             </a>
             {% if question.image %}
             <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
