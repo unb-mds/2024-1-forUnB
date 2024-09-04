@@ -1,7 +1,7 @@
 """Views for the main app."""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Count
@@ -106,7 +106,10 @@ def clean_html(text):
     cleaned_text = soup.get_text()
     return cleaned_text
 
-
+@require_http_methods(["GET"])
+def about(request):
+    """Render the about page."""
+    return render(request, 'main/about.html')
 
 @login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
