@@ -104,9 +104,9 @@ def clean_html(text):
     return cleaned_text
 
 @require_http_methods(["GET"])
-def sobre(request):
-    """Render the sobre page."""
-    return render(request, 'main/sobre.html')
+def about(request):
+    """Render the about page."""
+    return render(request, 'main/about.html')
 
 @login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
