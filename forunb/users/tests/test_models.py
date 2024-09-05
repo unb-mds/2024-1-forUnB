@@ -1,7 +1,11 @@
 """ Tests for the CustomUser model """
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from users.models import CustomUser
 from main.models import Forum, Question, Answer, Notification, Report
+from cloudinary.models import CloudinaryField
+from users.models import CustomUser
+from django.db import models
+from users.models import get_image_field
 
 
 class CustomUserModelTest(TestCase):
@@ -22,11 +26,30 @@ class CustomUserModelTest(TestCase):
             question=self.question, text='Test Answer', author=self.user
         )
 
+    @override_settings(DEBUG=False)
+    def test_get_image_field_in_production(self):
+        """Test that get_image_field returns CloudinaryField when DEBUG is False."""
+        image_field = get_image_field()
+        self.assertEqual(image_field, CloudinaryField)
+
+    @override_settings(DEBUG=True)
+    def test_get_image_field_in_debug(self):
+        """Test that get_image_field returns models.ImageField when DEBUG is True."""
+        image_field = get_image_field()
+        self.assertEqual(image_field, models.ImageField)
+
     def test_create_user(self):
         """ Test that a user can be created """
         self.assertEqual(self.user.email, 'testuser@aluno.unb.br')
         self.assertTrue(self.user.check_password('password123'))
         self.assertFalse(self.user.is_staff)
+
+    def test_create_user_without_email(self):
+        """Test that creating a user without an email raises a ValueError."""
+        with self.assertRaises(ValueError) as context:
+            CustomUser.objects.create_user(email=None, password='password123')
+
+        self.assertEqual(str(context.exception), 'The Email field must be set')
 
     def test_create_superuser(self):
         """ Test that a superuser can be created """

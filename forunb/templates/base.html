@@ -11,6 +11,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     {% load static %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'js/scripts.js' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'forunb/img/logo_favicon.png' %}" />
     <script src="https://cdn.tiny.cloud/1/your-tiny-api-key/tinymce/6/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -36,6 +37,8 @@
                             class="bi bi-star-fill"></i>Meus Fóruns</a>
                     <a class="btn btn-home btn-sm" href="{% url 'main:user_posts' %}"><i class="bi bi-star"></i> Meus
                         Posts</a>
+                    <a class="btn btn-home btn-sm" href="{% url 'main:about' %}"><i class="bi bi-info-circle"></i> Sobre
+                        </a>
                 </nav>
                 <footer class="mt-auto">
                     <p class="text-white">Fale conosco : forunb24@gmail.com</p>

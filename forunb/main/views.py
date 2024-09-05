@@ -1,7 +1,7 @@
 """Views for the main app."""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Count
@@ -96,10 +96,20 @@ def question_detail(request, question_id):
 
 
 def clean_html(text):
-    """Remove HTML tags from a text."""
+    """Remove HTML tags but preserve line breaks and basic formatting."""
     soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text()
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
+    for p in soup.find_all("p"):
+        p.insert(0, "\n")
+        p.insert(len(p.contents), "\n")
+    cleaned_text = soup.get_text()
+    return cleaned_text
 
+@require_http_methods(["GET"])
+def about(request):
+    """Render the about page."""
+    return render(request, 'main/about.html')
 
 @login_required(login_url='/users/login')
 def follow_forum(request, forum_id, action):
@@ -116,7 +126,7 @@ def follow_forum(request, forum_id, action):
 
 @login_required(login_url='/users/login')
 def new_question(request, forum_id):
-    """Create a new question."""
+    """Create a new question"""
     forum = get_object_or_404(Forum, id=forum_id)
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
@@ -129,7 +139,6 @@ def new_question(request, forum_id):
             request.user.created_questions.add(question)
             return JsonResponse({'success': True, 'question_id': question.id})
         return JsonResponse({'success': False, 'errors': form.errors.as_json()})
-
     form = QuestionForm()
     return render(request, 'main/new_question.html', {'form': form, 'forum': forum})
 
@@ -192,7 +201,7 @@ def notifications(request):
     return render(request, 'main/notifications.html', {'notifications': user_notifications})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_question(request, question_id):
     """Toggle the upvote of a question for a user."""
@@ -201,7 +210,7 @@ def toggle_upvote_question(request, question_id):
     return JsonResponse({'upvotes': question.upvote_count})
 
 
-@login_required
+@login_required(login_url='/users/login')
 @require_POST
 def toggle_upvote_answer(request, answer_id):
     """Toggle the upvote of an answer for a user."""
@@ -232,6 +241,7 @@ def report(request, item_id, item_type):
                 report_instance.user = request.user
                 report_instance.save()
                 return JsonResponse({'success': True})
+            print(form.errors)  # Isso irá mostrar quais campos estão falhando
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
         return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
     except Exception as e:  # pylint: disable=broad-except

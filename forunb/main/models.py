@@ -6,6 +6,11 @@ from PIL import Image
 from users.models import CustomUser
 from cloudinary.models import CloudinaryField
 
+if settings.DEBUG:
+    ImageField = models.ImageField
+else:
+    from cloudinary.models import CloudinaryField
+    ImageField = CloudinaryField
 
 class Forum(models.Model):
     """Model for a forum."""
@@ -53,7 +58,7 @@ class Question(Post):
         default=0, verbose_name='Favorited Count'
     )
     is_anonymous = models.BooleanField(default=False, verbose_name='')
-    image = CloudinaryField('image', blank=True, null=True)
+    image = ImageField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_questions', blank=True
     )
@@ -69,12 +74,12 @@ class Question(Post):
         """Save method for a question."""
         super().save(*args, **kwargs)
 
-        if self.image:
+        """if self.image:
             img = Image.open(self.image.path)  # pylint: disable=E1101
             if img.height > 800 or img.width > 800:
                 output_size = (800, 800)
                 img.thumbnail(output_size)
-                img.save(self.image.path)  # pylint: disable=E1101
+                img.save(self.image.path)  # pylint: disable=E1101"""
 
     def toggle_upvote(self, user):
         """Toggles the upvote of a question for a user."""
@@ -100,7 +105,7 @@ class Answer(Post):
     is_anonymous = models.BooleanField(
         default=False, verbose_name='Modo anônimo'
     )
-    image = CloudinaryField('image', blank=True, null=True)
+    image = ImageField('image', blank=True, null=True)
     upvoters = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='upvoted_answers', blank=True
     )
@@ -117,12 +122,12 @@ class Answer(Post):
         """Save method for an answer."""
         super().save(*args, **kwargs)
 
-        if self.image:
+        """if self.image:
             img = Image.open(self.image.path)  # pylint: disable=E1101
             if img.height > 800 or img.width > 800:
                 output_size = (800, 800)
                 img.thumbnail(output_size)
-                img.save(self.image.path)  # pylint: disable=E1101
+                img.save(self.image.path)  # pylint: disable=E1101"""
 
     def toggle_upvote(self, user):
         """Toggles the upvote of an answer for a user."""

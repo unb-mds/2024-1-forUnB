@@ -137,13 +137,13 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label class="form-label">Nome de usuário</label>
-                    <input type="text" name="username" class="form-control" value="{{ user.username }}" data-original-username="{{ user.username }}">
+                    <input type="text" name="username" class="form-control mt-2" value="{{ user.username }}" data-original-username="{{ user.username }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Foto de Perfil</label>
                     <div class="custom-file-container">
                         <input type="file" name="photo" id="photo" accept="image/*" onchange="showCropper(event)" style="display: none;">
-                        <button type="button" class="btn btn-image" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
+                        <button type="button" class="btn btn-image mt-2" onclick="document.getElementById('photo').click();">Escolher Arquivo</button>
                         <span id="file-name"></span>
                     </div>
                     <div class="img-container mt-3">
@@ -153,7 +153,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="text" class="email" value="{{ user.email }}" readonly>
+                    <input type="text" class="email mt-2" value="{{ user.email }}" readonly>
                 </div>
                 <div class="d-flex justify-content-center" id="action-buttons" style="display: none;">
                     <button type="button" class="btn btn-cancel" onclick="cancelSelection()">Cancelar</button>

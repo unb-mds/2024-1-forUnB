@@ -17,7 +17,7 @@
             {% endif %}
         </h1>
     </div>
-    <div class="d-flex forum-buttons">
+    <div class="d-flex forum-buttons mt-3">
         <div class="dropdown me-3">
             <button class="btn btn-question dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,7 +51,7 @@
     <div class="questions-container">
         {% if questions %}
         {% for question in questions %}
-        <div class="question-item">
+        <div class="question-item mt-3">
             <div class="question-meta">
                 {% load static %}
                 <img class="profile-picture"
@@ -67,8 +67,8 @@
                 <span class="question-date">há {{ question.created_at|custom_timesince }}</span>
             </div>
             <a href="{% url 'main:question_detail' question.id %}">
-                <h5 class="question-title">{{ question.title }}</h5>
-                <p class="question-description">{{ question.description }}</p>
+                <h5 class="question-title mt-2">{{ question.title }}</h5>
+                <p class="question-description mt-2 preformatted-text">{{ question.description }}</p>
             </a>
             {% if question.image %}
             <img src="{{ question.image.url }}" alt="Descrição da imagem relacionada à pergunta"
@@ -85,7 +85,7 @@
                 </a>
             </div>
         </div>
-        <hr class="question-separator">
+        <hr class="question-separator mt-2">
         {% endfor %}
         {% else %}
         <p>Nenhuma pergunta encontrada neste fórum.</p>
