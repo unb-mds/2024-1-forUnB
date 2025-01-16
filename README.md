@@ -13,9 +13,9 @@
     <img src="./docs/assets/for_unb.png" style="width:30vw"/>
 </div>
 
-O ForUnB é um projeto da disciplina **Métodos de Desenvolvimento de Software**, que tem como objetivo incentivar os alunos da Universidade de Brasília, campus Gama (UnB), a tirar dúvidas sobre qualquer matéria por meio de um fórum.
-
-O projeto é software livre e está sob a licença [MIT](./LICENSE).
+O ForUnB é um projeto da disciplina **Métodos de Desenvolvimento de Software**, que tem como objetivo incentivar os alunos da Universidade de Brasília, campus Gama (UnB), a tirar dúvidas sobre qualquer matéria por meio de um fórum.  
+O projeto é software livre e está sob a licença [MIT](./LICENSE).  
+**Acesse o site:** https://forunb-201a551c5a00.herokuapp.com/
 
 ## 📝 Sumário
 
