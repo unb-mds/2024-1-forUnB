@@ -10,7 +10,7 @@ import dj_database_url
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com', '.forunb.com']
+ALLOWED_HOSTS = ['two024-1-forunb.onrender.com','.herokuapp.com', '.forunb.com']
 
 DATABASES = {
     'default': dj_database_url.config(
